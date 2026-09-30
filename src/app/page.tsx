@@ -37,6 +37,7 @@ import InstagramCreatorsOutreach from '@/components/InstagramCreatorsOutreach';
 import XLeadsPumpStackerHub from '@/components/XLeadsPumpStackerHub';
 import AdvancedWholesaleSuite from '@/components/AdvancedWholesaleSuite';
 import DailyAutomationHub from '@/components/DailyAutomationHub';
+import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
   const [db, setDb] = useState<SkillDatabase | null>(null);
@@ -801,6 +802,9 @@ export default function SkillForgeDashboard() {
           </div>
         </div>
       )}
+
+      {/* 🤖 FLOATING AI CHAT — always visible on every tab */}
+      <PlatformChat apiKey={apiKey} />
     </div>
   );
 }
