@@ -72,16 +72,87 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Built-in Intelligent Call Simulation & Setup
+      const botType = (await req.clone().json().catch(() => ({})))?.botType || 'initial_outreach';
+      const reductionAmt = (await req.clone().json().catch(() => ({})))?.reductionAmount || 12000;
+      const originalOffer = lead?.agreedPrice || lead?.recommendedMaoOffer || 62000;
+      const targetDropOffer = Math.max(10000, originalOffer - Number(reductionAmt));
+      const strategyName = (await req.clone().json().catch(() => ({})))?.strategyName || lead?.leadSource || 'Wholesale Direct';
+
+      // ─── BOT 2: PLAN B — THE INSPECTION PRICE DROP (RENEGOTIATION) ───────────────
+      if (botType === 'plan_b_renegotiation') {
+        const planBPrompt = `You are Alex, an elite Wholesale Acquisitions Partner at AI Automated Services LLC calling ${ownerName} regarding the pending Purchase Agreement on ${propertyAddr}.
+GOAL: Renegotiate the purchase price from $${originalOffer.toLocaleString()} down to $${targetDropOffer.toLocaleString()} (a $${Number(reductionAmt).toLocaleString()} haircut) based on unexpected contractor inspection findings, while maintaining total rapport and keeping the closing date alive.
+
+CALL FRAMEWORK (PLAN B - INSPECTION PRICE DROP):
+1. COURTEOUS RAPPORT & CONTRACTOR WALK UPDATE:
+"Hey ${ownerName}, it's Alex from AI Automated Services LLC following up on ${propertyAddr}. Hope you're having a productive week! I wanted to call you directly because our technical inspection crew and contractor team just finished their comprehensive on-site walk of the property."
+
+2. THE INSPECTION DISCOVERY & PARTNER VETO:
+"Look, the neighborhood and bones are great. However, once our mechanical technicians got into the attic and crawlspace, they uncovered significant unexpected deferred maintenance — specifically, the HVAC furnace heat exchanger is cracked and the rear roof decking has hidden water rot. The licensed contractor estimate came in at $${Number(reductionAmt).toLocaleString()} to $15,000 above our initial underwriting budget. 
+Because of this, our investment committee and underwriting partners met this morning and they refused to approve closing at our original $${originalOffer.toLocaleString()} figure. In fact, they instructed me to issue a formal termination notice under Section 4 of our Inspection Contingency."
+
+3. THE WIN-WIN COMPROMISE OFFER (REVERSE ANCHOR):
+"However, ${ownerName}, I told my partners that you've been wonderful to work with, and I know you want this closed quickly without the headache of fixing anything or relisting on the MLS. I went to bat for you and got them to agree to this: If we can execute a quick 1-page Price Amendment Addendum adjusting the purchase price to $${targetDropOffer.toLocaleString()} net to you, I have full authority to immediately waive all remaining inspection contingencies and fund the deal next week in cash. Does that work so we can keep closing on track for you?"
+
+4. HANDLING THE SELLER OBJECTION ("That's too big of a drop"):
+"I completely understand ${ownerName}. But consider this: If we cancel and you list with an agent, any retail buyer getting an FHA or conventional mortgage will hire an inspector who will flag this exact same roof and furnace issue, and the bank will decline their loan unless you pay $15,000 out of pocket. Then you lose 60 to 90 days and pay 6% realtor commissions. With us, $${targetDropOffer.toLocaleString()} is 100% net cash in your pocket in 7 days, zero fees. Let's get this wrapped up today."
+
+5. CLOSING TIE-DOWN:
+"Can I text you the 1-page Price Amendment Addendum right now so you can sign it on your phone and keep closing on schedule?"`;
+
+        return NextResponse.json({
+          success: true,
+          provider: 'built_in_ai_agent',
+          botType: 'plan_b_renegotiation',
+          status: 'simulated_connected',
+          systemPromptForTelephony: planBPrompt,
+          spokenScript: `Hey ${ownerName}, it's Alex from AI Automated Services LLC calling regarding ${propertyAddr}. Our technical inspection crew finished the on-site walk, but uncovered $${Number(reductionAmt).toLocaleString()} in urgent roof and furnace replacements. My partners vetoed our original price, but I fought to keep the deal alive: if we adjust to $${targetDropOffer.toLocaleString()} net cash, we waive all contingencies and close in 7 days. Can we make that happen?`,
+          suggestedSms: `Hola ${ownerName}, soy Alex de AI Automated Services LLC. Nuestro equipo técnico completó la inspección en ${propertyAddr}. Se detectaron reparaciones imprevistas en techo y calefacción por $${Number(reductionAmt).toLocaleString()}. Mis socios autorizaron cerrar al 100% en efectivo en 7 días si ajustamos el precio a $${targetDropOffer.toLocaleString()} netos. ¿Hablamos 2 minutos?`,
+          message: `Bot Plan B (Renegociación de Precio por Inspección) activado para ${ownerName}. Oferta ajustada a $${targetDropOffer.toLocaleString()}.`,
+        });
+      }
+
+      // ─── BOT 3: PLAN C — CLEAN CANCELLATION & MUTUAL RELEASE (WALK AWAY) ─────────
+      if (botType === 'plan_c_cancellation') {
+        const planCPrompt = `You are Alex, an elite Wholesale Acquisitions Partner at AI Automated Services LLC calling ${ownerName} regarding the Purchase Agreement on ${propertyAddr}.
+GOAL: Professionally notify the seller that under Section 4 (Inspection & Due Diligence Contingency) the buyer is electing to cancel the contract and release all claims, keeping an amicable relationship, instructing the title company to release the Earnest Money Deposit (EMD) 100% to Buyer, and leaving the door open for future deals.
+
+CALL FRAMEWORK (PLAN C - CLEAN CANCELLATION & MUTUAL RELEASE):
+1. COURTEOUS NOTICE:
+"Hello ${ownerName}, this is Alex with AI Automated Services LLC calling regarding ${propertyAddr}. I hope you're doing well today."
+
+2. THE DUE DILIGENCE CONCLUSION:
+"I'm calling to provide our formal update regarding our inspection and partner due diligence contingency under Section 4 of our Purchase Agreement. As our 14-day inspection window comes to a close, our engineering reports and underwriting team reviewed the structural and title costs. Unfortunately, based on the high renovation requirements, our investment committee has formally decided not to proceed with the acquisition at this time."
+
+3. PROFESSIONAL RELEASE & EMD REFUND INSTRUCTION:
+"Pursuant to the terms of Section 4 of our agreement, we are sending over a formal 1-page Cancellation and Mutual Release of Purchase Agreement today. This document completely releases all of our equitable interest in the property, giving you full freedom to market it to any other party immediately, and authorizes the title company to return our escrow deposit without penalty. We truly appreciate your time and transparency throughout this process."
+
+4. LEAVING THE DOOR OPEN:
+"If your timeline or price expectations adjust down the road, or if you'd ever like to revisit a cash offer, please keep my direct number handy. We wish you the absolute best with the home."`;
+
+        return NextResponse.json({
+          success: true,
+          provider: 'built_in_ai_agent',
+          botType: 'plan_c_cancellation',
+          status: 'simulated_connected',
+          systemPromptForTelephony: planCPrompt,
+          spokenScript: `Hello ${ownerName}, this is Alex with AI Automated Services LLC. I am calling to give you an update regarding our inspection period on ${propertyAddr}. Due to the contractor renovation bids, our investment committee has decided not to proceed with the purchase. We are issuing the formal Mutual Release today so you have complete freedom to market the property, and instructing title to release escrow. We thank you for your time.`,
+          suggestedSms: `Hola ${ownerName}, soy Alex de AI Automated Services LLC. Siguiendo el periodo de inspección en ${propertyAddr}, nuestros socios no aprobaron los costos técnicos de remodelación. Hemos enviado la Cancelación y Liberación Mutua a la compañía de título para liberar tu propiedad de inmediato. Muchas gracias por tu atención.`,
+          message: `Bot Plan C (Cancelación Limpia y Liberación Mutua) activado para ${ownerName}. Cero penalidad y 100% reembolso de EMD.`,
+        });
+      }
+
+      // ─── BOT 1: INITIAL OUTREACH CLOSER (RICHARD TAYLOR LIVE CALL FRAMEWORK) ──────
       return NextResponse.json({
         success: true,
         provider: 'built_in_ai_agent',
+        botType: 'initial_outreach',
         status: 'simulated_connected',
-        systemPromptForTelephony: `You are Alex, an elite Wholesale Real Estate Acquisitions Closer calling ${ownerName} regarding the property at ${propertyAddr}. 
+        systemPromptForTelephony: `You are Alex, an elite Wholesale Real Estate Acquisitions Closer at AI Automated Services LLC calling ${ownerName} regarding the property at ${propertyAddr}. Strategy: ${strategyName}.
 You follow the exact Start-to-Finish Live Call Closing Framework of Richard Taylor (@richardgrandintaylor — Hold My Hand Wholesale / Reel DdpMUHvyuZZ):
 
 1. PATTERN INTERRUPT OPENER:
-"Hey ${ownerName}, my name is Alex with WholesalePlatform. I know you weren't expecting my call, but I'm reaching out very briefly about your property on ${propertyAddr}. Are you still the owner of that home?"
+"Hey ${ownerName}, my name is Alex with AI Automated Services LLC. I know you weren't expecting my call, but I'm reaching out very briefly about your property on ${propertyAddr}. Are you still the owner of that home?"
 
 2. UNCOVERING MOTIVATION & 4 PILLARS IN ORDER:
 - Walkaway Price Anchor: "If we were to buy this completely cash as-is without you having to fix anything, what's the lowest number you'd feel comfortable walking away with from the closing table?"
@@ -97,7 +168,7 @@ You follow the exact Start-to-Finish Live Call Closing Framework of Richard Tayl
 
 5. INSTANT DIGITAL TIE-DOWN:
 "Can I text you our simple 1-page agreement right to your phone right now so you can tap and sign on your screen, and we'll open escrow today?"`,
-        message: `Agente de Voz IA conectado con ${ownerName} (${targetPhone}) siguiendo la metodología de llamada en vivo de Richard Taylor (Hold My Hand Wholesale).`,
+        message: `Agente de Voz IA conectado con ${ownerName} (${targetPhone}) con la entidad AI Automated Services LLC y metodología de Richard Taylor.`,
       });
     }
 

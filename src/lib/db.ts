@@ -94,3 +94,5 @@ export function updateSingleSkill(updatedSkill: SkillModule): SkillDatabase {
 
   return saveDatabase(db);
 }
+
+export const readSkillDb = getDatabase;

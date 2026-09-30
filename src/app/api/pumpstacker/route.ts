@@ -429,7 +429,7 @@ Devuelve ÚNICAMENTE un JSON válido con los 5 códigos postales más calientes 
           targetZipCodes: [zipCode],
           buyBoxMatchReason: 'Pagan EMD de $5,000 no reembolsable en 24 horas si el margen bruto supera los $45,000.',
           contactMethod: 'Canal verificado en tu pestaña Cash Buyers',
-          skipTraceUrl: db.cashBuyers?.[0]?.url || 'https://www.facebook.com/groups/realestateswholesalers/',
+          skipTraceUrl: db.cashBuyers?.[0]?.sourceUrl || 'https://www.facebook.com/groups/realestateswholesalers/',
         },
         {
           rank: 4,

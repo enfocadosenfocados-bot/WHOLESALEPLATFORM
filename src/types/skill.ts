@@ -165,9 +165,13 @@ export interface MotivatedSellerLead {
     | 'contacted_sms_email'
     | 'in_call'
     | 'deal_agreed_yes'
-    | 'contract_signed';
+    | 'contract_signed'
+    | 'renegotiation_pending'
+    | 'cancelled_mutual_release';
   agreedPrice?: number;
   signedContractText?: string;
+  priceAddendumText?: string;
+  mutualReleaseText?: string;
   assignedBuyerName?: string;
   assignmentFeeProjected?: number;
 }

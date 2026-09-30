@@ -13,14 +13,14 @@ function generateAutoContractForSeller(
   const endBuyerPrice = agreedPrice + projectedFee;
 
   return `===================================================================
-PARTE 1: REAL ESTATE PURCHASE AND SALE AGREEMENT (PARA EL VENDEDOR)
+PARTE 1: REAL ESTATE PURCHASE AND SALE AGREEMENT (AS-IS)
 ===================================================================
 Effective Date: ${today}
-Strategy Applied: ${lead.leadSource} (SkillForge Automated Closer)
+Strategy Applied: ${lead.leadSource} (AI Automated Services LLC Closing Engine)
 
 1. PARTIES TO AGREEMENT:
 - Seller(s): ${lead.ownerName} ("Seller")
-- Buyer: Tu Inversiones Wholesale LLC and/or assigns ("Buyer")
+- Buyer: AI Automated Services LLC and/or assigns ("Buyer")
 
 2. SUBJECT PROPERTY:
 Seller agrees to sell and Buyer agrees to purchase the real property located at:
@@ -29,34 +29,114 @@ ${lead.propertyAddress}, ${lead.cityState}
 
 3. AGREED PURCHASE PRICE & PAYOFF OF ARREARS/LIENS:
 - Total Purchase Price: $${agreedPrice.toLocaleString()} USD (Payable in Cash at Closing)
-- Existing Tax/Mortgage Arrears ($${lead.taxOrMortgageArrears.toLocaleString()} USD): To be paid off directly out of closing proceeds by the Title Company so Seller receives clear relief.
-- Earnest Money Deposit (EMD): $100.00 USD to be deposited with Investor-Friendly Title Company (e.g. GoldKeyTC.com) within 5 business days after Inspection Period.
+- Existing Tax/Mortgage Arrears ($${lead.taxOrMortgageArrears.toLocaleString()} USD): To be paid off directly out of closing proceeds by Title Company so Seller receives clear net funds.
+- Earnest Money Deposit (EMD): $1,000.00 USD to be deposited with Investor-Friendly Title Company within 5 business days after inspection.
 
-4. MANDATORY THIRD-PARTY ASSIGNMENT CLAUSE (CLÁUSULA DE TERCER COMPRADOR):
-Buyer shall have the absolute and unrestricted right to market this Agreement and assign all rights, title, and interest herein to a third-party investor, partner, or Cash Buyer ("Assignee") for a net gain / Assignment Fee without requiring further consent from Seller. Upon assignment, the third-party Assignee shall fund the purchase and assume all closing obligations.
+4. MANDATORY ASSIGNMENT & EQUITABLE INTEREST:
+Buyer reserves the unencumbered and absolute right to assign, convey, or transfer this Agreement and all rights herein to any third-party investor, partner, or Cash Buyer ("Assignee") for a net assignment fee without requiring additional consent or approval from Seller.
 
-5. INSPECTION & DUE DILIGENCE CONTINGENCY PERIOD (100% RISK PROTECTION):
-Buyer shall have fourteen (14) business days from the Effective Date to inspect the Property, verify title, and confirm final underwriting with Buyer's financial partners. Buyer may cancel this Agreement at Buyer's sole discretion prior to the end of the Inspection Period by written notice and receive a full refund of any Earnest Money Deposit.
+5. INSPECTION & DUE DILIGENCE CONTINGENCY (100% ESCROW PROTECTION):
+Buyer's obligation to close is expressly contingent upon Buyer's satisfactory inspection and approval of the Property, in Buyer's sole and absolute discretion, within fourteen (14) business days of the Effective Date. If Buyer determines that the physical condition, repair estimates, or partner underwriting is unsatisfactory, Buyer may terminate this Agreement by written notice to Seller prior to expiration, whereupon all earnest money deposits shall be returned immediately in full to Buyer without penalty.
 
 6. AS-IS CONDITION & CLOSING COSTS:
-Property is sold strictly "AS-IS, WHERE-IS" — Seller shall not be required to make any repairs, paint, or clean out the property. Buyer (or Buyer's Assignee) shall pay all standard closing costs, escrow fees, and an additional $500 Transaction Coordinator fee at closing.
+Property is sold strictly "AS-IS, WHERE-IS". Seller shall not be required to make any repairs or clean out the property. Buyer (or Buyer's Assignee) shall pay all standard closing costs and title transfer charges.
 
 SELLER SIGNATURE: _______________________________   Date: ${today}
 Printed Name: ${lead.ownerName} | Phone: ${lead.phone}
 
 BUYER SIGNATURE:  _______________________________   Date: ${today}
-Printed Name: Tu Inversiones Wholesale LLC and/or assigns
+Printed Name: AI Automated Services LLC and/or assigns
 
 ===================================================================
-PARTE 2: ASSIGNMENT OF CONTRACT (PARA EL TERCER COMPRADOR / CASH BUYER)
+PARTE 2: ASSIGNMENT OF CONTRACT (PARA EL CASH BUYER)
 ===================================================================
-- Assignor (Original Buyer): Tu Inversiones Wholesale LLC
+- Assignor (Original Buyer): AI Automated Services LLC
 - Assignee (Third-Party Cash Buyer): ${buyerPartnerName}
 - Property: ${lead.propertyAddress}, ${lead.cityState}
 - Original Contract Price with Seller: $${agreedPrice.toLocaleString()} USD
 - Total Price to Cash Buyer (Assignee): $${endBuyerPrice.toLocaleString()} USD
 - YOUR NET ASSIGNMENT FEE (WIRE AT CLOSING): $${projectedFee.toLocaleString()} USD
 - Required Non-Refundable EMD from Cash Buyer: $5,000.00 USD (due within 24 hours at Title Company)`;
+}
+
+function generatePriceAmendmentAddendum(
+  lead: MotivatedSellerLead,
+  originalPrice: number,
+  newPrice: number,
+  reductionAmount: number
+): string {
+  const today = new Date().toISOString().split('T')[0];
+  return `===================================================================
+PRICE AMENDMENT ADDENDUM TO PURCHASE AND SALE AGREEMENT (PLAN B)
+===================================================================
+Effective Date of Addendum: ${today}
+Reference Contract Date: Executed Purchase Agreement for ${lead.propertyAddress}
+Property Address: ${lead.propertyAddress}, ${lead.cityState}
+Seller(s): ${lead.ownerName}
+Buyer: AI Automated Services LLC and/or assigns
+
+WHEREAS, Seller and Buyer previously entered into that certain Purchase and Sale Agreement ("Agreement") for the subject property; and
+WHEREAS, Buyer's technical inspection and contractor due diligence conducted pursuant to Section 4 of the Agreement uncovered unforeseen structural, mechanical (HVAC), and/or roof repair requirements in the amount of approximately $${reductionAmount.toLocaleString()} USD; and
+WHEREAS, the parties desire to modify the Purchase Price to reflect these physical condition findings so the transaction may proceed smoothly to immediate closing;
+
+NOW, THEREFORE, for valuable consideration, Seller and Buyer mutually agree to amend the Agreement as follows:
+
+1. MODIFICATION OF PURCHASE PRICE:
+Section 3 of the Agreement is hereby amended. The Purchase Price is reduced from the original price of $${originalPrice.toLocaleString()} USD to the new, net walkaway price of:
+   $${newPrice.toLocaleString()} USD (CASH AT CLOSING)
+
+2. FULL WAIVER OF INSPECTION CONTINGENCY:
+Upon execution of this Addendum, Buyer hereby waives any further inspection contingencies under Section 4 and confirms readiness to proceed to closing within seven (7) business days.
+
+3. RATIFICATION OF REMAINING TERMS:
+All other terms, conditions, and provisions of the original Agreement, including AS-IS conveyance, title requirements, and assignability, shall remain in full force and effect.
+
+SELLER SIGNATURE: _______________________________   Date: ${today}
+Printed Name: ${lead.ownerName}
+
+BUYER SIGNATURE:  _______________________________   Date: ${today}
+Printed Name: AI Automated Services LLC and/or assigns`;
+}
+
+function generateCancellationMutualRelease(
+  lead: MotivatedSellerLead,
+  originalPrice: number,
+  reason: string
+): string {
+  const today = new Date().toISOString().split('T')[0];
+  return `===================================================================
+CANCELLATION AND MUTUAL RELEASE OF PURCHASE AGREEMENT (PLAN C)
+===================================================================
+Effective Date: ${today}
+Property Address: ${lead.propertyAddress}, ${lead.cityState}
+Seller(s): ${lead.ownerName}
+Buyer: AI Automated Services LLC and/or assigns
+Escrow / Title Company: Title One / Investor-Friendly Title Company
+Reference Contract Purchase Price: $${originalPrice.toLocaleString()} USD
+
+WHEREAS, Seller and Buyer executed that certain Purchase and Sale Agreement ("Agreement") dated for the real property described above; and
+WHEREAS, Section 4 of said Agreement contains an express Inspection and Due Diligence Contingency granting Buyer the right to terminate said Agreement at Buyer's sole and absolute discretion prior to the expiration of the Inspection Period; and
+WHEREAS, Buyer's inspection, contractor underwriting, and/or partner review was unsatisfactory to Buyer (${reason});
+
+NOW, THEREFORE, the parties hereby agree as follows:
+
+1. TERMINATION OF AGREEMENT:
+The Purchase and Sale Agreement between Seller and Buyer is hereby terminated and deemed null, void, and of no further legal force or effect.
+
+2. RELEASE OF EQUITABLE INTEREST:
+Buyer hereby releases and relinquishes any and all right, title, claim, or equitable interest in or to the subject Property, restoring Seller to full and unencumbered ownership with the unrestricted right to market, list, or sell the property to any third party.
+
+3. FULL REFUND OF EARNEST MONEY DEPOSIT (EMD):
+Seller and Buyer hereby jointly instruct Escrow Agent / Title Company to immediately disburse and refund one hundred percent (100%) of all earnest money deposits held in escrow to Buyer (AI Automated Services LLC), without deductions, penalties, or delay.
+
+4. MUTUAL RELEASE OF ALL CLAIMS:
+Seller and Buyer, each for themselves and their respective heirs, successors, and assigns, do hereby completely release, acquit, and forever discharge each other from any and all claims, demands, liabilities, or causes of action arising out of or related to the Agreement.
+
+SELLER SIGNATURE: _______________________________   Date: ${today}
+Printed Name: ${lead.ownerName}
+
+BUYER SIGNATURE:  _______________________________   Date: ${today}
+Printed Name: AI Automated Services LLC and/or assigns`;
 }
 
 export async function POST(req: NextRequest) {
@@ -182,6 +262,73 @@ Responde con LAS PALABRAS EXACTAS (en inglés y en español) que el agente debe 
         success: true,
         lead,
         contractText: lead.signedContractText,
+        db,
+      });
+    }
+
+    // ACTION: PLAN B — RENEGOTIATE PRICE DROP (INSPECTION PRICE DROP ADDENDUM)
+    if (body.action === 'renegotiate_price_drop' && body.leadId) {
+      const lead = db.sellerLeads.find((l) => l.id === body.leadId);
+      if (!lead) {
+        return NextResponse.json({ error: 'Lead no encontrado' }, { status: 404 });
+      }
+
+      const originalPrice = Number(lead.agreedPrice || lead.recommendedMaoOffer || 62000);
+      const reductionAmount = Number(body.reductionAmount || 12000);
+      const newPrice = Math.max(10000, Number(body.newPrice || (originalPrice - reductionAmount)));
+
+      lead.agreedPrice = newPrice;
+      lead.status = 'renegotiation_pending';
+      const addendumText = generatePriceAmendmentAddendum(
+        lead,
+        originalPrice,
+        newPrice,
+        reductionAmount
+      );
+      (lead as any).priceAddendumText = addendumText;
+      saveDatabase(db);
+
+      const smsScript = `Hola ${lead.ownerName}, soy Alex de AI Automated Services LLC. Nuestro equipo técnico finalizó la inspección en ${lead.propertyAddress} y reportó $${reductionAmount.toLocaleString()} en reparaciones imprevistas de techo y calefacción. Mis socios aprueban cerrar en 7 días al contado si ajustamos a $${newPrice.toLocaleString()} netos. ¿Revisamos el addendum de 1 página hoy?`;
+      const emailScript = `Asunto: Addendum de Inspección — Ajuste de Precio a $${newPrice.toLocaleString()} (Cierre en 7 días) — ${lead.propertyAddress}\n\nEstimado ${lead.ownerName},\nAdjuntamos el Addendum de Enmienda de Precio tras el reporte técnico de contratistas. Reduciendo a $${newPrice.toLocaleString()} netos, liberamos todas las contingencias y cerramos la próxima semana sin comisiones.`;
+
+      return NextResponse.json({
+        success: true,
+        lead,
+        addendumText,
+        smsScript,
+        emailScript,
+        newPrice,
+        reductionAmount,
+        db,
+      });
+    }
+
+    // ACTION: PLAN C — CANCEL CONTRACT & MUTUAL RELEASE (WALK AWAY WITH 100% EMD REFUND)
+    if (body.action === 'cancel_and_release' && body.leadId) {
+      const lead = db.sellerLeads.find((l) => l.id === body.leadId);
+      if (!lead) {
+        return NextResponse.json({ error: 'Lead no encontrado' }, { status: 404 });
+      }
+
+      const originalPrice = Number(lead.agreedPrice || lead.recommendedMaoOffer || 62000);
+      const reason = body.reason || 'Costos de renovación exceden parámetros de suscripción técnica según Sección 4';
+
+      lead.status = 'cancelled_mutual_release';
+      const mutualReleaseText = generateCancellationMutualRelease(
+        lead,
+        originalPrice,
+        reason
+      );
+      (lead as any).mutualReleaseText = mutualReleaseText;
+      saveDatabase(db);
+
+      const smsScript = `Hola ${lead.ownerName}, soy Alex de AI Automated Services LLC. Te notifico con respeto que bajo la Sección 4 de inspección, nuestros socios no pudieron validar los costos de remodelación. Hemos firmado la Liberación Mutua para devolver el depósito de garantía y liberar tu propiedad de inmediato. Te deseamos mucho éxito.`;
+
+      return NextResponse.json({
+        success: true,
+        lead,
+        mutualReleaseText,
+        smsScript,
         db,
       });
     }

@@ -209,6 +209,81 @@ async function tryExecuteAction(
     return { actionTaken: 'get_stats', actionResult: stats };
   }
 
+  // PLAN B: THE INSPECTION PRICE DROP (RENEGOTIATION)
+  if (
+    intent === 'plan_b_renegotiate' ||
+    msg.includes('plan b') ||
+    msg.includes('renegociar') ||
+    msg.includes('price drop') ||
+    msg.includes('bajar el precio') ||
+    msg.includes('addendum') ||
+    (msg.includes('comprador') && msg.includes('no quiere')) ||
+    (msg.includes('richard') && msg.includes('no'))
+  ) {
+    const targetLead = (db.sellerLeads || [])[0] || {
+      ownerName: 'Marcus Vance',
+      propertyAddress: '18418 Joann St, Detroit, MI 48205',
+      cityState: 'Detroit, MI',
+      phone: '(313) 555-0199',
+      recommendedMaoOffer: 62000,
+    };
+    const origPrice = Number(targetLead.agreedPrice || targetLead.recommendedMaoOffer || 62000);
+    const dropAmt = 12000;
+    const newPrice = Math.max(10000, origPrice - dropAmt);
+
+    return {
+      actionTaken: 'plan_b_renegotiation',
+      actionResult: {
+        strategy: 'Plan B — The Inspection Price Drop',
+        entity: 'AI Automated Services LLC and/or assigns',
+        property: targetLead.propertyAddress,
+        ownerName: targetLead.ownerName,
+        phone: targetLead.phone,
+        originalPrice: origPrice,
+        priceReduction: dropAmt,
+        newNetCashPrice: newPrice,
+        phoneBotScript: `Hola ${targetLead.ownerName}, habla Alex de AI Automated Services LLC. Te llamo con reporte de nuestra inspección técnica en ${targetLead.propertyAddress}: los contratistas detectaron daños imprevistos graves en techo y caldera por $${dropAmt.toLocaleString()}. Mis socios vetaron el precio original de $${origPrice.toLocaleString()}, pero para evitarte retrasos o comisiones, me autorizaron a cerrar en 7 días al contado si ajustamos a $${newPrice.toLocaleString()} netos en mano con un Addendum de 1 página. ¿Hacemos el ajuste hoy?`,
+        smsScript: `Hola ${targetLead.ownerName.split(' ')[0]}, soy Alex de AI Automated Services LLC. La inspección técnica en ${targetLead.propertyAddress} detectó $${dropAmt.toLocaleString()} en reparaciones urgentes. Mis socios aprueban cerrar en 7 días al contado si ajustamos a $${newPrice.toLocaleString()} netos en mano. Te envié el Addendum por correo. ¿Hablamos 2 minutos?`,
+        addendumText: `PRICE AMENDMENT ADDENDUM TO PURCHASE AND SALE AGREEMENT\nProperty: ${targetLead.propertyAddress}\nSeller: ${targetLead.ownerName}\nBuyer: AI Automated Services LLC and/or assigns\nPursuant to Section 4 (Inspection Period), Purchase Price is amended to: $${newPrice.toLocaleString()} USD.\nAll contingencies waived upon execution. Closing in 7 business days.`,
+      },
+    };
+  }
+
+  // PLAN C: CLEAN CANCELLATION & MUTUAL RELEASE (WALK AWAY WITH 100% EMD REFUND)
+  if (
+    intent === 'plan_c_cancel' ||
+    msg.includes('plan c') ||
+    msg.includes('cancelar') ||
+    msg.includes('walk away') ||
+    msg.includes('mutual release') ||
+    msg.includes('devolver') ||
+    msg.includes('emd') ||
+    msg.includes('ningún comprador')
+  ) {
+    const targetLead = (db.sellerLeads || [])[0] || {
+      ownerName: 'Marcus Vance',
+      propertyAddress: '18418 Joann St, Detroit, MI 48205',
+      cityState: 'Detroit, MI',
+      phone: '(313) 555-0199',
+      recommendedMaoOffer: 62000,
+    };
+    return {
+      actionTaken: 'plan_c_cancellation',
+      actionResult: {
+        strategy: 'Plan C — Clean Cancellation & Mutual Release',
+        entity: 'AI Automated Services LLC and/or assigns',
+        property: targetLead.propertyAddress,
+        ownerName: targetLead.ownerName,
+        phone: targetLead.phone,
+        legalContingency: 'Section 4 (Inspection & Due Diligence Clause)',
+        emdRefundGuarantee: '100% devolución de depósito por la Title Company sin penalidad',
+        phoneBotScript: `Hola ${targetLead.ownerName}, te habla Alex de AI Automated Services LLC respecto a ${targetLead.propertyAddress}. Te llamo para darte una actualización sobre nuestro periodo de inspección bajo la Sección 4 de nuestro contrato. Como sabes, nuestro plazo vence esta semana. Tras evaluar las cotizaciones de remodelación, nuestro comité decidió no proceder con la compra. Emitimos hoy la Liberación Mutua para devolver nuestro depósito en título y liberar tu propiedad inmediatamente. Te agradecemos mucho tu amabilidad.`,
+        smsScript: `Hola ${targetLead.ownerName.split(' ')[0]}, soy Alex de AI Automated Services LLC. Siguiendo el periodo de inspección en ${targetLead.propertyAddress}, nuestros socios no pudieron validar los costos técnicos de remodelación. Hemos firmado y enviado la Cancelación y Liberación Mutua a la compañía de título para liberar tu propiedad de inmediato. Muchas gracias por tu tiempo.`,
+        mutualReleaseText: `CANCELLATION AND MUTUAL RELEASE OF PURCHASE AGREEMENT\nProperty: ${targetLead.propertyAddress}\nSeller: ${targetLead.ownerName}\nBuyer: AI Automated Services LLC and/or assigns\nTitle / Escrow: Title One / Investor-Friendly Title Co.\nAgreement is hereby terminated pursuant to Section 4. Buyer releases equitable interest. Title Company is instructed to refund 100% of EMD to Buyer immediately.`,
+      },
+    };
+  }
+
   return null;
 }
 

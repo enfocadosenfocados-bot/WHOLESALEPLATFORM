@@ -610,6 +610,40 @@ ${Object.entries(p.phoneBotScript.objectionRebuttals)
 ${p.contractText}
 \`\`\`
 Enlace de Firma Electrónica: ${p.eSignUrl}
+
+##### 🛡️ CONTINGENCIA PLAN B: Renegociación de Precio ("The Inspection Price Drop"):
+- **Situación:** El comprador final (${p.buyerName}) o los contratistas reportan que las reparaciones son $12,000-$15,000 mayores a lo esperado.
+- **Precio Ajustado Sugerido:** $${Math.max(10000, p.calculatedMaoCashOffer - 12000).toLocaleString()} USD
+- **🎙️ Script Telefónico para el Bot de Voz (Plan B):**
+  *"Hola ${p.ownerName}, habla Alex de AI Automated Services LLC. Nuestro equipo técnico finalizó la inspección en ${p.address}. Encontraron daños imprevistos en techo y caldera por $12,000. Mis socios vetaron el precio original, pero para cerrar en 7 días y sin comisiones, autorizan cerrar en $${Math.max(10000, p.calculatedMaoCashOffer - 12000).toLocaleString()} netos. ¿Revisamos el Addendum de 1 página hoy?"*
+- **📱 Script SMS de Renegociación (Plan B):**
+  *"Hola ${p.ownerName}, soy Alex de AI Automated Services LLC. La inspección técnica en ${p.address} arrojó $12k en reparaciones urgentes. Mis socios aprueban cerrar en 7 días al contado si ajustamos a $${Math.max(10000, p.calculatedMaoCashOffer - 12000).toLocaleString()} netos en mano. ¿Hablamos 2 minutos?"*
+- **📄 Plantilla de Price Amendment Addendum (Plan B):**
+\`\`\`text
+PRICE AMENDMENT ADDENDUM TO PURCHASE AND SALE AGREEMENT
+Property: ${p.address}, ${p.city}, ${p.state} ${p.zip}
+Seller: ${p.ownerName}
+Buyer: AI Automated Services LLC and/or assigns
+Pursuant to Section 4 (Inspection Period), Purchase Price is amended to: $${Math.max(10000, p.calculatedMaoCashOffer - 12000).toLocaleString()} USD.
+All contingencies waived upon execution. Closing in 7 business days.
+\`\`\`
+
+##### 🛡️ CONTINGENCIA PLAN C: Cancelación Limpia ("Walk Away / 100% EMD Refund"):
+- **Situación:** Ningún comprador toma el contrato o el vendedor se niega a ajustar el precio durante el periodo de inspección de 14 días.
+- **Riesgo:** $0 dólares (Devolución íntegra del depósito de garantía en la compañía de título sin penalidad).
+- **🎙️ Script Telefónico para el Bot de Voz (Plan C):**
+  *"Hola ${p.ownerName}, te habla Alex de AI Automated Services LLC sobre ${p.address}. Siguiendo nuestra cláusula de inspección (Sección 4), nuestros socios e ingenieros revisaron las cotizaciones de remodelación y no pudieron aprobar la adquisición. Emitimos hoy la Liberación Mutua formal para liberar tu título de inmediato y solicitar la devolución de nuestro depósito en título. Muchas gracias por tu amabilidad."*
+- **📱 Script SMS de Notificación Cortés (Plan C):**
+  *"Hola ${p.ownerName}, Alex de AI Automated Services LLC. Notificamos que bajo la cláusula de inspección, no procederemos con la compra de ${p.address}. Hemos enviado la Liberación Mutua a la compañía de título para liberar tu propiedad inmediatamente. ¡Muchos éxitos!"*
+- **📄 Plantilla de Cancellation and Mutual Release (Plan C):**
+\`\`\`text
+CANCELLATION AND MUTUAL RELEASE OF PURCHASE AGREEMENT
+Property: ${p.address}, ${p.city}, ${p.state} ${p.zip}
+Seller: ${p.ownerName}
+Buyer: AI Automated Services LLC and/or assigns
+Title / Escrow: Title One / Investor-Friendly Title Co.
+Agreement is hereby terminated pursuant to Section 4. Buyer releases equitable interest. Title Company is instructed to refund 100% of EMD to Buyer immediately.
+\`\`\`
 ---
 `
   )
