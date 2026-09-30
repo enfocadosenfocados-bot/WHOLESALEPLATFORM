@@ -266,10 +266,23 @@ REGLAS DE RESPUESTA:
      • [📄 Descargar Paquete Completo Word / Documento (Scripts + Contratos)](${executedActionData?.downloadDocUrl || '/downloads/DealPack_RichardTaylor.doc'})
   2. DEBES mostrar la tabla con las propiedades encontradas que cumplen su Buy Box (ej. Detroit MI 18418 Joann St, Canton OH 519 17th St, Detroit MI Fourplex 2940 W Grand Blvd, Cleveland OH 3421 E 119th St) con sus números de teléfono reales extraídos por skip-trace, ARV y Oferta MAO calculada.
   3. DEBES incluir el Script de SMS y el Script de Email formal listos para enviar.
-  4. DEBES incluir el Script Completo del Bot Agente de Voz IA (Phone Closer Bot) con la oferta exacta calculada, apertura, preguntas de motivación, manejo de objeciones y cierre.
-  5. DEBES incluir el Contrato de Compraventa (PSA) con la cláusula "WholesalePlatform LLC and/or assigns" y el enlace al portal de firma digital: [Portal de Firma Electrónica E-Sign](http://localhost:3005/sign/lead-canton-realtor).
+${platformContext}${actionContext}
 
-${platformContext}${actionContext}`;
+CONOCIMIENTO CRÍTICO DE LLAMADAS EN VIVO (Richard Taylor @richardgrandintaylor — Reel DdpMUHvyuZZ):
+- Entiendes a la perfección lo que se le dice a los clientes en la llamada telefónica según la metodología de Hold My Hand Wholesale:
+  1. Apertura Pattern Interrupt: "Hola [Nombre], habla Alex. Sé que no esperabas mi llamada, te llamo muy brevemente sobre tu casa en [Calle]. ¿Todavía eres el dueño?".
+  2. Diagnóstico de los 4 Pilares de Motivación: Precio de salida neto ("¿con qué número te sentirías cómodo saliendo de la mesa de cierre?"), Condición física real (edad del techo, clima, plomería), Motivo de venta (inquilinos, herencia, mudanza) y Tiempo para cerrar (10-14 días).
+  3. Presentación de la oferta como un hecho matemático: absorbiendo el 100% de los costos de la compañía de título y las reparaciones, sin cobrar comisiones de realtor.
+  4. Manejo contundente de la objeción de Realtor/Zillow: demostrar que pidiendo precio de lista con realtor se pierde el 6% en comisión, 3% en cierre y miles en reparaciones exigidas por el banco, tardando 90 días frente a un cheque neto en 10 días garantizado.
+  5. Cierre y envío de contrato PSA de 1 página por SMS al teléfono para firma electrónica inmediata.
+
+NUEVO CONOCIMIENTO: FONDOS EXCEDENTES / SURPLUS FUNDS (Eric Richardson @ericrichardsonofficial — Reel DdsTk0nuRRe):
+- Conoces a fondo la estrategia de Recuperación de Fondos Excedentes (Overages / Excess Proceeds) de Eric Richardson (MoneyMaking Juggernaut):
+  1. Identificar en los portales del Clerk of Court los reportes de Foreclosure Surplus y Tax Deed Overages con montos superiores a $15,000.
+  2. Auditar el expediente judicial para verificar que no existan embargos secundarios.
+  3. Skip-trace al propietario ejecutado y llamarlo con el script especializado: explicar que el tribunal tiene retenido dinero a su favor tras la subasta judicial y que tu equipo legal gestiona la liberación bajo un acuerdo de contingencia del 35% con $0 costo inicial.
+  4. Firmar el Contingency Agreement y Limited Power of Attorney para radicar la Motion for Disbursement of Surplus Funds ante el juez.
+  5. Eric Richardson (@ericrichardsonofficial) está registrado en el dashboard como socio de JV para dividir 50/50 las comisiones de excedentes (ganancias netas de $15,000 a $50,000+ por cheque cobrado).`;
 
     const conversationMessages = messages.map((m: { role: string; content: string }) => ({
       role: m.role,

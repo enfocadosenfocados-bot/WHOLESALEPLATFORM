@@ -279,9 +279,9 @@
       "slug": "wholesale-free-skip-tracing-cold-calling",
       "title": "Skip Tracing Gratis & Cold Calling de Alta Conversión",
       "category": "Skip Tracing & Outreach",
-      "version": "1.3",
-      "lastUpdated": "2026-09-29",
-      "masteryScore": 86,
+      "version": "1.4",
+      "lastUpdated": "2026-09-30",
+      "masteryScore": 98,
       "summary": "Cómo encontrar los números de teléfono celular reales de propietarios motivados (incluyendo propiedades a nombre de LLCs o difuntos en Probate) 100% gratis y cómo estructurar la llamada en frío para detectar los 4 pilares de motivación.",
       "whyItWorks": "Combinar el registro oficial del Property Appraiser (para obtener la dirección postal exacta del dueño) con buscadores públicos gratuitos permite alcanzar hasta un 75% de contacto directo sin pagar centavos por registro al empezar.",
       "executorType": "skip_trace_hub",
@@ -329,6 +329,23 @@
           "proTip": "El primero que dice un número pierde apalancamiento. Intenta siempre que el vendedor te dé su expectativa primero; si se niega, usa la técnica del Reverse Price Anchor.",
           "sourceAttribution": "FreeWholesaling.com (Acquisitions & Cold Calling)",
           "completed": false
+        },
+        {
+          "id": "step-richard-taylor-live-call",
+          "order": 4,
+          "title": "Metodología de Llamada en Vivo Start-to-Finish de Richard Taylor (@richardgrandintaylor — Hold My Hand Wholesale)",
+          "actionDescription": "Protocolo telefónico exacto que utiliza Richard Taylor en llamadas en vivo de inicio a fin: cómo conectar con el vendedor sin sonar a vendedor agresivo, diagnosticar los 4 pilares en orden, calcular la oferta en tiempo real absorbiendo todos los costos de cierre y enviar el contrato de 1 página por SMS antes de colgar.",
+          "exactCommandsOrClicks": [
+            "Apertura con Pattern Interrupt suave: \"Hola [Nombre], habla Alex. Sé que no estabas esperando mi llamada, te llamo muy brevemente sobre tu casa en [Calle]. ¿Todavía eres el dueño de esa propiedad?\".",
+            "Pregunta de anclaje de precio inicial: \"¿Si pudiéramos cerrar en efectivo en 10 días sin que tengas que reparar ni pintar nada, cuál sería el número más bajo con el que te sentirías cómodo caminando de la mesa de cierre?\".",
+            "Diagnóstico de condición física: indaga por los 4 sistemas mayores: techo (edad), plomería (fugas), electricidad y clima (HVAC).",
+            "Presentación de la oferta calculada: \"Basándome en que el techo y los pisos necesitan arreglo, nosotros asumimos el 100% de esos costos y pagamos todos los gastos de la compañía de título. Mi oferta neta directa para ti es de $[MAO] en efectivo. Si cerramos el viernes de la próxima semana, ¿hacemos el trato?\".",
+            "Manejo de objeción de Realtor / Zillow: \"Con un realtor pidiendo el precio completo pagarías 6% de comisión más gastos y el comprador bancario te exigirá reparaciones de inspección. Nosotros te garantizamos $[MAO] netos en 10 días.\"",
+            "Cierre instantáneo: \"Te acabo de enviar el contrato de 1 página a tu celular. Solo abres el enlace con el dedo en tu pantalla y abrimos título hoy mismo.\""
+          ],
+          "proTip": "En Hold My Hand Wholesale, Richard nunca discute el precio con el dueño. Plantea la oferta como un hecho matemático de costos de título y reparaciones absorbidas: \"El número que nos permite pagar tus gastos y cerrar en 10 días es este\".",
+          "sourceAttribution": "Reel IG @richardgrandintaylor (DdpMUHvyuZZ)",
+          "completed": true
         }
       ],
       "resources": [
@@ -412,6 +429,13 @@
           "type": "cold_call_script",
           "whenToUse": "Al llamar a listas de gobierno (Code Violations, Tax Delinquent, Absentee Owners).",
           "content": "1. APERTURA (Tono relajado, como un vecino o comprador local):\n\"Hola, ¿[Nombre del Dueño]? ¡Hola! Te habla [Tu Nombre]. Sé que te llamo de imprevisto, pero pasaba/estaba viendo propiedades por la zona de [Calle] y vi tu casa en [Dirección]. Solo llamaba para saber si de casualidad considerarías venderla por una oferta en efectivo.\"\n\n2. SI DICE \"DEPENDE DE LA OFERTA\" O \"TAL VEZ\":\n\"Totalmente entendible. Para no hacerte perder el tiempo con un número al azar, cuéntame un poquito de la casa... ¿Actualmente vive alguien ahí o está vacía?\"\n\"¿Cómo está de mantenimiento? ¿Hace cuánto se cambió el techo y el aire acondicionado?\"\n\n3. DESCUBRIR MOTIVACIÓN:\n\"Entiendo... ¿y qué te tiene pensando en la posibilidad de venderla en este momento?\"\n\n4. PEDIR EL PRECIO (PRE-OFERTA):\n\"Como nosotros compramos directo, pagamos todos los costos de cierre, no cobramos comisiones de realtor y la tomamos tal cual está (As-Is) sin que tengas que limpiar ni reparar nada... ¿qué precio tenías en mente para sentirte cómodo cerrando?\""
+        },
+        {
+          "id": "script-richard-taylor-full-call",
+          "title": "Guión Maestro de Llamada en Vivo de Richard Taylor (Hold My Hand Wholesale)",
+          "type": "phone_closer_script",
+          "whenToUse": "Utilizar en cualquier llamada de captación de vendedores motivados para presentar la oferta MAO y cerrar el contrato telefónico en 8-12 minutos.",
+          "content": "[APERTURA - PATTERN INTERRUPT]\n\"Hola [Nombre del Dueño], habla Alex de WholesalePlatform. Sé que no estabas esperando mi llamada, te llamo muy brevemente sobre tu casa en la calle [Nombre de la Calle]. ¿Sigues siendo el propietario?\"\n\n[SI DICE SÍ]\n\"Excelente [Nombre]. Nosotros somos compradores directos de bienes raíces y estamos adquiriendo un par de propiedades en el área este mismo mes. Quería preguntarte: si recibieras una oferta de contado, sin tener que hacerle ningún arreglo a la casa y sin pagar comisiones de agente, ¿estarías abierto a considerar una oferta en efectivo?\"\n\n[DIAGNÓSTICO DE LOS 4 PILARES]\n1. CONDICIÓN: \"Para tener una idea clara antes de darte un número injusto, ¿qué arreglos mayores o mantenimiento pendiente tiene la casa? ¿Cómo está el techo, el aire acondicionado y las tuberías?\"\n2. MOTIVACIÓN: \"¿Cuál es la razón principal por la que considerarías vender en este momento? ¿Quieres salir de la gestión de inquilinos, impuestos o reubicar el dinero?\"\n3. TIEMPO: \"¿Qué tan rápido te gustaría tener el dinero en tu cuenta bancaria? ¿Te funcionaría un cierre en 10 a 14 días o necesitas tiempo para mudarte?\"\n4. PRECIO ANCLADO: \"Si nosotros pagamos el 100% de los gastos de la compañía de título y tú no pagas ni un dólar de comisión, ¿cuál es el número neto más bajo con el que te sentirías cómodo saliendo de la mesa de cierre?\"\n\n[PRESENTACIÓN DE LA OFERTA CALCULADA]\n\"Entiendo perfectamente [Nombre]. Mira, haciendo los números con mi equipo: calculando que el techo y los pisos necesitan aproximadamente $[Estimado Reparaciones] que nosotros asumimos al 100%, y que nosotros pagamos todos los honorarios legales de cierre de título, mi oferta neta limpia en mano para ti es de $[Oferta MAO] en efectivo. Si cerramos el próximo viernes, ¿hacemos el trato?\"\n\n[MANEJO DE OBJECIÓN - \"ES MUY POCO / PIDO MÁS\"]\n\"Te comprendo [Nombre]. Si listas con un Realtor a tu precio ideal, vas a pagar el 6% de comisiones, más el 2-3% de gastos de cierre, y el banco del comprador te va a exigir miles de dólares en reparaciones tras la inspección, tardando de 60 a 90 días en pagar. Nosotros te garantizamos $[Oferta MAO] limpios y seguros en tu banco en 10 días hábiles. ¿Te ayudaría tener esa tranquilidad este mismo mes?\"\n\n[CIERRE Y ENVÍO DEL CONTRATO]\n\"Perfecto [Nombre]. Para formalizarlo y reservar los fondos con la compañía de título, te acabo de mandar el acuerdo de 1 página a tu celular por mensaje de texto. Solo ábrelo en tu pantalla, colocas tu firma con el dedo y comenzamos el trámite hoy mismo.\""
         }
       ],
       "sources": [
@@ -442,6 +466,14 @@
           "summaryOfNewKnowledge": "Módulo inicial con triangulación en 3 buscadores gratuitos y guion de los 4 pilares.",
           "sourceTitle": "FreeWholesaling.com Core Curriculum",
           "sourceType": "seed_course"
+        },
+        {
+          "version": "1.4",
+          "date": "2026-09-30",
+          "sourceType": "instagram_reel",
+          "sourceUrl": "https://www.instagram.com/reel/DdpMUHvyuZZ/",
+          "sourceTitle": "Reel IG @richardgrandintaylor (DdpMUHvyuZZ) — Start to Finish Live Call Closing",
+          "summaryOfNewKnowledge": "Protocolo de llamada en vivo paso a paso de Richard Taylor en Hold My Hand Wholesale: apertura pattern interrupt, 4 preguntas de diagnóstico, oferta calculada absorbiendo costos de título y cierre con contrato por SMS."
         }
       ],
       "agyExportedPath": ".agents/skills/wholesale-free-skip-tracing-cold-calling/SKILL.md"
@@ -1430,6 +1462,138 @@
           "summaryOfNewKnowledge": "Ingeniería inversa e implementación completa de las 8 funciones de XLeads X-Plan y PumpStacker: 60,000 Skiptraced Records workflow, AI Ranked Cash Buyers, XLeads Dispo Tab, BuyerMatch AI Dispo, 5 AI Zip Codes (SkyDrive AI + Sellability Scores), PumpStacker (Curative Title + Deep List Stacking), AI Death Scrubbing y AI Obituary Scraper."
         }
       ]
+    },
+    {
+      "id": "skill-surplus-funds-overages",
+      "slug": "wholesale-surplus-funds-overages-recovery",
+      "title": "Recuperación de Fondos Excedentes (Surplus Funds / Tax Deed Overages) con Eric Richardson",
+      "category": "Asset Recovery & Government Overages",
+      "version": "1.0",
+      "lastUpdated": "2026-09-30",
+      "masteryScore": 95,
+      "summary": "Metodología exacta de Eric Richardson (@ericrichardsonofficial / MoneyMaking Juggernaut) para rastrear y reclamar fondos excedentes de subastas judiciales y remates de impuestos que el condado retiene en custodia legal, cobrando un 30% a 40% de contingencia sin costo inicial para el dueño anterior.",
+      "whyItWorks": "Cuando una casa se subasta por más de la deuda de impuestos o hipoteca (ej. debía $20k pero se vendió en $100k en el remate judicial), los $80k sobrantes por ley pertenecen al dueño ejecutado. El condado los retiene en un fondo fiduciario y nunca los busca. El dueño no sabe que tiene ese dinero. Tú firmas un acuerdo de contingencia del 35%, tu abogado radicar la petición ante el juez y te llevas un cheque de $28,000 sin comprar la propiedad ni necesitar compradores en efectivo.",
+      "executorType": "surplus_funds_recovery",
+      "steps": [
+        {
+          "id": "surplus-step-1",
+          "order": 1,
+          "title": "Descargar las Listas de Excedentes de Subastas (Foreclosure Surplus / Excess Proceeds List)",
+          "actionDescription": "Accede a los portales oficiales del Clerk of the Circuit Court / County Comptroller de los condados objetivo y descarga la lista pública de \"Foreclosure Surplus Funds\" o \"Tax Deed Overages\".",
+          "exactCommandsOrClicks": [
+            "Busca en Google: \"[Nombre del Condado] Clerk of Court Foreclosure Surplus List\" o \"Tax Deed Excess Proceeds\".",
+            "Descarga el reporte en PDF o Excel emitido tras las subastas del mes anterior.",
+            "Filtra casos donde el monto de excedente (Surplus Balance) sea superior a $15,000 (ideal entre $25,000 y $120,000)."
+          ],
+          "proTip": "En estados como Florida, Georgia, Texas y Ohio, los secretarios de los tribunales publican listas mensuales de sumas retenidas que superan millones de dólares en cuentas de fideicomiso.",
+          "sourceAttribution": "Eric Richardson (@ericrichardsonofficial — MoneyMaking Juggernaut)",
+          "completed": false
+        },
+        {
+          "id": "surplus-step-2",
+          "order": 2,
+          "title": "Auditoría Forense del Expediente Judicial (Docket Title Search)",
+          "actionDescription": "Revisa el expediente judicial del caso para verificar que segundas hipotecas (Junior Liens) o gravámenes del IRS no hayan consumido todo el sobrante.",
+          "exactCommandsOrClicks": [
+            "Abre el buscador de casos del tribunal (County Civil Court Records Search) e ingresa el número de caso (Case Number).",
+            "Revisa el \"Certificate of Disbursements\" o \"Notice of Deposit of Surplus\".",
+            "Confirma si otros acreedores radicaron reclamaciones dentro del periodo legal (60-120 días)."
+          ],
+          "proTip": "Si no hay reclamos de segundos acreedores, el 100% de los fondos excedentes pertenecen al propietario registrado anterior.",
+          "sourceAttribution": "Eric Richardson — Metodología Excess Elite CRM",
+          "completed": false
+        },
+        {
+          "id": "surplus-step-3",
+          "order": 3,
+          "title": "Skip-Tracing del Dueño Ejecutado (Previous Homeowner Search)",
+          "actionDescription": "Localiza el número de teléfono celular actual y nueva dirección de residencia del dueño que perdió la propiedad.",
+          "exactCommandsOrClicks": [
+            "Ingresa el nombre completo del demandado en FastPeopleSearch.com o CyberBackgroundChecks.com.",
+            "Busca parientes cercanos si el dueño es de edad avanzada o no responde el teléfono principal.",
+            "Valida si el propietario original falleció para contactar a los herederos legales (Affidavit of Heirship)."
+          ],
+          "proTip": "Dado que perdieron su casa recientemente en subasta, casi siempre se mudaron a una vivienda en renta o con familiares en los últimos 6 meses. La nueva dirección postal es clave.",
+          "sourceAttribution": "Eric Richardson (@ericrichardsonofficial)",
+          "completed": false
+        },
+        {
+          "id": "surplus-step-4",
+          "order": 4,
+          "title": "Llamada Telefónica con el Guión de Eric Richardson (Sin sonar a estafa)",
+          "actionDescription": "Comunícate con el dueño con empatía, informándole sobre los fondos que el condado tiene retenidos a su favor y ofreciendo gestionar el reclamo sin ningún costo por adelantado.",
+          "exactCommandsOrClicks": [
+            "Apertura empática: \"Hola [Nombre], te llamo con respecto a la propiedad que tenías en [Dirección]. Mi empresa se especializa en auditoría de registros del condado. Notamos que tras la subasta judicial, el tribunal tiene fondos excedentes retenidos que por ley te pertenecen.\"",
+            "Manejo de sospecha: \"Nosotros cubrimos todos los honorarios legales y de abogados. Tú no pagas ni un solo dólar de tu bolsillo; cobramos un porcentaje de honorarios de contingencia únicamente cuando el cheque sea emitido por el juez a tu favor.\"",
+            "Envío del Acuerdo de Contingencia (Contingency Fee Agreement 30%-40%) y Limited Power of Attorney para firma digital inmediata."
+          ],
+          "proTip": "Nunca pidas números de cuenta ni dinero por adelantado; eso genera confianza absoluta porque el cheque sale a nombre del cliente o de la cuenta fiduciaria del abogado.",
+          "sourceAttribution": "Reel IG @ericrichardsonofficial (DdsTk0nuRRe)",
+          "completed": false
+        },
+        {
+          "id": "surplus-step-5",
+          "order": 5,
+          "title": "Radicación de la Moción de Desembolso ante el Juez (Motion to Disburse Funds)",
+          "actionDescription": "El abogado del equipo radica la petición formal ante el juez del condado para ordenar la entrega de los fondos retenidos.",
+          "exactCommandsOrClicks": [
+            "El abogado envía la \"Motion for Disbursement of Surplus Proceeds\" adjuntando el acuerdo de representación y la prueba de identidad.",
+            "El juez firma la \"Order Directing Clerk to Disburse Surplus Funds\".",
+            "El Clerk emite el cheque o transferencia bancaria en 14 a 30 días.",
+            "Se distribuyen los fondos: el 60%-70% va directo al cliente y el 30%-40% ingresa a tu cuenta bancaria como ganancia neta."
+          ],
+          "proTip": "Un solo deal de excedente promedio de $45,000 te deja entre $13,500 y $18,000 netos de ganancia sin haber arriesgado un dólar de capital.",
+          "sourceAttribution": "Eric Richardson — MoneyMaking Juggernaut",
+          "completed": false
+        }
+      ],
+      "resources": [
+        {
+          "id": "res-eric-richardson-ig",
+          "name": "Eric Richardson Instagram Oficial (@ericrichardsonofficial)",
+          "url": "https://www.instagram.com/ericrichardsonofficial/",
+          "category": "mentor_profile",
+          "isFree": true,
+          "howToUse": "Casos de estudio reales de cobros de cheques de $20k a $100k de excedentes judiciales.",
+          "discoveredVia": "reel-DdsTk0nuRRe"
+        },
+        {
+          "id": "res-fl-clerk-surplus",
+          "name": "Florida Clerks of Court Directory (Surplus Lists)",
+          "url": "https://www.flclerks.com/",
+          "category": "government_portal",
+          "isFree": true,
+          "howToUse": "Directorio oficial para descargar reportes de excedentes de subastas en los 67 condados de Florida.",
+          "discoveredVia": "eric-richardson-training"
+        }
+      ],
+      "scriptsAndTemplates": [
+        {
+          "id": "template-surplus-call-script",
+          "title": "Guión Telefónico de Recuperación de Fondos Excedentes (Eric Richardson)",
+          "type": "phone_closer_script",
+          "whenToUse": "Llamar al dueño que perdió su casa en subasta judicial de impuestos o hipoteca.",
+          "content": "\"Hola [Nombre del Propietario], le habla Alex de WholesalePlatform Asset Recovery. Sé que esta llamada puede sorprenderlo, pero le llamo con respecto a la propiedad que usted tenía anteriormente en [Dirección].\n\n¿Tiene un minuto para una excelente noticia financiera?\n\nMire [Nombre], la mayoría de las personas no lo saben, pero cuando su propiedad fue vendida en la subasta del condado el mes pasado, se vendió por una cantidad mayor a la deuda que existía. Por ley estatal, ese dinero sobrante —conocido como fondos excedentes o 'surplus funds'— le pertenece al 100% a usted, no al banco ni al condado.\n\nEl tribunal del condado actualmente tiene retenida una suma aproximada de $[Monto Excedente, ej. $45,000] en su cuenta de custodia. Sin embargo, si usted no radica la petición legal correspondiente dentro del plazo legal, ese dinero puede perderse ante el estado.\n\nNuestra firma trabaja con abogados locales especializados. Nosotros nos encargamos de preparar todos los documentos, radicarlos ante el juez y solicitar la emisión de su cheque.\n\nLo más importante: nosotros cubrimos el 100% de los costos legales. Usted NO paga ni un solo centavo de su bolsillo. Trabajamos bajo honorarios de contingencia del 35%, lo que significa que solo cobramos una vez que el tribunal apruebe y entregue su dinero. Si no le entregamos dinero, a usted no le cuesta nada.\n\n¿Le gustaría que le enviemos hoy el acuerdo de 1 página por correo electrónico o a su teléfono para comenzar el reclamo de sus fondos de inmediato?\""
+        },
+        {
+          "id": "template-surplus-contingency-agreement",
+          "title": "Acuerdo de Honorarios de Contingencia para Fondos Excedentes (Contingency Agreement)",
+          "type": "contract_template",
+          "whenToUse": "Hacer que el dueño anterior firme antes de radicar la moción ante el tribunal.",
+          "content": "SURPLUS FUNDS RECOVERY & CONTINGENCY FEE AGREEMENT\nClaimant (Former Property Owner): [Nombre del Dueño]\nProperty Subject of Foreclosure: [Dirección de la Propiedad]\nCourt Case Number: [Número de Caso del Tribunal]\nCounty / State: [Condado, Estado]\n\n1. AUTHORIZATION: Claimant hereby authorizes WholesalePlatform Asset Recovery LLC and its affiliated legal counsel to locate, audit, process, and file all necessary petitions and motions before the Court to recover and release all unclaimed excess auction proceeds (Surplus Funds) resulting from the foreclosure or tax sale of the Subject Property.\n\n2. CONTINGENCY FEE STRUCTURE: In consideration of the services rendered, Claimant agrees that WholesalePlatform LLC shall receive a contingency recovery fee equal to thirty-five percent (35%) of the total gross surplus funds actually disbursed by the Clerk of Court. \n\n3. ZERO OUT-OF-POCKET EXPENSE: WholesalePlatform LLC shall bear all upfront administrative and legal costs. If no funds are disbursed by the Court, Claimant owes ZERO DOLLARS ($0.00).\n\n4. DISBURSEMENT: The Clerk of the Court is hereby requested to disburse the approved funds to the designated Escrow Account for proper distribution per this agreement."
+        }
+      ],
+      "changelog": [
+        {
+          "version": "1.0",
+          "date": "2026-09-30",
+          "sourceType": "instagram_reel",
+          "sourceUrl": "https://www.instagram.com/reel/DdsTk0nuRRe/",
+          "sourceTitle": "Reel IG @ericrichardsonofficial (DdsTk0nuRRe) — Surplus Funds & Overages Recovery System",
+          "summaryOfNewKnowledge": "Estrategia completa de Eric Richardson (MoneyMaking Juggernaut) para rastrear y cobrar excedentes de subastas judiciales retenidos por los tribunales con 35% de comisión sin comprar casas."
+        }
+      ],
+      "agyExportedPath": ".agents/skills/wholesale-surplus-funds-overages-recovery/SKILL.md"
     }
   ],
   "ingestionHistory": [
@@ -2566,6 +2730,25 @@
       },
       "readyPitchMessage": "Hey everyone! In [Ciudad, Estado] with a [Cash / Subject-To] deal: [Detalles de la propiedad], Contract: $[Precio], ARV: $[ARV]. Looking for a JV partner / end buyer in this market. DM me!",
       "notes": "El mejor entorno colaborativo para principiantes: puedes asociarte con personas que ya tienen compradores listos en tu ciudad.",
+      "verified": true
+    },
+    {
+      "id": "cb-creator-eric-richardson",
+      "name": "Eric Richardson (@ericrichardsonofficial — MoneyMaking Juggernaut / Surplus Funds)",
+      "companyOrGroup": "Prestige Family Assets & MoneyMaking Juggernaut (Reel DdsTk0nuRRe)",
+      "creatorHandle": "@ericrichardsonofficial",
+      "platform": "reel_buyer",
+      "market": "Florida (Tampa, Orlando, Jacksonville, Miami), Texas (DFW, Houston), Georgia (Atlanta), NC y Nacional",
+      "buyBoxType": "Multifamily / Creative",
+      "maxPrice": "Excedentes de $15,000 a $150,000+ retenidos por el Condado",
+      "finderPayoutOffer": "💰 Paga 50/50 JV sobre la comisión de contingencia ($7,500 a $30,000+ por cheque de excedente cobrado)",
+      "dealRequirementMode": "both_accepted",
+      "dealRequirementLabel": "🤝 Acepta AMBOS (Solo Encontrar la Lista de Excedente O Contacto con el Dueño Anterior)",
+      "dealRequirementDetails": "Si encuentras un caso en los registros del condado con más de $20,000 en surplus retenido o ya tienes el contacto del dueño anterior, Eric Richardson y su equipo radican la moción legal con su abogado y dividen 50/50 la comisión cobrada.",
+      "propertySpecsWanted": "• Subastas de impuestos (Tax Deeds) y ejecuciones hipotecarias terminadas en los últimos 60-180 días con excedente no reclamado >$15,000.",
+      "priceAndArvRange": "• Fondos en custodia del Clerk of Court entre $15,000 y $250,000.",
+      "contactInfo": "IG DM: @ericrichardsonofficial | YouTube: MoneyMaking Juggernaut",
+      "sourceUrl": "https://www.instagram.com/reel/DdsTk0nuRRe/",
       "verified": true
     }
   ],
@@ -5277,6 +5460,17 @@
       "customDmEnglish": "Hey! I saw your comment on Zach Ginn's Reel about your Detroit cash deal locked up at $47,500 where you're looking for a buyer at a $5k assignment fee.\n\nI have a network of Detroit Fix & Flip and Section 8 buyers (including Richard Taylor's Detroit buyer box). Send me the address, bed/bath, sqft, and photos of your Detroit deal and let's get it sold together! Also let me know what other deals you're locking up.",
       "customDmSpanish": "¡Hola! Vi tu comentario en el Reel de Zach Ginn sobre tu propiedad en Detroit bajo contrato en $47,500 buscando comprador con $5,000 de fee.\n\nTengo compradores activos de Fix & Flip y Section 8 en Detroit. Envíame los detalles y fotos de la propiedad para moverla con mis compradores y hagamos JV.",
       "outreachStatus": "pending"
+    },
+    {
+      "id": "creator-eric-richardson",
+      "handle": "ericrichardsonofficial",
+      "name": "Eric Richardson (MoneyMaking Juggernaut)",
+      "role": "Especialista Líder en Surplus Funds, Tax Deed Overages & Asset Recovery",
+      "marketsTheyBuy": "Nacional (Florida, Texas, Georgia, Carolina del Norte, Ohio, California)",
+      "notes": "Reel DdsTk0nuRRe: Sistema para cobrar cheques de $15k a $80k en fondos excedentes de subastas retenidos en los tribunales del condado con 35% de contingencia.",
+      "buyBoxSummary": "Foreclosure Surplus Lists, Tax Deed Excess Proceeds >$15,000 retenidos por County Clerks",
+      "preferredContactMethod": "Instagram DM @ericrichardsonofficial / YouTube MoneyMaking Juggernaut",
+      "outreachStatus": "not_contacted"
     }
   ],
   "lastAutomationRun": {
