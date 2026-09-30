@@ -803,8 +803,12 @@ export default function SkillForgeDashboard() {
         </div>
       )}
 
-      {/* 🤖 FLOATING AI CHAT — always visible on every tab */}
-      <PlatformChat apiKey={apiKey} />
+      {/* 🤖 FLOATING AI CHAT — always visible on every tab with live tab switcher */}
+      <PlatformChat
+        apiKey={apiKey}
+        activeTab={activeTab}
+        onSelectTab={(tab) => setActiveTab(tab)}
+      />
     </div>
   );
 }
