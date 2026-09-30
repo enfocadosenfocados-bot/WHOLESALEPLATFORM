@@ -28,13 +28,13 @@ interface ChatMessage {
 }
 
 const QUICK_ACTIONS = [
-  { label: '🎯 Deal Pack Richard Taylor', prompt: 'Para Richard Taylor (@richardgrandintaylor) encuéntrame las propiedades que necesita en Excel y Word con números de vendedores, scripts de SMS/Email, script del bot de voz closer con la oferta calculada y contratos listos' },
-  { label: '🤖 Ejecutar Auto-Pilot', prompt: 'Ejecuta el auto-pilot ahora y busca propiedades para mis buyers' },
+  { label: '⚡ Master Deal Pack (TODOS los Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos' },
+  { label: '🎯 Deal Pack Richard Taylor (Section 8 / Fourplex)', prompt: 'Para Richard Taylor (@richardgrandintaylor) encuéntrame las propiedades que necesita en Excel y Word con números de vendedores, scripts de SMS/Email, script del bot closer con la oferta calculada y contratos listos' },
+  { label: '🌴 Deal Pack Zach Ginn (Florida/Clarksville)', prompt: 'Para Zach Ginn (@flipwithzach) encuéntrame las propiedades de Fix & Flip en Florida y Clarksville TN con números de vendedores, scripts de SMS/Email, script del bot closer y contratos listos' },
+  { label: '🌿 Deal Pack Carson (Land Flipping Infill Lots)', prompt: 'Para Carson (@carsonbuysland) encuéntrame los lotes baldíos de constructores en Palm Bay y Lehigh Acres FL con números de vendedores, scripts y contratos listos' },
+  { label: '🔑 Deal Pack Samuel G (Hipotecas 2.8%)', prompt: 'Para Samuel G (@ownwithsam) encuéntrame las propiedades con hipotecas asumibles al 2.8% en Tampa y Texas con números de vendedores, scripts y contratos listos' },
+  { label: '🤖 Ejecutar Auto-Pilot Diario', prompt: 'Ejecuta el auto-pilot ahora y busca propiedades para mis buyers' },
   { label: '📊 Ver Estadísticas', prompt: '¿Cuántos leads, buyers y deals tengo en la plataforma?' },
-  { label: '👥 Ver mis Buyers', prompt: 'Muéstrame mis top cash buyers y qué están buscando' },
-  { label: '🏠 Ver mis Leads', prompt: 'Muéstrame los seller leads más recientes de mi pipeline' },
-  { label: '🔍 Buscar Buyers', prompt: 'Busca nuevos cash buyers en Facebook y Reddit ahora' },
-  { label: '🛰️ Analizar Propiedad', prompt: 'Analiza con SkyDrive Vision la propiedad en 4821 N Habana Ave Tampa FL' },
 ];
 
 // Simple markdown-ish renderer for chat

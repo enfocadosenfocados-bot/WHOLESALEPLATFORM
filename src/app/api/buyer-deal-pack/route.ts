@@ -10,11 +10,12 @@ export interface BuyerDealItem {
   city: string;
   state: string;
   zip: string;
-  propertyType: 'Single Family (Section 8)' | 'Multifamily (Fourplex / Seller Finance)';
-  beds: number;
-  baths: number;
-  sqft: number;
-  yearBuilt: number;
+  propertyType: string;
+  beds?: number;
+  baths?: number;
+  sqft?: number;
+  lotSize?: string;
+  yearBuilt?: number;
   condition: string;
   daysOnMarket: number;
   strategy: string;
@@ -31,12 +32,19 @@ export interface BuyerDealItem {
     interestRate: number;
     termYears: number;
     monthlyPayment: number;
-    projectedRentalIncome: number;
-    netMonthlyCashFlow: number;
+    projectedRentalIncome?: number;
+    netMonthlyCashFlow?: number;
+  };
+  assumableTerms?: {
+    existingRate: number;
+    loanBalance: number;
+    monthlyPi: number;
+    cashToSeller: number;
   };
   projectedAssignmentFee: number;
   buyerName: string;
   buyerHandle: string;
+  buyerBuyBoxType: string;
   smsScript: string;
   emailScript: string;
   phoneBotScript: {
@@ -50,327 +58,430 @@ export interface BuyerDealItem {
   eSignUrl: string;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Comprehensive Deal Generator per Buyer Profile
+// ─────────────────────────────────────────────────────────────────────────────
+function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[] {
+  const bName = buyer.name;
+  const bHandle = buyer.creatorHandle || `@${buyer.name.split(' ')[0].toLowerCase()}`;
+  const buyBox = buyer.buyBoxType;
+  const market = buyer.market.toLowerCase();
+  const rawFee = buyer.finderPayoutOffer || '$10,000';
+  const feeNum = parseInt(rawFee.replace(/\D/g, '')) || 10000;
+
+  // 1. SECTION 8 / MIDWEST SFR & FOURPLEX (Richard Taylor, Brandon Mulrenin, etc.)
+  if (buyBox === 'Section 8 Rental' || market.includes('detroit') || market.includes('canton') || market.includes('cleveland') || market.includes('midwest')) {
+    return [
+      {
+        id: `deal-${buyer.id}-detroit-joann`,
+        address: '18418 Joann St',
+        city: 'Detroit',
+        state: 'MI',
+        zip: '48205',
+        propertyType: 'Single Family (Section 8 Rental)',
+        beds: 3,
+        baths: 1,
+        sqft: 1048,
+        yearBuilt: 1949,
+        condition: 'Estructura sólida, necesita actualización de pisos y pintura ($18,000). Renta garantizada HUD Section 8 de $1,250/mes.',
+        daysOnMarket: 45,
+        strategy: 'Single Family Section 8 Turnkey',
+        ownerName: 'Marcus Vance',
+        sellerRole: 'Owner',
+        phone: '(313) 555-8291',
+        email: 'marcus.vance48@gmail.com',
+        askingPrice: 85000,
+        estimatedArv: 135000,
+        estimatedRehab: 18000,
+        calculatedMaoCashOffer: 62000,
+        projectedAssignmentFee: feeNum,
+        buyerName: bName,
+        buyerHandle: bHandle,
+        buyerBuyBoxType: buyBox,
+        smsScript: `Hola Marcus, te escribe Alex de WholesalePlatform para ${bName}. Compramos al contado en Detroit en su estado actual sin comisiones de realtor y cubriendo el cierre en 10 días. ¿Aceptarías una oferta neta en mano de $62,000 en efectivo? Responde SÍ o llama al (313) 555-0199.`,
+        emailScript: `Asunto: Oferta de Contado ($62,000) As-Is — 18418 Joann St, Detroit MI\n\nEstimado Marcus Vance,\nNuestro grupo de inversión para ${bName} ofrece $62,000 en efectivo sin comisiones de bienes raíces ni reparaciones. Cerramos en 10 días hábiles con Title One Detroit y $2,500 de depósito EMD.\n\nAtentamente, Adquisiciones WholesalePlatform`,
+        phoneBotScript: {
+          openingHook: `Hola Marcus, habla Alex de WholesalePlatform. Te llamo por tu casa en Joann St en Detroit. ¿Sigues siendo el propietario?`,
+          discoveryQuestions: [
+            '¿Cuál es el número neto más bajo con el que te sentirías cómodo caminando de la mesa de cierre?',
+            '¿La casa tiene algún gravamen de impuestos o hipoteca pendiente?'
+          ],
+          offerPresentation: `Marcus, asumiendo el 100% de las reparaciones cosméticas y cubriendo todos los gastos de título, mi oferta neta directa para ti es de $62,000 en efectivo en 10 días. ¿Hacemos el trato?`,
+          objectionRebuttals: {
+            'Pido $85,000': 'Con un realtor pagarías 6% de comisión más gastos y reparaciones de inspección, quedándote con $63k tras 3 meses. Nosotros te garantizamos $62k netos en 10 días.'
+          },
+          closingHook: `Te envío el acuerdo de 1 página a tu celular ahora mismo Marcus. Firmas con el dedo en la pantalla y abrimos título hoy.`
+        },
+        contractText: `PURCHASE AND SALE AGREEMENT\nProperty: 18418 Joann St, Detroit, MI 48205\nSeller: Marcus Vance\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $62,000.00 USD\nClosing: 10 business days\nTerms: As-Is. Fully assignable.`,
+        eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+      },
+      {
+        id: `deal-${buyer.id}-fourplex-grand`,
+        address: '2940 W Grand Blvd',
+        city: 'Detroit',
+        state: 'MI',
+        zip: '48202',
+        propertyType: 'Multifamily (Fourplex / Seller Finance)',
+        beds: 8,
+        baths: 4,
+        sqft: 3420,
+        yearBuilt: 1935,
+        condition: 'Fourplex (4 unidades). 92 días en mercado. 2 unidades rentadas ($1,800/mes), 2 listas para inquilinos Section 8 ($1,150 c/u).',
+        daysOnMarket: 92,
+        strategy: 'Seller Financing (10% Down / 5% Interest / 30y Amort)',
+        ownerName: 'David K. Henderson',
+        sellerRole: 'Owner',
+        phone: '(313) 555-4920',
+        email: 'david.henderson.props@gmail.com',
+        askingPrice: 175000,
+        estimatedArv: 240000,
+        estimatedRehab: 22000,
+        calculatedMaoCashOffer: 110000,
+        sellerFinanceTerms: {
+          downPayment: 17500,
+          interestRate: 5.0,
+          termYears: 30,
+          monthlyPayment: 845,
+          projectedRentalIncome: 4100,
+          netMonthlyCashFlow: 3255
+        },
+        projectedAssignmentFee: feeNum,
+        buyerName: bName,
+        buyerHandle: bHandle,
+        buyerBuyBoxType: buyBox,
+        smsScript: `Hola David, vi tu Fourplex en 2940 W Grand Blvd. Podemos pagarte tu precio completo de $175,000 con un financiamiento por dueño (10% de enganche y 5% de interés a 30 años) con pagos garantizados de $845/mes sin ser casero. ¿Estarías abierto a escuchar los términos?`,
+        emailScript: `Asunto: Oferta de Precio Completo ($175,000) con Seller Financing — 2940 W Grand Blvd (Fourplex)\n\nEstimado David Henderson,\nPresentamos oferta por el 100% de su precio: $175,000 con $17,500 de enganche y pagos mensuales garantizados de $845.48 al 5% de interés a 30 años respaldado por primera hipoteca en título. Ingreso pasivo seguro sin gestión de inquilinos.`,
+        phoneBotScript: {
+          openingHook: `Hola David, habla Alex de WholesalePlatform para ${bName}. Te llamo por tu Fourplex en W Grand Blvd que tiene 90+ días publicado.`,
+          discoveryQuestions: ['¿Te serviría recibir el precio completo de $175k con pagos fijos mensuales en lugar de un descuento agresivo de contado?'],
+          offerPresentation: `David, te damos tus $175,000 completos: $17,500 en la mesa de cierre y $845.48 mensuales al 5% de interés respaldados por la propiedad. Es el mejor retorno pasivo seguro. ¿Te funciona?`,
+          objectionRebuttals: {
+            'Quiero todo en efectivo': 'En efectivo cualquier inversor ofrecerá $100k-$110k máximo y el IRS te quitará 25% de impuestos de golpe. Con Seller Financing ganas más de $304,000 en total difiriendo el impuesto.'
+          },
+          closingHook: `Te envío el contrato estructurado David para cerrar en 14 días.`
+        },
+        contractText: `SELLER FINANCING AGREEMENT\nProperty: 2940 W Grand Blvd, Detroit, MI 48202\nSeller: David K. Henderson\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $175,000.00 USD\nDown Payment: $17,500.00 USD\nTerms: 5% Interest, 360 months ($845.48/mo). Assignable.`,
+        eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+      }
+    ];
+  }
+
+  // 2. LAND / HOME BUILDERS (Carson, Derek Walter, Ron & Dan Apke, Sumner Healey, Cameron Builds, Daniel Martinez)
+  if (buyBox === 'Land / Home Builder' || market.includes('land') || bName.toLowerCase().includes('land') || bName.toLowerCase().includes('carson') || bName.toLowerCase().includes('builder')) {
+    return [
+      {
+        id: `deal-${buyer.id}-palmbay-eldron`,
+        address: '842 Eldron Blvd SE',
+        city: 'Palm Bay',
+        state: 'FL',
+        zip: '32909',
+        propertyType: 'Infill Residential Lot (0.23 Acres)',
+        lotSize: '0.23 Acres (80 x 125 ft)',
+        condition: 'Lote plano, calle pavimentada, postes de luz al frente, sin humedales (High & Dry). Buy Box exacto de constructores.',
+        daysOnMarket: 18,
+        strategy: 'Infill Lot Builder Wholesale (LandAtlas / XLeads)',
+        ownerName: 'Arthur Pendleton',
+        sellerRole: 'Owner',
+        phone: '(321) 555-7491',
+        email: 'arthur.pendleton.fl@yahoo.com',
+        askingPrice: 22000,
+        estimatedArv: 34000, // Builder purchase price
+        estimatedRehab: 0,
+        calculatedMaoCashOffer: 14000,
+        projectedAssignmentFee: 18000,
+        buyerName: bName,
+        buyerHandle: bHandle,
+        buyerBuyBoxType: buyBox,
+        smsScript: `Hola Arthur, vi tu terreno en 842 Eldron Blvd SE en Palm Bay. Compramos lotes al contado, cubrimos todos los gastos de cierre de título e impuestos atrasados. Te podemos ofrecer $14,000 netos cerrando en 14 días. ¿Estarías interesado? Responde SÍ o llama al (321) 555-0182.`,
+        emailScript: `Asunto: Oferta en Efectivo ($14,000) para Terreno en 842 Eldron Blvd SE, Palm Bay FL\n\nEstimado Arthur Pendleton,\nRepresento a compradores de lotes para ${bName}. Ofrecemos $14,000 limpios en mano, absorbiendo todos los honorarios de la compañía de título. Cierre en 14 días hábiles con Space Coast Title.`,
+        phoneBotScript: {
+          openingHook: `Hola Arthur, te habla Alex de WholesalePlatform. Te llamo por tu terreno baldío en Eldron Blvd en Palm Bay. ¿Lo tienes disponible para vender?`,
+          discoveryQuestions: [
+            '¿El terreno tiene algún gravamen de impuestos o asociación pendiente que debamos liquidar?',
+            '¿Si te depositamos $14,000 limpios en 14 días estarías listo para transferir la escritura?'
+          ],
+          offerPresentation: `Arthur, te ofrecemos $14,000 de contado en mano. Nosotros pagamos los gastos de cierre de título y no cobramos comisiones. ¿Hacemos el trato esta semana?`,
+          objectionRebuttals: {
+            'Los terrenos en la zona piden $25k': 'Piden $25k pero tardan 8 meses en venderse y pagan comisiones del 10% más gastos de cierre. Nosotros cerramos en 14 días garantizado con $2,000 de depósito en título.'
+          },
+          closingHook: `Te envío el contrato de compra de lote Arthur por SMS. Firmas con el dedo en tu pantalla y abrimos título hoy.`
+        },
+        contractText: `VACANT LAND PURCHASE AGREEMENT\nProperty: 842 Eldron Blvd SE, Palm Bay, FL 32909 (Parcel ID: 29-37-14-00-512)\nSeller: Arthur Pendleton\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $14,000.00 USD\nClosing: 14 business days. Title fees paid by buyer. Assignable.`,
+        eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+      },
+      {
+        id: `deal-${buyer.id}-lehigh-12th`,
+        address: '3914 12th St W',
+        city: 'Lehigh Acres',
+        state: 'FL',
+        zip: '33971',
+        propertyType: 'Infill Residential Lot (0.25 Acres)',
+        lotSize: '0.25 Acres (100 x 108 ft)',
+        condition: 'Lote residencial plano, sin vegetación densa, zona de rápida construcción para constructores de Cape Coral/Fort Myers.',
+        daysOnMarket: 29,
+        strategy: 'Infill Lot Wholesale to Builders',
+        ownerName: 'Cynthia Morales',
+        sellerRole: 'Owner',
+        phone: '(239) 555-1029',
+        email: 'cynthia.morales77@gmail.com',
+        askingPrice: 24000,
+        estimatedArv: 36000,
+        estimatedRehab: 0,
+        calculatedMaoCashOffer: 15500,
+        projectedAssignmentFee: 19500,
+        buyerName: bName,
+        buyerHandle: bHandle,
+        buyerBuyBoxType: buyBox,
+        smsScript: `Hola Cynthia, vi tu lote en 3914 12th St W en Lehigh Acres. Somos compradores de terrenos directos para ${bName}. Te ofrecemos $15,500 en efectivo y pagamos el 100% de los gastos de título. ¿Te gustaría cerrar este mes?`,
+        emailScript: `Asunto: Oferta Neta de Contado para Lote en 3914 12th St W, Lehigh Acres FL\n\nEstimada Cynthia Morales,\nOfrecemos $15,500 en efectivo por su terreno, cubriendo todos los costos de cierre y liquidando cualquier impuesto pendiente en el condado de Lee. Cierre en 10 días con First American Title.`,
+        phoneBotScript: {
+          openingHook: `Hola Cynthia, habla Alex de WholesalePlatform. Te llamo por tu terreno en la calle 12 Oeste en Lehigh Acres. ¿Sigues buscando venderlo?`,
+          discoveryQuestions: ['¿Cuánto tiempo llevas con el terreno y por qué decidiste venderlo ahora?'],
+          offerPresentation: `Cynthia, nuestra oferta en mano es de $15,500 netos. Sin comisiones de agente y con dinero seguro en tu cuenta en 10 días. ¿Te funciona?`,
+          objectionRebuttals: {
+            'Quiero $20,000': 'Con $20k en lista tardaría meses y pagarías comisiones de realtor. Te ofrezco $16,500 netos en mano cerrando el próximo viernes.'
+          },
+          closingHook: `Excelente Cynthia, te mando el documento al celular para firma digital en 30 segundos.`
+        },
+        contractText: `VACANT LAND PURCHASE AGREEMENT\nProperty: 3914 12th St W, Lehigh Acres, FL 33971\nSeller: Cynthia Morales\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $15,500.00 USD\nClosing: 10 business days. Fully assignable.`,
+        eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+      }
+    ];
+  }
+
+  // 3. CREATIVE FINANCE & 2.8% ASSUMABLE MORTGAGES (Samuel G, SubTo, etc.)
+  if (buyBox === 'Multifamily / Creative' || bName.toLowerCase().includes('sam') || bName.toLowerCase().includes('assumable')) {
+    return [
+      {
+        id: `deal-${buyer.id}-tampa-northdale`,
+        address: '10423 Northdale Blvd',
+        city: 'Tampa',
+        state: 'FL',
+        zip: '33624',
+        propertyType: 'Single Family (Hipotecas Asumibles 2.75% VA / Subject-To)',
+        beds: 3,
+        baths: 2,
+        sqft: 1680,
+        yearBuilt: 1988,
+        condition: 'Casa impecable en vecindario de alta demanda en Tampa. Hipoteca existente VA al 2.75% con pago mensual de solo $748/mes cuando los bancos cobran 7% ($1,850/mes).',
+        daysOnMarket: 85,
+        strategy: 'VA Assumable Loan Transfer / Subject-To Equity Takeover',
+        ownerName: "Kevin O'Donnell",
+        sellerRole: 'Owner',
+        phone: '(813) 555-3819',
+        email: 'kevin.odonnell.tampa@outlook.com',
+        askingPrice: 320000,
+        estimatedArv: 335000,
+        estimatedRehab: 5000,
+        calculatedMaoCashOffer: 22000, // Cash to seller (equity payout)
+        assumableTerms: {
+          existingRate: 2.75,
+          loanBalance: 182000,
+          monthlyPi: 748,
+          cashToSeller: 22000
+        },
+        projectedAssignmentFee: 15000,
+        buyerName: bName,
+        buyerHandle: bHandle,
+        buyerBuyBoxType: buyBox,
+        smsScript: `Hola Kevin, vi tu casa en 10423 Northdale Blvd en Tampa. Sé que tienes una hipoteca fija al 2.75%. Podemos asumir formalmente tu deuda liberando tu responsabilidad, darte $22,000 en efectivo en la mano y cerrar este mes sin comisiones de broker. ¿Estarías abierto a revisarlo?`,
+        emailScript: `Asunto: Oferta Asumible 2.75% VA + $22,000 Cash en Mano — 10423 Northdale Blvd, Tampa FL\n\nEstimado Kevin O'Donnell,\nPara nuestro comprador ${bName}, ofrecemos asumir su hipoteca existente con pago de solo $748/mes, entregándole $22,000 en efectivo en el cierre y cubriendo todos los costos legales de transferencia con Title Company especializada en Florida.`,
+        phoneBotScript: {
+          openingHook: `Hola Kevin, habla Alex de WholesalePlatform para ${bName}. Te llamo por tu casa en Northdale Blvd en Tampa.`,
+          discoveryQuestions: [
+            '¿Tu hipoteca al 2.75% está al corriente y al día en pagos?',
+            '¿Te gustaría recibir $22,000 netos en efectivo y que un inversionista calificado asuma el pago mensual puntual?'
+          ],
+          offerPresentation: `Kevin, te entregamos $22,000 limpios en efectivo en la mesa de cierre y asumimos los $182k restantes de tu préstamo al 2.75%. Es un cierre limpio sin comisiones. ¿Hacemos el trámite?`,
+          objectionRebuttals: {
+            '¿Qué pasa con mi crédito?': 'El pago se realiza mediante una entidad fiduciaria con servicio de pago bancario garantizado (Servicing Company) que reporta puntualmente a los burós de crédito mejorando tu puntaje.'
+          },
+          closingHook: `Te envío el acuerdo de transferencia Kevin para abrir título en Tampa mañana.`
+        },
+        contractText: `ASSUMABLE MORTGAGE PURCHASE AGREEMENT\nProperty: 10423 Northdale Blvd, Tampa, FL 33624\nSeller: Kevin O'Donnell\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nExisting Loan: $182,000 at 2.75% fixed interest\nCash to Seller: $22,000.00 USD at Closing. Assignable.`,
+        eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+      }
+    ];
+  }
+
+  // 4. TAX DEEDS & COUNTY GIS FORECLOSURES (Max Rathbun, Rowan Gill)
+  if (market.includes('charlotte') || market.includes('jacksonville') || bName.toLowerCase().includes('max') || bName.toLowerCase().includes('rowan')) {
+    return [
+      {
+        id: `deal-${buyer.id}-charlotte-kistler`,
+        address: '4920 Kistler Ave',
+        city: 'Charlotte',
+        state: 'NC',
+        zip: '28205',
+        propertyType: 'Single Family (Mecklenburg County Tax Foreclosure GIS)',
+        beds: 3,
+        baths: 2,
+        sqft: 1480,
+        yearBuilt: 1968,
+        condition: 'Impuestos atrasados de $21,204 con subasta judicial programada por el condado. Dueño absentee viviendo fuera de NC.',
+        daysOnMarket: 14,
+        strategy: 'County GIS Tax Foreclosure Rescue',
+        ownerName: 'Donald Whitaker',
+        sellerRole: 'Owner',
+        phone: '(704) 555-8371',
+        email: 'donald.whitaker.nc@gmail.com',
+        askingPrice: 220000,
+        estimatedArv: 364000,
+        estimatedRehab: 35000,
+        calculatedMaoCashOffer: 160000,
+        projectedAssignmentFee: feeNum,
+        buyerName: bName,
+        buyerHandle: bHandle,
+        buyerBuyBoxType: buyBox,
+        smsScript: `Hola Donald, vi tu propiedad en 4920 Kistler Ave en Charlotte. Sé que el condado tiene una fecha próxima de subasta por impuestos. Te ofrecemos $160,000 de contado, liquidamos el gravamen de $21,204 en el cierre y te entregas tu dinero limpio en 7 días antes del remate. ¿Hablamos hoy?`,
+        emailScript: `Asunto: Oferta Urgente de Contado ($160,000) — Liquidación de Embargo Fiscal 4920 Kistler Ave, Charlotte NC\n\nEstimado Donald Whitaker,\nNuestro grupo para ${bName} compra de contado en Charlotte. Garantizamos liquidar la deuda impositiva ante el tribunal y dejarle $160,000 netos antes de la fecha judicial. Cierre en 7 días con Hunter & Chandler Law Group.`,
+        phoneBotScript: {
+          openingHook: `Hola Donald, habla Alex de WholesalePlatform. Te llamo urgente por tu propiedad en Kistler Ave en Charlotte antes de la subasta del condado.`,
+          discoveryQuestions: ['¿Estás al tanto de la fecha de subasta de Mecklenburg County?'],
+          offerPresentation: `Donald, te damos $160,000 netos en la mano y pagamos los $21k de impuestos en el cierre. Evitas perder la casa y te llevas tu dinero limpio el viernes. ¿Lo firmamos?`,
+          objectionRebuttals: {
+            'Quiero esperar a ver si cancelo los impuestos': 'Donald, si el condado remata la propiedad pierdes todo el valor acumulado. Nosotros te aseguramos $160k limpios en tu cuenta bancaria esta misma semana.'
+          },
+          closingHook: `Te envío el contrato por SMS de inmediato Donald. Firmas hoy y notificamos al abogado del condado para detener la subasta.`
+        },
+        contractText: `TAX FORECLOSURE AS-IS PURCHASE AGREEMENT\nProperty: 4920 Kistler Ave, Charlotte, NC 28205\nSeller: Donald Whitaker\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $160,000.00 USD (Includes pay-off of tax liens at closing). Closing: 7 days. Fully assignable.`,
+        eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+      }
+    ];
+  }
+
+  // 5. STANDARD NATIONWIDE FIX & FLIP (Zach Ginn, Jerry Norton, Jamil Damji, RJ Bates, Troy Kearns, Austin Rutherford, Ryan Pineda, Facebook, Reddit, etc.)
+  return [
+    {
+      id: `deal-${buyer.id}-tampa-habana`,
+      address: '4821 N Habana Ave',
+      city: 'Tampa',
+      state: 'FL',
+      zip: '33614',
+      propertyType: 'Single Family (Fix & Flip Distressed)',
+      beds: 3,
+      baths: 2,
+      sqft: 1520,
+      yearBuilt: 1964,
+      condition: 'Techo de 19 años con filtraciones, maleza alta en patio, aire acondicionado inoperativo. Dueño motivado por divorcio y mudanza fuera del estado.',
+      daysOnMarket: 31,
+      strategy: 'Heavy Rehab Fix & Flip (SkyDrive Distress Score: 84/100)',
+      ownerName: 'Jorge Alvarez',
+      sellerRole: 'Owner',
+      phone: '(813) 555-9142',
+      email: 'jorge.alvarez.tampa@gmail.com',
+      askingPrice: 240000,
+      estimatedArv: 325000,
+      estimatedRehab: 42000,
+      calculatedMaoCashOffer: 178000,
+      projectedAssignmentFee: feeNum,
+      buyerName: bName,
+      buyerHandle: bHandle,
+      buyerBuyBoxType: buyBox,
+      smsScript: `Hola Jorge, te escribe Alex de WholesalePlatform para ${bName}. Vi tu casa en 4821 N Habana Ave en Tampa. Compramos propiedades al contado en su estado actual, sin comisiones y cubriendo todos los gastos de título en 10 días. ¿Aceptarías $178,000 en efectivo limpios en mano? Responde SÍ o llama al (813) 555-0199.`,
+      emailScript: `Asunto: Oferta en Efectivo y Sin Comisiones ($178,000) — 4821 N Habana Ave, Tampa FL\n\nEstimado Jorge Alvarez,\nNuestro grupo de inversionistas de Fix & Flip para ${bName} ofrece $178,000 en efectivo (As-Is). Absorbemos el costo total de reparaciones de techo y A/C, cubriendo el 100% de gastos de cierre con depósito EMD de $3,000 en las primeras 48 horas con First American Title Tampa.`,
+      phoneBotScript: {
+        openingHook: `Hola Jorge, habla Alex de WholesalePlatform. Te llamo por tu casa en Habana Ave en Tampa. ¿La tienes disponible para vender en efectivo?`,
+        discoveryQuestions: [
+          '¿Cuál es el número neto más bajo con el que te sentirías cómodo caminando de la mesa de cierre en 10 días?',
+          '¿Prefieres cerrar este mismo mes para no seguir pagando impuestos y seguro?'
+        ],
+        offerPresentation: `Jorge, calculando el reemplazo de techo y clima que nosotros asumimos al 100%, mi oferta neta directa para ti es de $178,000 en efectivo, limpios sin comisiones. Cerramos el viernes de la próxima semana. ¿Hacemos el trato?`,
+        objectionRebuttals: {
+          'Pido $240,000': 'Con un realtor pidiendo $240k pagarías $14,400 de comisión más $4k de cierre y el comprador bancario te exigirá techo nuevo antes de prestar dinero. Nosotros te garantizamos $178k limpios en tu cuenta en 10 días sin inspecciones.'
+        },
+        closingHook: `Te envío el contrato de 1 página a tu celular Jorge. Firmas con el dedo en tu pantalla y abrimos título hoy mismo.`
+      },
+      contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 4821 N Habana Ave, Tampa, FL 33614\nSeller: Jorge Alvarez\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $178,000.00 USD\nEMD: $3,000.00 USD with First American Title\nClosing: 10 business days. Fully assignable.`,
+      eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+    },
+    {
+      id: `deal-${buyer.id}-clarksville-ringgold`,
+      address: '142 Ringgold Rd',
+      city: 'Clarksville',
+      state: 'TN',
+      zip: '37042',
+      propertyType: 'Single Family (Pre-Foreclosure Auction in 6 Days)',
+      beds: 3,
+      baths: 2,
+      sqft: 1390,
+      yearBuilt: 1982,
+      condition: 'Propiedad con aviso de subasta hipotecaria programada para el próximo martes. Necesita pintura y baños ($20k). Dueño necesita liquidar antes del remate.',
+      daysOnMarket: 9,
+      strategy: 'Urgent Pre-Foreclosure Cash Flip',
+      ownerName: 'Wayne Campbell',
+      sellerRole: 'Owner',
+      phone: '(931) 555-4301',
+      email: 'wayne.campbell.tn@yahoo.com',
+      askingPrice: 140000,
+      estimatedArv: 215000,
+      estimatedRehab: 22000,
+      calculatedMaoCashOffer: 108000,
+      projectedAssignmentFee: feeNum,
+      buyerName: bName,
+      buyerHandle: bHandle,
+      buyerBuyBoxType: buyBox,
+      smsScript: `Hola Wayne, vi tu propiedad en 142 Ringgold Rd en Clarksville. Sabemos que la subasta es en pocos días. Te ofrecemos $108,000 en efectivo, pagamos tu atraso hipotecario en el cierre y te dejamos el saldo limpio en mano antes del martes. ¿Hablamos hoy?`,
+      emailScript: `Asunto: Oferta Urgente de Rescate Hipotecario ($108,000) — 142 Ringgold Rd, Clarksville TN\n\nEstimado Wayne Campbell,\nCompramos en Clarksville de contado para ${bName}. Podemos liquidar su hipoteca atrasada y cerrar en 5 días hábiles antes de la subasta judicial, protegiendo su historial de crédito y entregándole fondos limpios.`,
+      phoneBotScript: {
+        openingHook: `Hola Wayne, te habla Alex de WholesalePlatform. Te llamo urgente por tu propiedad en Ringgold Rd antes de la fecha judicial del banco.`,
+        discoveryQuestions: ['¿Cuál es el saldo total para liquidar al banco antes de la subasta?'],
+        offerPresentation: `Wayne, te pagamos $108,000 en efectivo. Liquidamos la hipoteca en el cierre y te llevas el resto en mano. Detenemos la subasta de inmediato. ¿Procedemos?`,
+        objectionRebuttals: {
+          'No sé si me alcance el tiempo': 'Nuestra compañía de título en Nashville tiene servicio de cierre express en 48 horas. Notificamos al fideicomisario bancario hoy mismo con el contrato firmado.'
+        },
+        closingHook: `Te mando el contrato ahora mismo Wayne para detener la subasta hoy.`
+      },
+      contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 142 Ringgold Rd, Clarksville, TN 37042\nSeller: Wayne Campbell\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $108,000.00 USD\nClosing: 5 business days. Fully assignable.`,
+      eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
+    }
+  ];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST handler
+// ─────────────────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const buyerQuery = (body.buyer || body.handle || 'richard').toLowerCase();
+    const buyerQuery = (body.buyer || body.handle || 'all').toLowerCase();
     const db = getDatabase();
-
-    // 1. Locate Buyer
     const buyers = db.cashBuyers || [];
-    let matchedBuyer = buyers.find(
-      (b) =>
-        b.name.toLowerCase().includes(buyerQuery) ||
-        b.creatorHandle?.toLowerCase().includes(buyerQuery) ||
-        b.id.toLowerCase().includes(buyerQuery)
-    );
 
-    if (!matchedBuyer) {
-      // Default to Richard Taylor if none matched
-      matchedBuyer = buyers.find((b) => b.id === 'cb-creator-richard-taylor') || buyers[0];
+    const isAll =
+      buyerQuery === 'all' ||
+      buyerQuery === 'todos' ||
+      buyerQuery === 'dashboard' ||
+      buyerQuery.includes('todos') ||
+      buyerQuery.includes('todo');
+
+    let targetBuyers: VerifiedCashBuyer[] = [];
+    if (isAll) {
+      targetBuyers = buyers;
+    } else {
+      const found = buyers.find(
+        (b) =>
+          b.name.toLowerCase().includes(buyerQuery) ||
+          b.creatorHandle?.toLowerCase().includes(buyerQuery) ||
+          b.id.toLowerCase().includes(buyerQuery) ||
+          b.market.toLowerCase().includes(buyerQuery)
+      );
+      targetBuyers = [found || buyers[0]];
     }
 
-    const isRichardTaylor =
-      matchedBuyer.name.toLowerCase().includes('richard') ||
-      matchedBuyer.creatorHandle?.toLowerCase().includes('richard');
+    // Collect all deals
+    const allDeals: BuyerDealItem[] = [];
+    for (const buyer of targetBuyers) {
+      const deals = generateDealsForBuyerProfile(buyer);
+      allDeals.push(...deals);
+    }
 
-    // 2. Curate / Find Properties tailored exactly to the buyer's Buy Box
-    const propertiesData: BuyerDealItem[] = isRichardTaylor
-      ? [
-          {
-            id: 'deal-taylor-detroit-joann',
-            address: '18418 Joann St',
-            city: 'Detroit',
-            state: 'MI',
-            zip: '48205',
-            propertyType: 'Single Family (Section 8)',
-            beds: 3,
-            baths: 1,
-            sqft: 1048,
-            yearBuilt: 1949,
-            condition: 'Estructura sólida, necesita actualización cosmética ligera ($18,000 en pisos y pintura). Listo para inquilino Section 8.',
-            daysOnMarket: 45,
-            strategy: 'Single-Family Section 8 Rental ($1,250/mes garantizado por HUD)',
-            ownerName: 'Marcus Vance',
-            sellerRole: 'Owner',
-            phone: '(313) 555-8291',
-            email: 'marcus.vance48@gmail.com',
-            askingPrice: 85000,
-            estimatedArv: 135000,
-            estimatedRehab: 18000,
-            calculatedMaoCashOffer: 62000,
-            projectedAssignmentFee: 10000,
-            buyerName: 'Richard Taylor (Hold My Hand Wholesale)',
-            buyerHandle: '@richardgrandintaylor',
-            smsScript:
-              'Hola Marcus, te escribe Alex de WholesalePlatform. Vi tu propiedad en 18418 Joann St en Detroit. Compramos propiedades al contado en su estado actual, sin comisiones de realtor y cubrimos todos los gastos de cierre de título en 10 días. ¿Estarías abierto a recibir una oferta en efectivo de $62,000 sin contingencias?',
-            emailScript: `Asunto: Oferta en Efectivo y Sin Comisiones — 18418 Joann St, Detroit MI
-
-Estimado Marcus Vance,
-
-Le escribo en representación de nuestro grupo de inversión de Section 8 en Detroit. Hemos analizado su propiedad en 18418 Joann St y estamos preparados para presentar una oferta de compra en efectivo de $62,000 (As-Is).
-
-Nuestras condiciones:
-- Cero reparaciones de su parte (nosotros absorbemos el costo de pintura y pisos).
-- Cero comisiones de bienes raíces (ahorra el 6%).
-- Cierre rápido en 7 a 14 días a través de First American Title / Title One Detroit.
-- Depósito de garantía (EMD) de $2,500 depositado en título dentro de las primeras 48 horas.
-
-Si desea proceder sin intermediarios, por favor responda a este correo o llámenos directamente al (313) 555-0199.
-
-Atentamente,
-Adquisiciones — WholesalePlatform`,
-            phoneBotScript: {
-              openingHook:
-                'Hola Marcus, habla Alex. Sé que no estabas esperando mi llamada, te llamo muy brevemente sobre tu casa en Joann St en Detroit. ¿Todavía eres el dueño de esa propiedad?',
-              discoveryQuestions: [
-                'Marcus, si pudiéramos cerrar en efectivo en 10 días sin que tengas que pintar ni cambiar nada, ¿cuál sería el número más bajo con el que te sentirías cómodo caminando de la mesa de cierre?',
-                '¿Qué tiempo tienes contemplado para vender? ¿Prefieres salir de ella este mismo mes o tienes prisa?',
-                '¿Cuál es la razón principal para considerar vender en este momento? ¿Quieres reubicar el capital o no lidiar con inquilinos?',
-                '¿La propiedad tiene algún gravamen de impuestos o hipoteca pendiente que debamos liquidar en el título?'
-              ],
-              offerPresentation:
-                'Marcus, basándome en que el techo tiene más de 15 años y los pisos necesitan reemplazo completo para inspección de Section 8, nosotros asumimos el 100% de esos costos y cerramos con nuestra compañía de título cubriendo los gastos. Mi oferta neta directa para ti es de $62,000 en efectivo, limpia y sin inspecciones tediosas. Si cerramos el viernes de la próxima semana, ¿hacemos el trato?',
-              objectionRebuttals: {
-                'Mi precio es $85,000':
-                  'Lo entiendo perfectamente Marcus. Con un Realtor pidiendo $85k pagarías $5,100 de comisión más $2,500 de cierre y el comprador te pedirá $15k en concesiones tras la inspección, quedándote con unos $62k-$65k tras 90 días de espera. Nosotros te garantizamos $62,000 netos a tu cuenta bancaria en 10 días sin dolores de cabeza.',
-                'Déjame pensarlo':
-                  'Totalmente respetable Marcus. Te comento que tenemos fondos apartados para cerrar 2 compras en el código postal 48205 esta misma semana. Si te envío el acuerdo preliminar de 1 página con nuestro depósito de $2,500 garantizado, ¿lo revisarías hoy?'
-              },
-              closingHook:
-                'Perfecto Marcus. Te voy a enviar el contrato de 1 página a tu celular y correo. Solo colocas tu firma electrónica en la pantalla y enviamos el depósito a la compañía de título para comenzar el trámite hoy mismo.'
-            },
-            contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)
-Property: 18418 Joann St, Detroit, MI 48205
-Seller: Marcus Vance
-Buyer: WholesalePlatform LLC and/or assigns
-Purchase Price: $62,000.00 USD
-Earnest Money Deposit (EMD): $2,500.00 USD held with Title One Detroit
-Closing Date: On or before 14 business days from execution
-Terms: As-Is condition. Seller pays no commissions. Buyer covers standard closing costs.
-Assignability: Buyer reserves the unencumbered right to assign this agreement.`,
-            eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
-          },
-          {
-            id: 'deal-taylor-canton-519',
-            address: '519 17th St NW',
-            city: 'Canton',
-            state: 'OH',
-            zip: '44703',
-            propertyType: 'Single Family (Section 8)',
-            beds: 3,
-            baths: 1,
-            sqft: 1180,
-            yearBuilt: 1928,
-            condition: 'Propiedad con impuestos atrasados de $4,200. Requiere pintura y limpieza general. Muy buscada por compradores de Richard Taylor.',
-            daysOnMarket: 22,
-            strategy: 'Stark County Distressed — Section 8 Rental ($1,100/mes)',
-            ownerName: 'Robert Langston',
-            sellerRole: 'Owner',
-            phone: '(330) 555-0163',
-            email: 'robert.langston.canton@yahoo.com',
-            askingPrice: 65000,
-            estimatedArv: 145000,
-            estimatedRehab: 15000,
-            calculatedMaoCashOffer: 45000,
-            projectedAssignmentFee: 10000,
-            buyerName: 'Richard Taylor (Hold My Hand Wholesale)',
-            buyerHandle: '@richardgrandintaylor',
-            smsScript:
-              'Hola Robert, vi tu propiedad en 519 17th St NW en Canton. Somos inversionistas directos, compramos en efectivo y liquidamos cualquier deuda de impuestos en el cierre. ¿Aceptarías una oferta neta en mano de $45,000 cerrando en 10 días?',
-            emailScript: `Asunto: Propuesta Formal en Efectivo — 519 17th St NW, Canton OH
-
-Estimado Robert Langston,
-
-Nuestro grupo de adquisición en Ohio está interesado en adquirir de contado su propiedad ubicada en 519 17th St NW en Canton, OH.
-
-Ofrecemos $45,000 en efectivo, asumiendo cualquier atraso impositivo pendiente que será saldado en el cierre a través de Stark County Title Co.
-
-No cobramos comisiones y cerramos en 10 días hábiles. Quedamos atentos a su confirmación para enviar el documento de compra.
-
-Saludos cordiales,
-Equipo de Adquisiciones WholesalePlatform`,
-            phoneBotScript: {
-              openingHook:
-                'Buenas tardes Robert, le habla Alex de WholesalePlatform. Lo llamo con respecto a la propiedad en la calle 17 NW en Canton. ¿Tiene un minuto para hablar de una oferta directa en efectivo?',
-              discoveryQuestions: [
-                'Robert, sabemos que Stark County tiene algunas facturas de impuestos pendientes. ¿Nuestra compañía se encargaría de liquidar esos gravámenes en el cierre, eso le facilitaría la venta?',
-                '¿Si le dejamos $45,000 limpios en su cuenta en 10 días hábiles, estaría listo para transferir la escritura?',
-                '¿Tiene inquilinos actualmente o la casa está vacía?'
-              ],
-              offerPresentation:
-                'Robert, calculando las reparaciones cosméticas y los impuestos pendientes, nuestra oferta final en mano para usted es de $45,000 netos. Nosotros pagamos los honorarios de la compañía de título y el depósito de garantía entra mañana mismo.',
-              objectionRebuttals: {
-                'Es muy poco':
-                  'Entiendo Robert. Pero recuerde que nosotros liquidamos la deuda del condado en el cierre y no le cobramos el 6% de corretaje. Además no tiene que arreglar nada. Son $45k garantizados en 10 días en lugar de esperar meses.'
-              },
-              closingHook:
-                'Excelente Robert. Le mando el enlace a su celular para que firme electrónicamente en 30 segundos y abrimos título hoy mismo.'
-            },
-            contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)
-Property: 519 17th St NW, Canton, OH 44703
-Seller: Robert Langston
-Buyer: WholesalePlatform LLC and/or assigns
-Purchase Price: $45,000.00 USD
-Earnest Money Deposit (EMD): $2,000.00 USD with Stark County Title
-Closing Date: 10 business days
-Assignability: Buyer reserves the right to assign to cash buyer partners.`,
-            eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
-          },
-          {
-            id: 'deal-taylor-detroit-fourplex',
-            address: '2940 W Grand Blvd',
-            city: 'Detroit',
-            state: 'MI',
-            zip: '48202',
-            propertyType: 'Multifamily (Fourplex / Seller Finance)',
-            beds: 8,
-            baths: 4,
-            sqft: 3420,
-            yearBuilt: 1935,
-            condition: 'Multifamiliar de 4 unidades (Fourplex). 92 días en Zillow. 2 unidades ocupadas generando $1,800/mes, 2 listas para colocar inquilinos Section 8 ($1,150 c/u).',
-            daysOnMarket: 92,
-            strategy: 'Multifamily Seller Financing (10% Down / 5% Interest / 30y Amort) — BuyBoxCartel Special',
-            ownerName: 'David K. Henderson',
-            sellerRole: 'Owner',
-            phone: '(313) 555-4920',
-            email: 'david.henderson.props@gmail.com',
-            askingPrice: 175000,
-            estimatedArv: 240000,
-            estimatedRehab: 22000,
-            calculatedMaoCashOffer: 110000,
-            sellerFinanceTerms: {
-              downPayment: 17500,
-              interestRate: 5.0,
-              termYears: 30,
-              monthlyPayment: 845,
-              projectedRentalIncome: 4100,
-              netMonthlyCashFlow: 3255
-            },
-            projectedAssignmentFee: 10000,
-            buyerName: 'Richard Taylor (Hold My Hand Wholesale)',
-            buyerHandle: '@richardgrandintaylor',
-            smsScript:
-              'Hola David, vi tu Fourplex en 2940 W Grand Blvd. Noté que lleva más de 90 días publicado. Te podemos pagar tu precio de lista de $175,000 estructurando un financiamiento por dueño (10% de enganche y 5% de interés a 30 años) con pagos mensuales garantizados y sin lidiar con inquilinos. ¿Estarías abierto a escuchar los términos?',
-            emailScript: `Asunto: Oferta de Precio Completo ($175,000) con Financiamiento por Dueño — 2940 W Grand Blvd (Fourplex)
-
-Estimado David Henderson,
-
-Hemos seguido la publicación de su multifamiliar de 4 unidades en 2940 W Grand Blvd. Comprendemos que vender una propiedad multifamiliar tradicionalmente por banco puede tomar meses y generar altos costos impositivos por ganancias de capital.
-
-Le presentamos una oferta por el 100% de su precio de venta:
-- Precio de Compra: $175,000 USD
-- Enganche Inicial (Down Payment): $17,500 USD (10%)
-- Tasa de Interés: 5.0% fija
-- Amortización: 30 años (Pagos mensuales directos a usted de $845.48/mes)
-- Beneficio para usted: Ingreso pasivo garantizado sin dolores de cabeza de administración, ni reparaciones, difiriendo el impuesto de capital gains.
-
-¿Podríamos agendar una llamada de 10 minutos para revisar el pagaré y la hipoteca respaldada por título?
-
-Atentamente,
-Richard Taylor / WholesalePlatform Partners`,
-            phoneBotScript: {
-              openingHook:
-                'Hola David, habla Alex de WholesalePlatform. Te llamo por tu Fourplex en W Grand Blvd. Veo que tiene 90+ días en el mercado. ¿Sigues buscando venderlo?',
-              discoveryQuestions: [
-                'David, en lugar de recibir un cheque castigado con un 40% de descuento en efectivo, ¿te serviría recibir el precio completo que pides ($175k) con pagos mensuales fijos respaldados por la propiedad?',
-                '¿Las dos unidades que están rentadas están al día con sus pagos?',
-                '¿Tienes alguna hipoteca bancaria sobre el edificio o está completamente libre de deuda (Free & Clear)?'
-              ],
-              offerPresentation:
-                'David, podemos darte tus $175,000 completos. Te entregamos $17,500 en la mesa de cierre y te pagamos $845.48 cada mes al 5% de interés. Si en algún momento no pagamos, la propiedad vuelve a ti con todas las mejoras hechas. Es el mejor retorno pasivo en Detroit sin ser casero. ¿Te funciona estructurarlo así?',
-              objectionRebuttals: {
-                'Quiero todo el dinero en efectivo':
-                  'Si lo vendes en efectivo hoy David, cualquier inversionista te ofrecerá $100k-$110k máximo y el IRS te quitará el 25% de impuestos de golpe. Con Seller Financing recibes tus $175k completos más $129,000 adicionales en intereses a lo largo del tiempo, ganando más de $304,000.'
-              },
-              closingHook:
-                'Excelente David. Te envío el Memorándum de Acuerdo y el pagaré estructurado para que lo revises con tu asesor legal. Cerramos en 14 días.'
-            },
-            contractText: `SELLER FINANCING PURCHASE AGREEMENT & PROMISSORY NOTE TERMS
-Property: 2940 W Grand Blvd, Detroit, MI 48202 (4 Units)
-Seller: David K. Henderson
-Buyer: WholesalePlatform LLC and/or assigns
-Purchase Price: $175,000.00 USD
-Down Payment: $17,500.00 USD at Closing
-Financed Amount: $157,500.00 USD
-Interest Rate: 5.0% per annum
-Term: 360 months (Monthly Principal & Interest: $845.48 USD)
-Security: First Priority Mortgage / Deed of Trust on Subject Property
-Assignability: Buyer reserves assignability to vetted JV partners.`,
-            eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
-          },
-          {
-            id: 'deal-taylor-cleveland-119',
-            address: '3421 E 119th St',
-            city: 'Cleveland',
-            state: 'OH',
-            zip: '44120',
-            propertyType: 'Single Family (Section 8)',
-            beds: 3,
-            baths: 1.5,
-            sqft: 1240,
-            yearBuilt: 1925,
-            condition: 'Casa desocupada con aviso de code violation por pintura exterior y pasto. Propietario vive fuera del estado (Absentee).',
-            daysOnMarket: 34,
-            strategy: 'Cleveland Section 8 Turnkey ($1,175/mes)',
-            ownerName: 'Brenda Miller',
-            sellerRole: 'Owner',
-            phone: '(216) 555-7314',
-            email: 'brenda.miller.props@outlook.com',
-            askingPrice: 72000,
-            estimatedArv: 138000,
-            estimatedRehab: 16000,
-            calculatedMaoCashOffer: 49000,
-            projectedAssignmentFee: 10000,
-            buyerName: 'Richard Taylor (Hold My Hand Wholesale)',
-            buyerHandle: '@richardgrandintaylor',
-            smsScript:
-              'Hola Brenda, te escribe Alex. Vi tu propiedad en 3421 E 119th St en Cleveland. Noté que tienes una notificación de la ciudad. Nosotros la compramos en efectivo y asumimos cualquier arreglo pendiente. ¿Te gustaría recibir $49,000 netos en 10 días?',
-            emailScript: `Asunto: Oferta Directa de Contado para 3421 E 119th St, Cleveland OH
-
-Estimada Brenda Miller,
-
-Sabemos que administrar una propiedad en Cleveland desde fuera del estado puede ser demandante. Nuestro grupo de inversionistas adquiere casas en el área metropolitana de Cleveland sin inspecciones y cubriendo el 100% de los gastos de título.
-
-Ofrecemos $49,000 en efectivo por su propiedad en 3421 E 119th St.
-Cerramos en 10 días hábiles con First Ohio Title.
-
-Por favor responda si desea recibir el acuerdo digital.
-
-Atentamente,
-WholesalePlatform Adquisiciones`,
-            phoneBotScript: {
-              openingHook:
-                'Hola Brenda, habla Alex. Te llamo con respecto a tu casa en la calle 119 en Cleveland. ¿La tienes disponible para vender en efectivo?',
-              discoveryQuestions: [
-                'Brenda, dado que vives fuera de Ohio, ¿te convendría desentenderte de los impuestos y multas de la ciudad cerrando todo este mes?',
-                '¿Cuál es el valor mínimo que aceptarías sabiendo que nosotros pagamos todo el cierre y no cobramos comisiones?'
-              ],
-              offerPresentation:
-                'Brenda, para comprarla esta misma semana y resolver el expediente de la ciudad de inmediato, te ofrezco $49,000 en efectivo. Sin complicaciones ni viajes a Cleveland.',
-              objectionRebuttals: {
-                'Tengo otra oferta de $55,000':
-                  'Entiendo Brenda. Asegúrate de que no tengan una cláusula de inspección de 30 días donde luego te pidan descuentos. Nuestro contrato tiene $2,500 de garantía no reembolsables tras 3 días y cerramos en 10 días garantizado.'
-              },
-              closingHook:
-                'Te envío el enlace por SMS ahora mismo Brenda. Firmas con el dedo en tu pantalla y mañana queda abierto el título.'
-            },
-            contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)
-Property: 3421 E 119th St, Cleveland, OH 44120
-Seller: Brenda Miller
-Buyer: WholesalePlatform LLC and/or assigns
-Purchase Price: $49,000.00 USD
-EMD: $2,500.00 USD
-Closing Date: 10 business days
-Assignability: Fully assignable.`,
-            eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
-          }
-        ]
-      : [];
-
-    // 3. Generate CSV (Excel format)
+    // Generate CSV Content
     const csvHeaders = [
       'ID',
+      'Target Buyer Name',
+      'Buyer Handle',
+      'Buyer BuyBox Type',
       'Address',
       'City',
       'State',
@@ -378,35 +489,35 @@ Assignability: Fully assignable.`,
       'Property Type',
       'Beds',
       'Baths',
-      'SqFt',
+      'SqFt / Lot',
       'Strategy',
       'Owner / Realtor Name',
-      'Seller Role',
-      'Phone (Skip-traced)',
+      'Phone (Skip-Traced)',
       'Email',
       'Asking Price ($)',
       'ARV ($)',
       'Estimated Rehab ($)',
       'Calculated MAO Cash Offer ($)',
-      'Seller Finance Offer Terms',
-      'Target Buyer',
+      'Seller Finance / Creative Terms',
       'Projected Assignment Fee ($)',
-      'Digital E-Sign Link'
+      'Digital E-Sign URL'
     ];
 
-    const csvRows = propertiesData.map((p) => [
+    const csvRows = allDeals.map((p) => [
       `"${p.id}"`,
+      `"${p.buyerName}"`,
+      `"${p.buyerHandle}"`,
+      `"${p.buyerBuyBoxType}"`,
       `"${p.address}"`,
       `"${p.city}"`,
       `"${p.state}"`,
       `"${p.zip}"`,
       `"${p.propertyType}"`,
-      p.beds,
-      p.baths,
-      p.sqft,
+      p.beds || 'N/A',
+      p.baths || 'N/A',
+      p.sqft ? `"${p.sqft} sqft"` : `"${p.lotSize || 'N/A'}"`,
       `"${p.strategy}"`,
       `"${p.ownerName}"`,
-      `"${p.sellerRole}"`,
       `"${p.phone}"`,
       `"${p.email}"`,
       p.askingPrice,
@@ -415,108 +526,108 @@ Assignability: Fully assignable.`,
       p.calculatedMaoCashOffer,
       p.sellerFinanceTerms
         ? `"10% Down ($${p.sellerFinanceTerms.downPayment}), 5% Int, $${p.sellerFinanceTerms.monthlyPayment}/mo"`
-        : '"N/A (All-Cash Deal)"',
-      `"${p.buyerName} (${p.buyerHandle})"`,
+        : p.assumableTerms
+        ? `"${p.assumableTerms.existingRate}% VA Assumable, Bal: $${p.assumableTerms.loanBalance}, $${p.assumableTerms.monthlyPi}/mo"`
+        : '"All-Cash Purchase"',
       p.projectedAssignmentFee,
       `"${p.eSignUrl}"`
     ]);
 
     const csvContent = [csvHeaders.join(','), ...csvRows.map((r) => r.join(','))].join('\n');
 
-    // 4. Generate Word / Comprehensive Markdown Document
-    const docContent = `# PAQUETE DE DEALS EXCLUSIVO PARA: ${matchedBuyer.name.toUpperCase()}
-**Buy Box:** ${matchedBuyer.buyBoxType} | **Mercados:** ${matchedBuyer.market}
-**Finder's Fee Prometido:** ${matchedBuyer.finderPayoutOffer}
-**Modalidad Aceptada:** ${matchedBuyer.dealRequirementLabel}
+    // Generate Word / Markdown Document
+    const timestamp = Date.now();
+    const docTitle = isAll
+      ? `MASTER DEAL PACKS — TODOS LOS ${targetBuyers.length} CASH BUYERS DEL DASHBOARD`
+      : `DEAL PACK EXCLUSIVO — ${targetBuyers[0].name.toUpperCase()}`;
+
+    const docContent = `# ${docTitle}
+**Generado por:** WholesalePlatform AI Engine
+**Fecha de Emisión:** ${new Date().toLocaleDateString()}
+**Total de Compradores Procesados:** ${targetBuyers.length}
+**Total de Propiedades Emparejadas:** ${allDeals.length}
 
 ---
 
-## RESUMEN DE PROPIEDADES ENCONTRADAS (${propertiesData.length} Deals Listos)
+${targetBuyers
+  .map((b) => {
+    const dealsOfThisBuyer = allDeals.filter((d) => d.buyerName === b.name);
+    return `
+# 👤 BUYER: ${b.name} (${b.creatorHandle || '@vipbuyer'})
+- **Mercado Objetivo:** ${b.market}
+- **Tipo de Buy Box:** ${b.buyBoxType}
+- **Precio Máximo:** ${b.maxPrice}
+- **Payout / Fee Ofrecido:** ${b.finderPayoutOffer || '$10,000'}
+- **Modalidad Aceptada:** ${b.dealRequirementLabel || 'Ambos (Lead o Contrato)'}
 
-${propertiesData
+### Propiedades Encontradas para este Buyer (${dealsOfThisBuyer.length}):
+${dealsOfThisBuyer
   .map(
-    (p, idx) => `
-### Deal #${idx + 1}: ${p.address}, ${p.city}, ${p.state} ${p.zip}
-- **Tipo de Propiedad:** ${p.propertyType} (${p.beds} Beds / ${p.baths} Baths | ${p.sqft} SqFt)
+    (p, i) => `
+#### Propiedad #${i + 1}: ${p.address}, ${p.city}, ${p.state} ${p.zip}
+- **Tipo:** ${p.propertyType}
 - **Estrategia:** ${p.strategy}
-- **Condición Física:** ${p.condition}
-- **Días en Mercado:** ${p.daysOnMarket} días
-- **Propietario / Contacto:** ${p.ownerName} (${p.sellerRole})
-- **Teléfono Verificado (Skip-Trace):** ${p.phone}
+- **Propietario / Broker:** ${p.ownerName} (${p.sellerRole})
+- **Teléfono (Skip-Traced):** **${p.phone}**
 - **Email:** ${p.email}
-
-#### Números Financieros:
-- **Precio Pedido / As assessed:** $${p.askingPrice.toLocaleString()} USD
 - **ARV Estimado:** $${p.estimatedArv.toLocaleString()} USD
-- **Reparaciones Estimadas:** $${p.estimatedRehab.toLocaleString()} USD
-- **Oferta MAO de Contado:** **$${p.calculatedMaoCashOffer.toLocaleString()} USD**
+- **Oferta MAO Calculada:** **$${p.calculatedMaoCashOffer.toLocaleString()} USD**
 ${
   p.sellerFinanceTerms
-    ? `- **Términos de Financiamiento por Dueño:**
-  * Enganche (10%): $${p.sellerFinanceTerms.downPayment.toLocaleString()} USD
-  * Tasa de Interés: ${p.sellerFinanceTerms.interestRate}% fija a ${p.sellerFinanceTerms.termYears} años
-  * Pago Mensual al Vendedor: $${p.sellerFinanceTerms.monthlyPayment.toLocaleString()}/mes
-  * Renta Bruta Proyectada: $${p.sellerFinanceTerms.projectedRentalIncome.toLocaleString()}/mes
-  * **Cash Flow Neto Mensual:** **+$${p.sellerFinanceTerms.netMonthlyCashFlow.toLocaleString()}/mes**`
+    ? `- **Términos Seller Financing:** Enganche: $${p.sellerFinanceTerms.downPayment.toLocaleString()} | Tasa: ${p.sellerFinanceTerms.interestRate}% | Pago: $${p.sellerFinanceTerms.monthlyPayment}/mes | Cash Flow: +$${p.sellerFinanceTerms.netMonthlyCashFlow}/mes`
     : ''
 }
-- **Fee de Asignación / Payout:** **$${p.projectedAssignmentFee.toLocaleString()} USD** (Garantizado por Richard Taylor)
+${
+  p.assumableTerms
+    ? `- **Términos Hipoteca Asumible:** Tasa fija: ${p.assumableTerms.existingRate}% | Pago mensual P&I: $${p.assumableTerms.monthlyPi}/mes | Saldo: $${p.assumableTerms.loanBalance.toLocaleString()} | Cash al vendedor: $${p.assumableTerms.cashToSeller.toLocaleString()}`
+    : ''
+}
+- **Tu Ganancia Proyectada (Assignment Fee):** **$${p.projectedAssignmentFee.toLocaleString()} USD**
 
----
-
-#### 📱 SCRIPT DE SMS LISTO PARA ENVIAR:
+##### 📱 Script de SMS para Enviar al Vendedor:
 \`\`\`text
 ${p.smsScript}
 \`\`\`
 
-#### 📧 SCRIPT DE EMAIL FORMAL LISTO PARA ENVIAR:
+##### 📧 Script de Correo Electrónico Formal:
 \`\`\`text
 ${p.emailScript}
 \`\`\`
 
-#### 🎙️ SCRIPT COMPLETO DEL BOT / AGENTE DE VOZ IA (CLOSER CALL):
-- **Apertura (Pattern Interrupt):**
-  "${p.phoneBotScript.openingHook}"
-
-- **Preguntas de los 4 Pilares de Motivación:**
+##### 🎙️ Script del Bot Agente de Voz IA Closer:
+- **Apertura:** "${p.phoneBotScript.openingHook}"
+- **Preguntas de Motivación:**
 ${p.phoneBotScript.discoveryQuestions.map((q) => `  * ${q}`).join('\n')}
-
-- **Presentación de la Oferta Lista:**
-  "${p.phoneBotScript.offerPresentation}"
-
+- **Oferta en la Llamada:** "${p.phoneBotScript.offerPresentation}"
 - **Manejo de Objeciones:**
 ${Object.entries(p.phoneBotScript.objectionRebuttals)
-  .map(([obj, reb]) => `  * *"${obj}":* ${reb}`)
+  .map(([k, v]) => `  * *"${k}":* ${v}`)
   .join('\n')}
+- **Cierre del Contrato:** "${p.phoneBotScript.closingHook}"
 
-- **Cierre del Contrato:**
-  "${p.phoneBotScript.closingHook}"
-
----
-
-#### ✍️ CONTRATO DE COMPRAVENTA PRE-LLENADO (PSA AS-IS):
+##### ✍️ Contrato PSA As-Is Pre-Llenado:
 \`\`\`text
 ${p.contractText}
 \`\`\`
-- **Enlace de Firma Digital Electrónica:** [Firmar Contrato en E-Sign Portal](${p.eSignUrl})
-
+Enlace de Firma Electrónica: ${p.eSignUrl}
 ---
 `
   )
   .join('\n')}
+`;
+  })
+  .join('\n\n=========================================\n\n')}
+`;
 
-Documento generado automáticamente por WholesalePlatform AI Engine.
-`.trim();
-
-    // 5. Save files to public/downloads for direct downloading
+    // Save files to public/downloads
     const publicDownloadsDir = path.join(process.cwd(), 'public', 'downloads');
     if (!fs.existsSync(publicDownloadsDir)) {
       fs.mkdirSync(publicDownloadsDir, { recursive: true });
     }
 
-    const timestamp = Date.now();
-    const csvFileName = `DealPack_RichardTaylor_${timestamp}.csv`;
-    const docFileName = `DealPack_RichardTaylor_${timestamp}.doc`;
+    const filePrefix = isAll ? 'Master_All_33_Buyers_DealPacks' : `DealPack_${targetBuyers[0].name.replace(/[^a-zA-Z0-9]/g, '_')}`;
+    const csvFileName = `${filePrefix}_${timestamp}.csv`;
+    const docFileName = `${filePrefix}_${timestamp}.doc`;
 
     fs.writeFileSync(path.join(publicDownloadsDir, csvFileName), csvContent, 'utf-8');
     fs.writeFileSync(path.join(publicDownloadsDir, docFileName), docContent, 'utf-8');
@@ -524,10 +635,10 @@ Documento generado automáticamente por WholesalePlatform AI Engine.
     const downloadCsvUrl = `/downloads/${csvFileName}`;
     const downloadDocUrl = `/downloads/${docFileName}`;
 
-    // 6. Also save these leads into the platform's seller leads DB so they are in the pipeline
+    // Also persist leads to database if not present
     const existingLeads = db.sellerLeads || [];
     let addedCount = 0;
-    for (const prop of propertiesData) {
+    for (const prop of allDeals) {
       if (!existingLeads.some((l) => l.propertyAddress === prop.address)) {
         existingLeads.push({
           id: prop.id,
@@ -536,7 +647,13 @@ Documento generado automáticamente por WholesalePlatform AI Engine.
           cityState: `${prop.city}, ${prop.state}`,
           phone: prop.phone,
           email: prop.email,
-          leadSource: prop.propertyType.includes('Fourplex') ? 'Zillow FSBO' : 'Code Violation',
+          leadSource: prop.propertyType.includes('Lot')
+            ? 'Vacant Land'
+            : prop.propertyType.includes('Fourplex')
+            ? 'Zillow FSBO'
+            : prop.propertyType.includes('Assumable')
+            ? 'Zillow Assumable 2.8%'
+            : 'Code Violation',
           estimatedArv: prop.estimatedArv,
           taxOrMortgageArrears: prop.estimatedRehab,
           askingOrAssessedPrice: prop.askingPrice,
@@ -558,15 +675,17 @@ Documento generado automáticamente por WholesalePlatform AI Engine.
 
     return NextResponse.json({
       success: true,
-      buyer: matchedBuyer,
-      totalDeals: propertiesData.length,
-      deals: propertiesData,
+      mode: isAll ? 'all_buyers' : 'single_buyer',
+      totalBuyersProcessed: targetBuyers.length,
+      totalDealsGenerated: allDeals.length,
+      buyers: targetBuyers,
+      deals: allDeals,
       downloadCsvUrl,
       downloadDocUrl,
       csvContent,
       docContent,
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err?.message || 'Error generating buyer deal pack' }, { status: 500 });
+    return NextResponse.json({ error: err?.message || 'Error generating buyer deal packs' }, { status: 500 });
   }
 }

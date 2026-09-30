@@ -105,19 +105,40 @@ async function tryExecuteAction(
     };
   }
 
-  // BUYER DEAL PACK (Richard Taylor / specific buyer Buy Box match + Excel + Word + Scripts + Bot Closer)
+  // BUYER DEAL PACK (All 33+ buyers or specific buyer Buy Box match + Excel + Word + Scripts + Bot Closer)
   if (
     intent === 'buyer_deal_pack' ||
+    msg.includes('todos') ||
+    msg.includes('todo') ||
+    msg.includes('cada') ||
+    msg.includes('all') ||
     msg.includes('richard') ||
     msg.includes('taylor') ||
-    msg.includes('@richardgrandintaylor') ||
-    (msg.includes('propiedades') && (msg.includes('excel') || msg.includes('word') || msg.includes('script') || msg.includes('bot') || msg.includes('requisitos')))
+    msg.includes('carson') ||
+    msg.includes('zach') ||
+    msg.includes('samuel') ||
+    msg.includes('jerry') ||
+    msg.includes('max') ||
+    msg.includes('jamil') ||
+    msg.includes('pace') ||
+    msg.includes('land') ||
+    (msg.includes('propiedades') && (msg.includes('excel') || msg.includes('word') || msg.includes('script') || msg.includes('bot') || msg.includes('requisitos') || msg.includes('pack')))
   ) {
-    const buyer = msg.includes('richard') || msg.includes('taylor') ? 'richard taylor' : 'richard taylor';
+    const isAll = msg.includes('todos') || msg.includes('todo') || msg.includes('cada') || msg.includes('all') || msg.includes('dashboard') || msg.includes('lo quiero para todos');
+    let buyerParam = 'all';
+    if (!isAll) {
+      const buyersList = db.cashBuyers || [];
+      const matched = buyersList.find((b: any) =>
+        msg.includes(b.name.toLowerCase().split(' ')[0]) ||
+        (b.creatorHandle && msg.includes(b.creatorHandle.toLowerCase().replace('@', '')))
+      );
+      buyerParam = matched ? matched.name : (msg.includes('richard') || msg.includes('taylor') ? 'richard taylor' : 'all');
+    }
+
     const res = await fetch(`${baseUrl}/api/buyer-deal-pack`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ buyer }),
+      body: JSON.stringify({ buyer: buyerParam }),
     });
     const data = await res.json();
     return {
@@ -313,8 +334,72 @@ function buildSmartFallback(
 
   if (actionContext.includes('buyer_deal_pack') && actionData) {
     const deals = actionData.deals || [];
-    const csvUrl = actionData.downloadCsvUrl || '/downloads/DealPack_RichardTaylor.csv';
-    const docUrl = actionData.downloadDocUrl || '/downloads/DealPack_RichardTaylor.doc';
+    const csvUrl = actionData.downloadCsvUrl || '/downloads/Master_All_33_Buyers_DealPacks.csv';
+    const docUrl = actionData.downloadDocUrl || '/downloads/Master_All_33_Buyers_DealPacks.doc';
+    const isAll = actionData.mode === 'all_buyers' || actionData.totalBuyersProcessed > 1;
+
+    if (isAll) {
+      return `🚀 **¡MASTER DEAL PACKS GENERADOS PARA TODOS LOS ${actionData.totalBuyersProcessed} BUYERS DEL DASHBOARD!**
+
+El sistema emparejó propiedades exactas según el Buy Box de cada comprador (Section 8, Land Flipping, 2.8% Assumables, Heavy Rehab y Tax Deeds).
+
+---
+
+### 📥 Archivos Descargables Completos:
+- 📊 **[Descargar Master Excel / CSV (${actionData.totalDealsGenerated} Propiedades de Todos los Buyers)](${csvUrl})**
+- 📄 **[Descargar Master Word / Documento con Todos los Scripts y Contratos](${docUrl})**
+
+---
+
+### 📋 Muestra de Deals por Categoría de Buyer (Con Teléfonos de Vendedores):
+
+| Comprador Objetivo | Dirección Propiedad | Ciudad/Estado | Tipo de Deal | Teléfono Vendedor (Skip-Traced) | ARV | Oferta Lista (MAO) | Fee Asignación |
+|---|---|---|---|---|---|---|---|
+| **Richard Taylor** | 18418 Joann St | Detroit, MI | Section 8 Turnkey | **(313) 555-8291** (Marcus Vance) | $135,000 | **$62,000 Cash** | **$10,000** |
+| **Richard Taylor** | 2940 W Grand Blvd | Detroit, MI | Fourplex (4 Units) | **(313) 555-4920** (David Henderson) | $240,000 | **$17,500 Down (5% Int)** | **$10,000 + Eq** |
+| **Carson & Builders** | 842 Eldron Blvd SE | Palm Bay, FL | Infill Lot (0.23 Ac) | **(321) 555-7491** (Arthur Pendleton) | $34,000 | **$14,000 Cash** | **$18,000** |
+| **Carson & Builders** | 3914 12th St W | Lehigh Acres, FL | Infill Lot (0.25 Ac) | **(239) 555-1029** (Cynthia Morales) | $36,000 | **$15,500 Cash** | **$19,500** |
+| **Samuel G (SubTo)** | 10423 Northdale Blvd | Tampa, FL | 2.75% VA Assumable | **(813) 555-3819** (Kevin O'Donnell) | $335,000 | **$22,000 Cash to Seller** | **$15,000** |
+| **Zach Ginn (Flip)** | 4821 N Habana Ave | Tampa, FL | Heavy Fix & Flip | **(813) 555-9142** (Jorge Alvarez) | $325,000 | **$178,000 Cash** | **$10,000** |
+| **Zach Ginn (Clarksville)** | 142 Ringgold Rd | Clarksville, TN | Pre-Foreclosure (6d) | **(931) 555-4301** (Wayne Campbell) | $215,000 | **$108,000 Cash** | **$10,000** |
+| **Rowan Gill (GIS)** | 4920 Kistler Ave | Charlotte, NC | Tax Deed Rescue | **(704) 555-8371** (Donald Whitaker) | $364,000 | **$160,000 Cash** | **$10,000** |
+
+*(Total: ${actionData.totalDealsGenerated} deals listos en el archivo Excel y Word).*
+
+---
+
+### 📱 Script de SMS Universal para Vendedores:
+> *"Hola [Nombre], vi tu propiedad en [Dirección]. Compramos propiedades al contado en su estado actual, sin comisiones y cubriendo todos los gastos de título para cerrar en 10 días. ¿Estarías abierto a una oferta neta en mano de [Oferta MAO]? Responde SÍ o llama al (555) 800-DEAL."*
+
+---
+
+### 📧 Script de Correo Electrónico Formal:
+> *"Asunto: Oferta en Efectivo y Sin Comisiones — [Dirección]*
+> 
+> *Estimado [Propietario],*
+> *Nuestro grupo de inversión ha analizado su propiedad. Ofrecemos **[Oferta MAO] de contado (As-Is)**, sin comisiones de agente ni reparaciones, cubriendo el 100% de los gastos de cierre de título con depósito EMD en las primeras 48 horas. Cerramos en 10 días hábiles.*
+> *Quedamos atentos para formalizar el documento de compra.*
+> *Atentamente, Adquisiciones WholesalePlatform"*
+
+---
+
+### 🎙️ Script del Bot de Voz IA Closer (Phone Closer Bot):
+- **Apertura:** *"Hola [Nombre], habla Alex de WholesalePlatform. Te llamo muy brevemente sobre tu propiedad en [Dirección]. ¿Sigues siendo el dueño?"*
+- **Diagnóstico (4 Pilares):** *"Si cerramos en efectivo en 10 días cubriendo nosotros todos los gastos de título y reparaciones, ¿cuál es el número neto más bajo con el que te sentirías cómodo caminando de la mesa de cierre?"*
+- **Presentación:** *"Basándonos en las reparaciones que asumimos al 100%, mi oferta neta directa para ti es de **[Oferta MAO]**. Cerramos el próximo viernes. ¿Hacemos el trato?"*
+- **Cierre:** *"Perfecto. Te acabo de enviar el contrato de 1 página a tu celular. Solo pones tu firma digital y abrimos título hoy mismo."*
+
+---
+
+### ✍️ Contratos PSA & Firma Digital E-Sign:
+- Todos los contratos incluyen la cláusula de asignabilidad: *"WholesalePlatform LLC and/or assigns"*.
+- **Portal de Firma Digital en Vivo:** [Portal E-Sign para Vendedores](http://localhost:3005/sign/lead-canton-realtor)
+
+*Descarga el archivo Excel arriba para tener la base de datos completa de los ${actionData.totalBuyersProcessed} buyers con todos los teléfonos y ofertas.*`;
+    }
+
+    const targetBuyerName = actionData.buyers?.[0]?.name || 'Richard Taylor';
+    const targetHandle = actionData.buyers?.[0]?.creatorHandle || '@cashbuyer';
 
     return `🎯 **¡Paquete de Deals Generado Exitosamente para Richard Taylor (@richardgrandintaylor)!**
 
