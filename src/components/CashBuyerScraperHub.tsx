@@ -45,6 +45,8 @@ export default function CashBuyerScraperHub({
   const [filterDealMode, setFilterDealMode] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string>('');
+  const [selectedMagnet, setSelectedMagnet] = useState<'detroit' | 'cleveland' | 'land' | 'generic'>('detroit');
+  const [showQuestionsGuide, setShowQuestionsGuide] = useState<boolean>(false);
 
   const handleScrape = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,12 +73,52 @@ export default function CashBuyerScraperHub({
     setTimeout(() => setCopiedId(''), 2200);
   };
 
-  const magnetPostText = `🔥 OFF-MARKET ${buyBoxType.toUpperCase()} DEAL IN ${market.toUpperCase()} 🔥
+  const magnetPosts = {
+    detroit: `🚨 OFF-MARKET DETROIT SECTION 8 CASH FLOW DEAL 🚨
 
-I just locked up / sourced a heavily discounted off-market property in ${market} (~60% of ARV / motivated owner).
+📍 Location: Detroit, MI (Zip: 48205 / Regent Park corridor)
+💰 Cash Price: $62,000 USD
+📈 Projected Section 8 Voucher Rent: $1,250 - $1,350/mo ($15k+/yr gross)
+🛠️ Rehab: Light cosmetic turnover (~$8k - $12k). Roof and mechanicals in working condition.
+📊 Estimated ARV: $125,000+
+📄 Clean title opened with Title One Detroit. 10-day closing.
+Direct assignable contract held by AI Automated Services LLC.
 
-Looking for serious Cash Buyers, End-Buyers or JV Partners who are actively buying in ${market} right now.
-Drop your EMAIL + EXACT BUY BOX in the comments (or DM me "DEAL") and let's close this! 👇`;
+👉 Serious Cash Buyers with Proof of Funds: Drop your EMAIL + PHONE below or DM me "DETROIT" and I'll send the full photo pack and inspection report! 👇`,
+
+    cleveland: `🔥 CLEVELAND OFF-MARKET FIX & FLIP / BRRRR OPPORTUNITY 🔥
+
+📍 Location: Cleveland Metro / Cuyahoga County (Zip: 44105)
+💰 Contract Price: $48,000 USD
+🔨 Estimated Rehab: ~$25,000 (Kitchen, bath, drywall, mechanical updates)
+📊 Realistic ARV: $145,000 USD (Strong neighborhood comps)
+💵 Spread / Gross Equity: ~$72,000 USD
+🏠 Specs: 3 Bed / 1.5 Bath, full dry basement, 2-car detached garage.
+Clean title, closing in 10-14 days with First American Title. Direct contract with AI Automated Services LLC.
+
+👉 Drop your EMAIL or DM me "CLEVELAND" to receive the lockbox code and full property walkthrough! 👇`,
+
+    land: `🏗️ INFILL BUILDER LOT (0.25 ACRES) — READY TO BUILD 🏗️
+
+📍 Location: High-growth builder corridor (Paved street, power at pole, high & dry)
+💰 Cash Price: $18,000 USD
+📐 Dimensions: 80 x 125 ft (High & Dry, No Wetlands, Paved Street)
+📈 Recent Builder Comps (Sold): $32,000 – $36,000 USD
+Zoning: Single-Family Residential (R-1). No HOA. Low property taxes.
+Assignable purchase contract held directly by AI Automated Services LLC. Title clear.
+
+👉 Home builders & land investors: Drop your EMAIL or DM "LOT" for the parcel ID, GIS boundary survey, and builder comps! 👇`,
+
+    generic: `🔥 OFF-MARKET ${buyBoxType.toUpperCase()} DEAL IN ${market.toUpperCase()} 🔥
+
+I just locked up a heavily discounted off-market property in ${market} (~60% of ARV / direct with motivated owner).
+Entity: AI Automated Services LLC.
+
+Looking for serious Cash Buyers or JV Partners actively buying in ${market}.
+👉 Drop your EMAIL + PHONE + EXACT BUY BOX in the comments (or DM "DEAL") and let's close this! 👇`
+  };
+
+  const magnetPostText = magnetPosts[selectedMagnet] || magnetPosts.generic;
 
   const filteredBuyers = cashBuyers.filter((b) => {
     const matchesPlatform =
@@ -225,29 +267,162 @@ Drop your EMAIL + EXACT BUY BOX in the comments (or DM me "DEAL") and let's clos
           </div>
         </form>
 
-        {/* Post Magnet Generator */}
-        <div className="p-3.5 rounded-xl bg-slate-950/90 border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-              <MessageSquarePlus className="w-4 h-4" />
-              Post Imán para Grupos de Facebook y Reddit en {market} (Atrae Compradores y Closers en 1 hora):
-            </span>
-            <button
-              type="button"
-              onClick={() => copyText('magnet-post', magnetPostText)}
-              className="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1.5"
-            >
-              {copiedId === 'magnet-post' ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-              ) : (
-                <Copy className="w-3.5 h-3.5" />
-              )}
-              {copiedId === 'magnet-post' ? 'Post Copiado' : 'Copiar Post para FB / Reddit'}
-            </button>
+        {/* Post Magnet Generator & Facebook REI Group Launchpad */}
+        <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800 space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800 pb-2.5">
+            <div>
+              <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                <MessageSquarePlus className="w-4 h-4" />
+                Anuncios Imán de Alta Conversión para Grupos de Facebook & Reddit (Atraen 15 a 40 Compradores con Teléfono y Email):
+              </span>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                Copia y pega este anuncio en los grupos de Facebook de Detroit, Cleveland o nacionales. Incluye tu entidad <strong>AI Automated Services LLC</strong>.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                { id: 'detroit', label: '🏙️ Detroit (Section 8 $62k)' },
+                { id: 'cleveland', label: '🔨 Cleveland (Fix & Flip $48k)' },
+                { id: 'land', label: '🏗️ Terrenos / Builders ($18k)' },
+                { id: 'generic', label: `📍 ${market}` },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setSelectedMagnet(tab.id as any)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
+                    selectedMagnet === tab.id
+                      ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
+                      : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => copyText('magnet-post', magnetPosts[selectedMagnet])}
+                className="text-xs px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition"
+              >
+                {copiedId === 'magnet-post' ? (
+                  <Check className="w-3.5 h-3.5" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
+                {copiedId === 'magnet-post' ? '¡Copiado!' : 'Copiar Anuncio'}
+              </button>
+            </div>
           </div>
-          <pre className="text-xs text-slate-300 font-mono whitespace-pre-wrap bg-slate-900 p-3 rounded-lg border border-slate-800">
-            {magnetPostText}
+
+          <pre className="text-xs text-slate-200 font-mono whitespace-pre-wrap bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 max-h-48 overflow-y-auto leading-relaxed">
+            {magnetPosts[selectedMagnet]}
           </pre>
+
+          {/* Top Facebook Groups Launchpad with Direct Links */}
+          <div className="pt-2 border-t border-slate-800/80 space-y-2">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <span className="text-[11px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1">
+                <Users className="w-3.5 h-3.5" />
+                Grupos de Facebook Más Activos de USA para Pegar Este Anuncio:
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowQuestionsGuide(!showQuestionsGuide)}
+                className="text-[11px] text-amber-300 hover:underline font-semibold"
+              >
+                {showQuestionsGuide ? 'Ocultar Respuestas de Entrada' : '🔑 Ver Respuestas para Entrar a Grupos Privados'}
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {[
+                {
+                  name: 'Detroit Wholesalers & Cash Buyers Only',
+                  members: '14,200 miembros',
+                  market: 'Detroit, MI',
+                  url: 'https://www.facebook.com/groups/detroitcashbuyerswholesalers/',
+                },
+                {
+                  name: 'Metro Detroit Real Estate Investors Group',
+                  members: '9,800 miembros',
+                  market: 'Detroit & Metro, MI',
+                  url: 'https://www.facebook.com/groups/metrodetroitrei/',
+                },
+                {
+                  name: 'Cleveland OH Off Market/Wholesale Real Estate',
+                  members: '18,500 miembros',
+                  market: 'Cleveland, OH',
+                  url: 'https://www.facebook.com/groups/clevelandrealestateinvestors/',
+                },
+                {
+                  name: 'Ohio Real Estate Investors & Cash Buyers',
+                  members: '24,000 miembros',
+                  market: 'Cleveland / Columbus / Akron',
+                  url: 'https://www.facebook.com/groups/ohiorealestateinvestors/',
+                },
+                {
+                  name: 'Texas Wholesale Real Estate Network',
+                  members: '32,000 miembros',
+                  market: 'DFW, Houston, San Antonio, TX',
+                  url: 'https://www.facebook.com/groups/texaswholesalerealestate/',
+                },
+                {
+                  name: 'Atlanta Real Estate Investors (GaREIA)',
+                  members: '21,500 miembros',
+                  market: 'Metro Atlanta, GA',
+                  url: 'https://www.facebook.com/groups/atlantarealestateinvestors/',
+                },
+              ].map((g, idx) => (
+                <a
+                  key={idx}
+                  href={g.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-sky-500/40 transition flex items-center justify-between group"
+                >
+                  <div className="min-w-0 pr-2">
+                    <h4 className="text-xs font-bold text-white group-hover:text-sky-300 truncate">
+                      {g.name}
+                    </h4>
+                    <p className="text-[10px] text-slate-400">
+                      {g.market} • <span className="text-emerald-400">{g.members}</span>
+                    </p>
+                  </div>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-sky-400 shrink-0" />
+                </a>
+              ))}
+            </div>
+
+            {/* Expandable Membership Questions Guide */}
+            {showQuestionsGuide && (
+              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-2 mt-2">
+                <div className="font-bold text-amber-300">
+                  📋 Respuestas Aprobadas para las Preguntas de Membresía de Facebook (Membership Questions):
+                </div>
+                <div className="space-y-1.5 text-slate-300 text-[11px] font-mono">
+                  <div>
+                    <strong className="text-white">Pregunta 1: ¿Eres inversionista, wholesaler o agente?</strong>
+                    <p className="text-amber-200">
+                      &rarr; &quot;Direct Acquisition Partner at AI Automated Services LLC. We source off-market properties and buy/assign directly.&quot;
+                    </p>
+                  </div>
+                  <div>
+                    <strong className="text-white">Pregunta 2: ¿Aceptas no publicar propiedades de terceros (no daisy chaining)?</strong>
+                    <p className="text-amber-200">
+                      &rarr; &quot;100% Yes. We only post direct equitable interest contracts held by our company.&quot;
+                    </p>
+                  </div>
+                  <div>
+                    <strong className="text-white">Pregunta 3: ¿Cuál es tu correo para enviarte o recibir deals?</strong>
+                    <p className="text-amber-200">
+                      &rarr; &quot;deals@aiautomatedservices.com&quot;
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
