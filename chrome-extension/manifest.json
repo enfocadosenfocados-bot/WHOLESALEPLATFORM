@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "WholesalePlatform 1-Click Deal Importer",
+  "version": "1.0.0",
+  "description": "Importa propiedades de Zillow, Redfin y portales GIS a tu pipeline de WholesalePlatform en 1 clic.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "*://*.zillow.com/*",
+    "*://*.redfin.com/*",
+    "http://localhost:3000/*",
+    "http://localhost:3005/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "WholesalePlatform Importer"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.zillow.com/*", "*://*.redfin.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

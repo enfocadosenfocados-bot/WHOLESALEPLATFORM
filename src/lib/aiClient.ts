@@ -85,3 +85,18 @@ export async function callMultimodalAI(options: AIChatOptions): Promise<string> 
 
   throw new Error(`OpenRouter error: ${lastError}`);
 }
+
+export async function callSkillForgeAI(options: {
+  prompt: string;
+  systemPrompt?: string;
+  jsonMode?: boolean;
+  apiKey?: string;
+}): Promise<string> {
+  return callMultimodalAI({
+    systemPrompt: options.systemPrompt || 'You are an expert Real Estate Wholesaling AI assistant.',
+    userPrompt: options.prompt,
+    apiKey: options.apiKey,
+    jsonMode: options.jsonMode,
+  });
+}
+

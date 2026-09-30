@@ -34,19 +34,21 @@ import CashBuyerScraperHub from '@/components/CashBuyerScraperHub';
 import SellerAcquisitionPipeline from '@/components/SellerAcquisitionPipeline';
 import InstagramCreatorsOutreach from '@/components/InstagramCreatorsOutreach';
 import XLeadsPumpStackerHub from '@/components/XLeadsPumpStackerHub';
+import AdvancedWholesaleSuite from '@/components/AdvancedWholesaleSuite';
 
 export default function SkillForgeDashboard() {
   const [db, setDb] = useState<SkillDatabase | null>(null);
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
     | 'skills'
+    | 'institutional_suite'
     | 'xleads_pumpstacker'
     | 'seller_pipeline'
     | 'cash_buyers'
     | 'ig_creators'
     | 'executors'
     | 'history'
-  >('cash_buyers');
+  >('institutional_suite');
   const [runnerSkill, setRunnerSkill] = useState<SkillModule | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
@@ -242,6 +244,18 @@ export default function SkillForgeDashboard() {
             >
               <Layers className="w-4 h-4" />
               1. Árbol de Skills ({db.skills.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab('institutional_suite')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'institutional_suite'
+                  ? 'bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-cyan-500/25 ring-1 ring-cyan-400'
+                  : 'bg-slate-900 text-cyan-300 hover:text-white border border-cyan-500/40'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-cyan-300" />
+              ⚡ Suite Institucional (E-Sign / Deal Portals / Telefonía / Extensión / Webhooks)
             </button>
 
             <button
@@ -620,6 +634,11 @@ export default function SkillForgeDashboard() {
               )}
             </div>
           </div>
+        )}
+
+        {/* TAB: ADVANCED INSTITUTIONAL WHOLESALE SUITE */}
+        {activeTab === 'institutional_suite' && (
+          <AdvancedWholesaleSuite sellerLeads={db.sellerLeads || []} />
         )}
 
         {/* TAB: XLEADS & PUMPSTACKER SUITE */}
