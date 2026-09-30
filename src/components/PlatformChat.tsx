@@ -28,6 +28,7 @@ interface ChatMessage {
 }
 
 const QUICK_ACTIONS = [
+  { label: '🎯 Deal Pack Richard Taylor', prompt: 'Para Richard Taylor (@richardgrandintaylor) encuéntrame las propiedades que necesita en Excel y Word con números de vendedores, scripts de SMS/Email, script del bot de voz closer con la oferta calculada y contratos listos' },
   { label: '🤖 Ejecutar Auto-Pilot', prompt: 'Ejecuta el auto-pilot ahora y busca propiedades para mis buyers' },
   { label: '📊 Ver Estadísticas', prompt: '¿Cuántos leads, buyers y deals tengo en la plataforma?' },
   { label: '👥 Ver mis Buyers', prompt: 'Muéstrame mis top cash buyers y qué están buscando' },
@@ -40,25 +41,44 @@ const QUICK_ACTIONS = [
 function renderContent(text: string) {
   const lines = text.split('\n');
   return lines.map((line, i) => {
+    // Markdown links: [text](url)
+    let processed = line.replace(
+      /\[(.*?)\]\((.*?)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-cyan-400 font-bold underline hover:text-cyan-300 inline-flex items-center gap-0.5">$1 ↗</a>'
+    );
     // Bold
-    const boldified = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    processed = processed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Code blocks / inline code
+    processed = processed.replace(/`([^`]+)`/g, '<code class="bg-slate-900 px-1 py-0.5 rounded text-amber-300 font-mono text-[11px]">$1</code>');
+
     // Bullet
     if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
       return (
         <div key={i} className="flex gap-1.5 items-start">
           <span className="text-cyan-400 shrink-0 mt-0.5">▸</span>
-          <span dangerouslySetInnerHTML={{ __html: boldified.replace(/^[•\-]\s*/, '') }} />
+          <span dangerouslySetInnerHTML={{ __html: processed.replace(/^[•\-]\s*/, '') }} />
         </div>
       );
     }
-    // Heading-like
-    if (line.startsWith('##') || line.startsWith('**') && line.endsWith('**')) {
+    // Blockquote
+    if (line.trim().startsWith('>')) {
       return (
-        <div key={i} className="font-bold text-white mt-1" dangerouslySetInnerHTML={{ __html: boldified }} />
+        <div key={i} className="border-l-2 border-cyan-500/50 pl-2.5 py-1 my-1 bg-slate-900/60 rounded-r text-slate-300 italic" dangerouslySetInnerHTML={{ __html: processed.replace(/^>\s*/, '') }} />
+      );
+    }
+    // Heading-like
+    if (line.startsWith('###')) {
+      return (
+        <div key={i} className="font-bold text-cyan-300 text-[12px] mt-2 mb-1" dangerouslySetInnerHTML={{ __html: processed.replace(/^###\s*/, '') }} />
+      );
+    }
+    if (line.startsWith('##')) {
+      return (
+        <div key={i} className="font-black text-white text-[13px] mt-2.5 mb-1" dangerouslySetInnerHTML={{ __html: processed.replace(/^##\s*/, '') }} />
       );
     }
     if (line.trim() === '') return <div key={i} className="h-1" />;
-    return <div key={i} dangerouslySetInnerHTML={{ __html: boldified }} />;
+    return <div key={i} dangerouslySetInnerHTML={{ __html: processed }} />;
   });
 }
 
