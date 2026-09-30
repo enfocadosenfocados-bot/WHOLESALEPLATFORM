@@ -23,6 +23,7 @@ import {
   Users,
   Instagram,
   Zap,
+  Bot,
 } from 'lucide-react';
 import { SkillDatabase, SkillModule } from '@/types/skill';
 import IngestCenter from '@/components/IngestCenter';
@@ -35,12 +36,14 @@ import SellerAcquisitionPipeline from '@/components/SellerAcquisitionPipeline';
 import InstagramCreatorsOutreach from '@/components/InstagramCreatorsOutreach';
 import XLeadsPumpStackerHub from '@/components/XLeadsPumpStackerHub';
 import AdvancedWholesaleSuite from '@/components/AdvancedWholesaleSuite';
+import DailyAutomationHub from '@/components/DailyAutomationHub';
 
 export default function SkillForgeDashboard() {
   const [db, setDb] = useState<SkillDatabase | null>(null);
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
     | 'skills'
+    | 'daily_automation'
     | 'institutional_suite'
     | 'xleads_pumpstacker'
     | 'seller_pipeline'
@@ -48,7 +51,7 @@ export default function SkillForgeDashboard() {
     | 'ig_creators'
     | 'executors'
     | 'history'
-  >('institutional_suite');
+  >('daily_automation');
   const [runnerSkill, setRunnerSkill] = useState<SkillModule | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
@@ -234,6 +237,18 @@ export default function SkillForgeDashboard() {
         {/* 2. Navigation Tabs */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveTab('daily_automation')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'daily_automation'
+                  ? 'bg-gradient-to-r from-emerald-600 to-cyan-600 text-white shadow-lg shadow-emerald-500/30 ring-1 ring-emerald-400 animate-pulse-slow'
+                  : 'bg-slate-900 text-emerald-300 hover:text-white border border-emerald-500/40'
+              }`}
+            >
+              <Bot className="w-4 h-4" />
+              🤖 Auto-Pilot Diario (Buscar + Llamar + Mensajear)
+            </button>
+
             <button
               onClick={() => setActiveTab('skills')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
@@ -636,10 +651,16 @@ export default function SkillForgeDashboard() {
           </div>
         )}
 
+        {/* TAB: 🤖 DAILY AUTO-PILOT — PROPERTY SEARCH + OUTREACH + AI CALLS */}
+        {activeTab === 'daily_automation' && (
+          <DailyAutomationHub />
+        )}
+
         {/* TAB: ADVANCED INSTITUTIONAL WHOLESALE SUITE */}
         {activeTab === 'institutional_suite' && (
           <AdvancedWholesaleSuite sellerLeads={db.sellerLeads || []} />
         )}
+
 
         {/* TAB: XLEADS & PUMPSTACKER SUITE */}
         {activeTab === 'xleads_pumpstacker' && (
