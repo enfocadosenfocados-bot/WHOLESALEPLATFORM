@@ -112,7 +112,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
           },
           closingHook: `Te envío el acuerdo de 1 página a tu celular ahora mismo Marcus. Firmas con el dedo en la pantalla y abrimos título hoy.`
         },
-        contractText: `PURCHASE AND SALE AGREEMENT\nProperty: 18418 Joann St, Detroit, MI 48205\nSeller: Marcus Vance\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $62,000.00 USD\nClosing: 10 business days\nTerms: As-Is. Fully assignable.`,
+        contractText: `PURCHASE AND SALE AGREEMENT\nProperty: 18418 Joann St, Detroit, MI 48205\nSeller: Marcus Vance\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $62,000.00 USD\nClosing: 10 business days\nTerms: As-Is. Assignability: Buyer reserves the unencumbered right to assign this agreement. Inspection Contingency: 14 business days full due diligence with 100% deposit refund upon cancellation.`,
         eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
       },
       {
@@ -160,7 +160,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
           },
           closingHook: `Te envío el contrato estructurado David para cerrar en 14 días.`
         },
-        contractText: `SELLER FINANCING AGREEMENT\nProperty: 2940 W Grand Blvd, Detroit, MI 48202\nSeller: David K. Henderson\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $175,000.00 USD\nDown Payment: $17,500.00 USD\nTerms: 5% Interest, 360 months ($845.48/mo). Assignable.`,
+        contractText: `SELLER FINANCING AGREEMENT\nProperty: 2940 W Grand Blvd, Detroit, MI 48202\nSeller: David K. Henderson\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $175,000.00 USD\nDown Payment: $17,500.00 USD\nTerms: 5% Interest, 360 months ($845.48/mo). Assignable.`,
         eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
       }
     ];
@@ -206,7 +206,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
           },
           closingHook: `Te envío el contrato de compra de lote Arthur por SMS. Firmas con el dedo en tu pantalla y abrimos título hoy.`
         },
-        contractText: `VACANT LAND PURCHASE AGREEMENT\nProperty: 842 Eldron Blvd SE, Palm Bay, FL 32909 (Parcel ID: 29-37-14-00-512)\nSeller: Arthur Pendleton\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $14,000.00 USD\nClosing: 14 business days. Title fees paid by buyer. Assignable.`,
+        contractText: `VACANT LAND PURCHASE AGREEMENT\nProperty: 842 Eldron Blvd SE, Palm Bay, FL 32909 (Parcel ID: 29-37-14-00-512)\nSeller: Arthur Pendleton\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $14,000.00 USD\nClosing: 14 business days. Title fees paid by buyer. Assignable.`,
         eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
       },
       {
@@ -243,7 +243,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
           },
           closingHook: `Excelente Cynthia, te mando el documento al celular para firma digital en 30 segundos.`
         },
-        contractText: `VACANT LAND PURCHASE AGREEMENT\nProperty: 3914 12th St W, Lehigh Acres, FL 33971\nSeller: Cynthia Morales\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $15,500.00 USD\nClosing: 10 business days. Fully assignable.`,
+        contractText: `VACANT LAND PURCHASE AGREEMENT\nProperty: 3914 12th St W, Lehigh Acres, FL 33971\nSeller: Cynthia Morales\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $15,500.00 USD\nClosing: 10 business days. Fully assignable.`,
         eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
       }
     ];
@@ -298,7 +298,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
           },
           closingHook: `Te envío el acuerdo de transferencia Kevin para abrir título en Tampa mañana.`
         },
-        contractText: `ASSUMABLE MORTGAGE PURCHASE AGREEMENT\nProperty: 10423 Northdale Blvd, Tampa, FL 33624\nSeller: Kevin O'Donnell\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nExisting Loan: $182,000 at 2.75% fixed interest\nCash to Seller: $22,000.00 USD at Closing. Assignable.`,
+        contractText: `ASSUMABLE MORTGAGE PURCHASE AGREEMENT\nProperty: 10423 Northdale Blvd, Tampa, FL 33624\nSeller: Kevin O'Donnell\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nExisting Loan: $182,000 at 2.75% fixed interest\nCash to Seller: $22,000.00 USD at Closing. Assignable.`,
         eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
       }
     ];
@@ -344,7 +344,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
           },
           closingHook: `Te envío el contrato por SMS de inmediato Donald. Firmas hoy y notificamos al abogado del condado para detener la subasta.`
         },
-        contractText: `TAX FORECLOSURE AS-IS PURCHASE AGREEMENT\nProperty: 4920 Kistler Ave, Charlotte, NC 28205\nSeller: Donald Whitaker\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $160,000.00 USD (Includes pay-off of tax liens at closing). Closing: 7 days. Fully assignable.`,
+        contractText: `TAX FORECLOSURE AS-IS PURCHASE AGREEMENT\nProperty: 4920 Kistler Ave, Charlotte, NC 28205\nSeller: Donald Whitaker\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $160,000.00 USD (Includes pay-off of tax liens at closing). Closing: 7 days. Fully assignable.`,
         eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
       }
     ];
@@ -392,7 +392,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
         },
         closingHook: `Te envío el contrato de 1 página a tu celular Jorge. Firmas con el dedo en tu pantalla y abrimos título hoy mismo.`
       },
-      contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 4821 N Habana Ave, Tampa, FL 33614\nSeller: Jorge Alvarez\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $178,000.00 USD\nEMD: $3,000.00 USD with First American Title\nClosing: 10 business days. Fully assignable.`,
+      contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 4821 N Habana Ave, Tampa, FL 33614\nSeller: Jorge Alvarez\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $178,000.00 USD\nEMD: $3,000.00 USD with First American Title\nClosing: 10 business days. Fully assignable.`,
       eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
     },
     {
@@ -432,7 +432,7 @@ function generateDealsForBuyerProfile(buyer: VerifiedCashBuyer): BuyerDealItem[]
         },
         closingHook: `Te mando el contrato ahora mismo Wayne para detener la subasta hoy.`
       },
-      contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 142 Ringgold Rd, Clarksville, TN 37042\nSeller: Wayne Campbell\nBuyer: WholesalePlatform LLC and/or assigns (${bName})\nPrice: $108,000.00 USD\nClosing: 5 business days. Fully assignable.`,
+      contractText: `PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 142 Ringgold Rd, Clarksville, TN 37042\nSeller: Wayne Campbell\nBuyer: AI Automated Services LLC and/or assigns (${bName})\nPrice: $108,000.00 USD\nClosing: 5 business days. Fully assignable.`,
       eSignUrl: 'http://localhost:3005/sign/lead-canton-realtor'
     }
   ];

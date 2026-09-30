@@ -405,7 +405,7 @@ El sistema emparejó propiedades exactas según el Buy Box de cada comprador (Se
 ---
 
 ### ✍️ Contratos PSA & Firma Digital E-Sign:
-- Todos los contratos incluyen la cláusula de asignabilidad: *"WholesalePlatform LLC and/or assigns"*.
+- Todos los contratos incluyen la cláusula de asignabilidad: *"AI Automated Services LLC and/or assigns"*.
 - **Portal de Firma Digital en Vivo:** [Portal E-Sign para Vendedores](http://localhost:3005/sign/lead-canton-realtor)
 
 *Descarga el archivo Excel arriba para tener la base de datos completa de los ${actionData.totalBuyersProcessed} buyers con todos los teléfonos y ofertas.*`;
@@ -462,7 +462,7 @@ Cumple al 100% con su Buy Box: **Section 8 Rentals ($40k-$135k en Detroit, Canto
 ---
 
 ### ✍️ Contrato PSA Pre-llenado & Enlace E-Sign:
-- **Cláusula de Asignación:** *"Buyer: WholesalePlatform LLC and/or assigns"*
+- **Cláusula de Asignación:** *"Buyer: AI Automated Services LLC and/or assigns"*
 - **Enlace de Firma Electrónica Inmediata:** [Portal E-Sign para el Vendedor](http://localhost:3005/sign/lead-canton-realtor)
 
 *Todos los datos y archivos quedaron guardados en tu pipeline y disponibles para descarga inmediata.*`;

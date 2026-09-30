@@ -1580,7 +1580,7 @@
           "title": "Acuerdo de Honorarios de Contingencia para Fondos Excedentes (Contingency Agreement)",
           "type": "contract_template",
           "whenToUse": "Hacer que el dueño anterior firme antes de radicar la moción ante el tribunal.",
-          "content": "SURPLUS FUNDS RECOVERY & CONTINGENCY FEE AGREEMENT\nClaimant (Former Property Owner): [Nombre del Dueño]\nProperty Subject of Foreclosure: [Dirección de la Propiedad]\nCourt Case Number: [Número de Caso del Tribunal]\nCounty / State: [Condado, Estado]\n\n1. AUTHORIZATION: Claimant hereby authorizes WholesalePlatform Asset Recovery LLC and its affiliated legal counsel to locate, audit, process, and file all necessary petitions and motions before the Court to recover and release all unclaimed excess auction proceeds (Surplus Funds) resulting from the foreclosure or tax sale of the Subject Property.\n\n2. CONTINGENCY FEE STRUCTURE: In consideration of the services rendered, Claimant agrees that WholesalePlatform LLC shall receive a contingency recovery fee equal to thirty-five percent (35%) of the total gross surplus funds actually disbursed by the Clerk of Court. \n\n3. ZERO OUT-OF-POCKET EXPENSE: WholesalePlatform LLC shall bear all upfront administrative and legal costs. If no funds are disbursed by the Court, Claimant owes ZERO DOLLARS ($0.00).\n\n4. DISBURSEMENT: The Clerk of the Court is hereby requested to disburse the approved funds to the designated Escrow Account for proper distribution per this agreement."
+          "content": "SURPLUS FUNDS RECOVERY & CONTINGENCY FEE AGREEMENT\nClaimant (Former Property Owner): [Nombre del Dueño]\nProperty Subject of Foreclosure: [Dirección de la Propiedad]\nCourt Case Number: [Número de Caso del Tribunal]\nCounty / State: [Condado, Estado]\n\n1. AUTHORIZATION: Claimant hereby authorizes WholesalePlatform Asset Recovery LLC and its affiliated legal counsel to locate, audit, process, and file all necessary petitions and motions before the Court to recover and release all unclaimed excess auction proceeds (Surplus Funds) resulting from the foreclosure or tax sale of the Subject Property.\n\n2. CONTINGENCY FEE STRUCTURE: In consideration of the services rendered, Claimant agrees that AI Automated Services LLC shall receive a contingency recovery fee equal to thirty-five percent (35%) of the total gross surplus funds actually disbursed by the Clerk of Court. \n\n3. ZERO OUT-OF-POCKET EXPENSE: AI Automated Services LLC shall bear all upfront administrative and legal costs. If no funds are disbursed by the Court, Claimant owes ZERO DOLLARS ($0.00).\n\n4. DISBURSEMENT: The Clerk of the Court is hereby requested to disburse the approved funds to the designated Escrow Account for proper distribution per this agreement."
         }
       ],
       "changelog": [
@@ -5203,7 +5203,7 @@
       "agreedPrice": 62000,
       "assignedBuyerName": "Richard Taylor (Hold My Hand Wholesale)",
       "assignmentFeeProjected": 10000,
-      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 18418 Joann St, Detroit, MI 48205\nSeller: Marcus Vance\nBuyer: WholesalePlatform LLC and/or assigns\nPurchase Price: $62,000.00 USD\nEarnest Money Deposit (EMD): $2,500.00 USD held with Title One Detroit\nClosing Date: On or before 14 business days from execution\nTerms: As-Is condition. Seller pays no commissions. Buyer covers standard closing costs.\nAssignability: Buyer reserves the unencumbered right to assign this agreement."
+      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 18418 Joann St, Detroit, MI 48205\nSeller: Marcus Vance\nBuyer: AI Automated Services LLC and/or assigns\nPurchase Price: $62,000.00 USD\nEarnest Money Deposit (EMD): $2,500.00 USD held with Title One Detroit\nClosing Date: On or before 14 business days from execution\nTerms: As-Is condition. Seller pays no commissions. Buyer covers standard closing costs.\nAssignability: Buyer reserves the unencumbered right to assign this agreement."
     },
     {
       "id": "deal-taylor-detroit-fourplex",
@@ -5222,7 +5222,7 @@
       "agreedPrice": 110000,
       "assignedBuyerName": "Richard Taylor (Hold My Hand Wholesale)",
       "assignmentFeeProjected": 10000,
-      "signedContractText": "SELLER FINANCING PURCHASE AGREEMENT & PROMISSORY NOTE TERMS\nProperty: 2940 W Grand Blvd, Detroit, MI 48202 (4 Units)\nSeller: David K. Henderson\nBuyer: WholesalePlatform LLC and/or assigns\nPurchase Price: $175,000.00 USD\nDown Payment: $17,500.00 USD at Closing\nFinanced Amount: $157,500.00 USD\nInterest Rate: 5.0% per annum\nTerm: 360 months (Monthly Principal & Interest: $845.48 USD)\nSecurity: First Priority Mortgage / Deed of Trust on Subject Property\nAssignability: Buyer reserves assignability to vetted JV partners."
+      "signedContractText": "SELLER FINANCING PURCHASE AGREEMENT & PROMISSORY NOTE TERMS\nProperty: 2940 W Grand Blvd, Detroit, MI 48202 (4 Units)\nSeller: David K. Henderson\nBuyer: AI Automated Services LLC and/or assigns\nPurchase Price: $175,000.00 USD\nDown Payment: $17,500.00 USD at Closing\nFinanced Amount: $157,500.00 USD\nInterest Rate: 5.0% per annum\nTerm: 360 months (Monthly Principal & Interest: $845.48 USD)\nSecurity: First Priority Mortgage / Deed of Trust on Subject Property\nAssignability: Buyer reserves assignability to vetted JV partners."
     },
     {
       "id": "deal-taylor-cleveland-119",
@@ -5241,7 +5241,7 @@
       "agreedPrice": 49000,
       "assignedBuyerName": "Richard Taylor (Hold My Hand Wholesale)",
       "assignmentFeeProjected": 10000,
-      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 3421 E 119th St, Cleveland, OH 44120\nSeller: Brenda Miller\nBuyer: WholesalePlatform LLC and/or assigns\nPurchase Price: $49,000.00 USD\nEMD: $2,500.00 USD\nClosing Date: 10 business days\nAssignability: Fully assignable."
+      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 3421 E 119th St, Cleveland, OH 44120\nSeller: Brenda Miller\nBuyer: AI Automated Services LLC and/or assigns\nPurchase Price: $49,000.00 USD\nEMD: $2,500.00 USD\nClosing Date: 10 business days\nAssignability: Fully assignable."
     },
     {
       "id": "deal-cb-reddit-market-1790806744038-tampa-habana",
@@ -5260,7 +5260,7 @@
       "agreedPrice": 178000,
       "assignedBuyerName": "Hilos de Reddit: Cash Buyers & Bird-Dog Closers en Tampa, FL",
       "assignmentFeeProjected": 150035005050100,
-      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 4821 N Habana Ave, Tampa, FL 33614\nSeller: Jorge Alvarez\nBuyer: WholesalePlatform LLC and/or assigns (Hilos de Reddit: Cash Buyers & Bird-Dog Closers en Tampa, FL)\nPrice: $178,000.00 USD\nEMD: $3,000.00 USD with First American Title\nClosing: 10 business days. Fully assignable."
+      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 4821 N Habana Ave, Tampa, FL 33614\nSeller: Jorge Alvarez\nBuyer: AI Automated Services LLC and/or assigns (Hilos de Reddit: Cash Buyers & Bird-Dog Closers en Tampa, FL)\nPrice: $178,000.00 USD\nEMD: $3,000.00 USD with First American Title\nClosing: 10 business days. Fully assignable."
     },
     {
       "id": "deal-cb-reddit-market-1790806744038-clarksville-ringgold",
@@ -5279,7 +5279,7 @@
       "agreedPrice": 108000,
       "assignedBuyerName": "Hilos de Reddit: Cash Buyers & Bird-Dog Closers en Tampa, FL",
       "assignmentFeeProjected": 150035005050100,
-      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 142 Ringgold Rd, Clarksville, TN 37042\nSeller: Wayne Campbell\nBuyer: WholesalePlatform LLC and/or assigns (Hilos de Reddit: Cash Buyers & Bird-Dog Closers en Tampa, FL)\nPrice: $108,000.00 USD\nClosing: 5 business days. Fully assignable."
+      "signedContractText": "PURCHASE AND SALE AGREEMENT (AS-IS)\nProperty: 142 Ringgold Rd, Clarksville, TN 37042\nSeller: Wayne Campbell\nBuyer: AI Automated Services LLC and/or assigns (Hilos de Reddit: Cash Buyers & Bird-Dog Closers en Tampa, FL)\nPrice: $108,000.00 USD\nClosing: 5 business days. Fully assignable."
     },
     {
       "id": "deal-cb-creator-flipwithzach-palmbay-eldron",
@@ -5298,7 +5298,7 @@
       "agreedPrice": 14000,
       "assignedBuyerName": "Zach Ginn & Rick Ginn (@flipwithzach — FlipWithRick.com / FreeWholesaling)",
       "assignmentFeeProjected": 18000,
-      "signedContractText": "VACANT LAND PURCHASE AGREEMENT\nProperty: 842 Eldron Blvd SE, Palm Bay, FL 32909 (Parcel ID: 29-37-14-00-512)\nSeller: Arthur Pendleton\nBuyer: WholesalePlatform LLC and/or assigns (Zach Ginn & Rick Ginn (@flipwithzach — FlipWithRick.com / FreeWholesaling))\nPrice: $14,000.00 USD\nClosing: 14 business days. Title fees paid by buyer. Assignable."
+      "signedContractText": "VACANT LAND PURCHASE AGREEMENT\nProperty: 842 Eldron Blvd SE, Palm Bay, FL 32909 (Parcel ID: 29-37-14-00-512)\nSeller: Arthur Pendleton\nBuyer: AI Automated Services LLC and/or assigns (Zach Ginn & Rick Ginn (@flipwithzach — FlipWithRick.com / FreeWholesaling))\nPrice: $14,000.00 USD\nClosing: 14 business days. Title fees paid by buyer. Assignable."
     },
     {
       "id": "deal-cb-creator-flipwithzach-lehigh-12th",
@@ -5317,7 +5317,7 @@
       "agreedPrice": 15500,
       "assignedBuyerName": "Zach Ginn & Rick Ginn (@flipwithzach — FlipWithRick.com / FreeWholesaling)",
       "assignmentFeeProjected": 19500,
-      "signedContractText": "VACANT LAND PURCHASE AGREEMENT\nProperty: 3914 12th St W, Lehigh Acres, FL 33971\nSeller: Cynthia Morales\nBuyer: WholesalePlatform LLC and/or assigns (Zach Ginn & Rick Ginn (@flipwithzach — FlipWithRick.com / FreeWholesaling))\nPrice: $15,500.00 USD\nClosing: 10 business days. Fully assignable."
+      "signedContractText": "VACANT LAND PURCHASE AGREEMENT\nProperty: 3914 12th St W, Lehigh Acres, FL 33971\nSeller: Cynthia Morales\nBuyer: AI Automated Services LLC and/or assigns (Zach Ginn & Rick Ginn (@flipwithzach — FlipWithRick.com / FreeWholesaling))\nPrice: $15,500.00 USD\nClosing: 10 business days. Fully assignable."
     }
   ],
   "igCreators": [
