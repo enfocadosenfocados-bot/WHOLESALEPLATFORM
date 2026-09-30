@@ -4,8 +4,20 @@ import { callSkillForgeAI } from '@/lib/aiClient';
 
 export async function POST(req: NextRequest) {
   try {
-    const { action, leadId, provider, apiKey, phoneNumber, assistantId, transcript, audioPrompt } =
-      await req.json();
+    const body = await req.json();
+    const {
+      action,
+      leadId,
+      provider,
+      apiKey,
+      phoneNumber,
+      assistantId,
+      transcript,
+      audioPrompt,
+      botType = 'initial_outreach',
+      reductionAmount = 12000,
+      strategyName: customStrategyName,
+    } = body;
 
     const db = getDatabase();
     const lead = db.sellerLeads?.find((l) => l.id === leadId);
@@ -72,11 +84,10 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      const botType = (await req.clone().json().catch(() => ({})))?.botType || 'initial_outreach';
-      const reductionAmt = (await req.clone().json().catch(() => ({})))?.reductionAmount || 12000;
+      const reductionAmt = Number(reductionAmount) || 12000;
       const originalOffer = lead?.agreedPrice || lead?.recommendedMaoOffer || 62000;
-      const targetDropOffer = Math.max(10000, originalOffer - Number(reductionAmt));
-      const strategyName = (await req.clone().json().catch(() => ({})))?.strategyName || lead?.leadSource || 'Wholesale Direct';
+      const targetDropOffer = Math.max(10000, originalOffer - reductionAmt);
+      const strategyName = customStrategyName || lead?.leadSource || 'Wholesale Direct';
 
       // ─── BOT 2: PLAN B — THE INSPECTION PRICE DROP (RENEGOTIATION) ───────────────
       if (botType === 'plan_b_renegotiation') {
