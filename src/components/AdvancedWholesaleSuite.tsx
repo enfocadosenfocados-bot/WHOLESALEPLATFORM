@@ -43,7 +43,7 @@ export default function AdvancedWholesaleSuite({ sellerLeads }: AdvancedWholesal
   const [callStatusMsg, setCallStatusMsg] = useState('');
   const [callLoading, setCallLoading] = useState(false);
   const [callTranscript, setCallTranscript] = useState(
-    `Agente: "Hola, llamo por la propiedad en ${sellerLeads[0]?.propertyAddress || 'Tampa'}. ¿Sigue disponible para una oferta en efectivo?"\nVendedor: "Sí, la casa necesita techo y algo de pintura, pero queremos venderla rápido antes de fin de mes."\nAgente: "¿Estarían dispuestos a aceptar una oferta neta en efectivo de $${(sellerLeads[0]?.recommendedMaoOffer || 170000).toLocaleString()} donde nosotros cubrimos los gastos de título?"\nVendedor: "Si es en efectivo y cerramos en 20 días, sí acepto."`
+    `Alex (Asistente IA): "Hola, le habla Alex, el asistente ejecutivo con IA del equipo de compras de AI Automated Services LLC. Apoyo a nuestro equipo conectando con propietarios en la zona. Vimos su propiedad en ${sellerLeads[0]?.propertyAddress || 'Tampa'} y queríamos consultar si estaría abierto a una oferta en efectivo sin comisiones de intermediarios."\nVendedor: "Hola. Sí, la casa necesita techo y algo de pintura, pero queremos venderla rápido antes de fin de mes."\nAlex (Asistente IA): "Comprendo perfectamente. Nosotros compramos exactamente tal como está la propiedad y cubrimos los gastos de cierre. ¿Estaría dispuesto a considerar una oferta neta de $${(sellerLeads[0]?.recommendedMaoOffer || 170000).toLocaleString()} USD cerrando en unos 20 días?"\nVendedor: "Si es en efectivo, sin comisiones y cerramos en ese tiempo, sí acepto."`
   );
   const [analysisResult, setAnalysisResult] = useState<any>(null);
 
