@@ -37,6 +37,7 @@ import InstagramCreatorsOutreach from '@/components/InstagramCreatorsOutreach';
 import XLeadsPumpStackerHub from '@/components/XLeadsPumpStackerHub';
 import AdvancedWholesaleSuite from '@/components/AdvancedWholesaleSuite';
 import DailyAutomationHub from '@/components/DailyAutomationHub';
+import SaaSReplacementHub from '@/components/SaaSReplacementHub';
 import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
@@ -44,6 +45,7 @@ export default function SkillForgeDashboard() {
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
     | 'skills'
+    | 'saas_replacement'
     | 'daily_automation'
     | 'institutional_suite'
     | 'xleads_pumpstacker'
@@ -52,7 +54,7 @@ export default function SkillForgeDashboard() {
     | 'ig_creators'
     | 'executors'
     | 'history'
-  >('daily_automation');
+  >('saas_replacement');
   const [runnerSkill, setRunnerSkill] = useState<SkillModule | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
@@ -239,11 +241,23 @@ export default function SkillForgeDashboard() {
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div className="flex flex-wrap gap-2">
             <button
+              onClick={() => setActiveTab('saas_replacement')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'saas_replacement'
+                  ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg shadow-emerald-500/30 ring-1 ring-emerald-400'
+                  : 'bg-slate-900 text-emerald-300 hover:text-white border border-emerald-500/40'
+              }`}
+            >
+              <Layers className="w-4 h-4 text-emerald-400" />
+              🔥 Motor Central Leads (Reemplazo SaaS $0)
+            </button>
+
+            <button
               onClick={() => setActiveTab('daily_automation')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
                 activeTab === 'daily_automation'
                   ? 'bg-gradient-to-r from-emerald-600 to-cyan-600 text-white shadow-lg shadow-emerald-500/30 ring-1 ring-emerald-400 animate-pulse-slow'
-                  : 'bg-slate-900 text-emerald-300 hover:text-white border border-emerald-500/40'
+                  : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'
               }`}
             >
               <Bot className="w-4 h-4" />
@@ -650,6 +664,11 @@ export default function SkillForgeDashboard() {
               )}
             </div>
           </div>
+        )}
+
+        {/* TAB: 🔥 SAAS REPLACEMENT HUB (PROPSTREAM / BATCHLEADS / TRANCHI REPLACEMENT) */}
+        {activeTab === 'saas_replacement' && (
+          <SaaSReplacementHub />
         )}
 
         {/* TAB: 🤖 DAILY AUTO-PILOT — PROPERTY SEARCH + OUTREACH + AI CALLS */}
