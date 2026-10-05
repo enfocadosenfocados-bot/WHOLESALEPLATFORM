@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     try {
       const res = await fetch('https://data.cityofchicago.org/resource/22u3-xenr.json?$limit=40', {
         headers: { 'User-Agent': 'WholesalePlatform/2.0' },
-        next: { revalidate: 3600 }
+        signal: AbortSignal.timeout(4000),
       });
       if (res.ok) {
         liveViolations = await res.json();
