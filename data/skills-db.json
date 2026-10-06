@@ -1461,7 +1461,8 @@
           "sourceUrlOrRef": "https://xleads.com",
           "summaryOfNewKnowledge": "Ingeniería inversa e implementación completa de las 8 funciones de XLeads X-Plan y PumpStacker: 60,000 Skiptraced Records workflow, AI Ranked Cash Buyers, XLeads Dispo Tab, BuyerMatch AI Dispo, 5 AI Zip Codes (SkyDrive AI + Sellability Scores), PumpStacker (Curative Title + Deep List Stacking), AI Death Scrubbing y AI Obituary Scraper."
         }
-      ]
+      ],
+      "sources": []
     },
     {
       "id": "skill-surplus-funds-overages",
@@ -1593,7 +1594,8 @@
           "summaryOfNewKnowledge": "Estrategia completa de Eric Richardson (MoneyMaking Juggernaut) para rastrear y cobrar excedentes de subastas judiciales retenidos por los tribunales con 35% de comisión sin comprar casas."
         }
       ],
-      "agyExportedPath": ".agents/skills/wholesale-surplus-funds-overages-recovery/SKILL.md"
+      "agyExportedPath": ".agents/skills/wholesale-surplus-funds-overages-recovery/SKILL.md",
+      "sources": []
     },
     {
       "id": "wholesale-government-land-banks-cclba",
@@ -1752,7 +1754,84 @@
           "summaryOfNewKnowledge": "Estrategia completa de Austin Okafor para adquirir terrenos e infill lots en Chicago/Cook County directamente a través del CCLBA sin realtors, con impuestos perdonados, revendiéndolos a constructores locales o desarrolladores de vivienda asequible."
         }
       ],
-      "agyExportedPath": ".agents/skills/wholesale-government-land-banks-cclba/SKILL.md"
+      "agyExportedPath": ".agents/skills/wholesale-government-land-banks-cclba/SKILL.md",
+      "steps": [
+        {
+          "id": "cclba-step-1",
+          "order": 1,
+          "title": "Acceso y Registro en el Portal Oficial del Cook County Land Bank Authority (CCLBA)",
+          "actionDescription": "Ingresa a cookcountylandbank.org y crea tu perfil de comprador o desarrollador comunitario.",
+          "exactCommandsOrClicks": [
+            "Visita https://www.cookcountylandbank.org/ y dirígete a la pestaña \"Properties / Available Properties\".",
+            "Filtra por tipo de propiedad: \"Vacant Land / Lots\" o \"Single Family Residential (SFR)\".",
+            "Filtra por zonas de alto volumen de regeneración en Chicago (ej. Englewood, Chatham, Roseland, West Pullman, Austin o suburbios de Cook County como Harvey o Chicago Heights).",
+            "Exporta o anota el PIN (Property Index Number), precio de lista de la CCLBA (usualmente entre $3,000 y $15,000 para lotes baldíos) y metros cuadrados (SF)."
+          ],
+          "proTip": "A diferencia de una subasta de impuestos regular donde heredas gravámenes de agua o multas, el CCLBA adquiere el título vía orden judicial y por ley estatal (Illinois Land Bank Act) extingue automáticamente el 100% de las deudas impositivas y multas previas. El comprador recibe un título limpio de mercado.",
+          "sourceAttribution": "Austin Okafor (@okafor_austin1) — Reel Dd3rN7KMHRI",
+          "completed": false
+        },
+        {
+          "id": "cclba-step-2",
+          "order": 2,
+          "title": "Análisis de Zonificación y Viabilidad para Constructores (Infill & Modular Housing)",
+          "actionDescription": "Verifica la zonificación municipal (Zoning Code RS-3 o RT-4 en Chicago) para confirmar que se puede construir una vivienda unifamiliar o bifamiliar.",
+          "exactCommandsOrClicks": [
+            "Abre el portal Chicago Cityscape (chicagocityscape.com) o el Chicago Zoning Map (gisapps.chicago.gov/ZoningMap).",
+            "Ingresa la dirección o el PIN para confirmar la zonificación residencial (RS-3 permite unifamiliar estándar de 25x125 ft; RT-4 permite dos unidades).",
+            "Verifica si hay servicios públicos a pie de calle (agua, alcantarillado, electricidad de ComEd y gas de Peoples Gas) usando Google Street View para ver bocas de alcantarilla y postes eléctricos.",
+            "Calcula el valor de mercado del lote terminado: en Chicago los lotes residenciales listos para construir se venden a desarrolladores entre $25,000 y $60,000 según el barrio."
+          ],
+          "proTip": "Un lote listado en el Land Bank en $5,000 que un constructor pagaría $20,000 en el mercado abierto representa un spread bruto de $15,000.",
+          "sourceAttribution": "Austin Okafor (@okafor_austin1)",
+          "completed": false
+        },
+        {
+          "id": "cclba-step-3",
+          "order": 3,
+          "title": "Presentación de la Solicitud de Compra (CCLBA Buyer Application)",
+          "actionDescription": "Completa la solicitud formal de adquisición directamente con el Land Bank sin comisión de realtor.",
+          "exactCommandsOrClicks": [
+            "Descarga y diligencia el formulario \"CCLBA Property Application / Purchase Agreement Offer\".",
+            "Presenta la entidad compradora como \"AI Automated Services LLC and/or assigns\".",
+            "Incluye un Plan de Reurbanización Simple (Scope of Work / Redevelopment Plan): redacta que el terreno será destinado a vivienda asequible unifamiliar infill o asignado a un constructor local calificado para construcción en 12 a 24 meses.",
+            "Adjunta Prueba de Fondos (Proof of Funds) por el monto de compra ($5,000 a $15,000) o la carta de preaprobación de un prestamista privado/hard money."
+          ],
+          "proTip": "El Land Bank prioriza a solicitantes que presenten un plan creíble de desarrollo residencial para reactivar el vecindario sobre especuladores que dejen el lote abandonado.",
+          "sourceAttribution": "Austin Okafor (@okafor_austin1)",
+          "completed": false
+        },
+        {
+          "id": "cclba-step-4",
+          "order": 4,
+          "title": "Estructuración de Salida: Asignación a Constructor o Double Close",
+          "actionDescription": "Monetiza el contrato asignándolo a constructores locales de vivienda o desarrolladores de Chicago.",
+          "exactCommandsOrClicks": [
+            "Contacta a desarrolladores locales de Chicago o inversionistas del Buy Box de Austin Okafor.",
+            "Si la política del Land Bank permite la asignación directa de contrato, usa el \"Assignment of Contract Agreement\" con un Assignment Fee de $5,000 a $15,000.",
+            "Si el Land Bank requiere que el solicitante cierre en escritura (Deed Restriction de cierre), estructura un Double Closing el mismo día usando fondos transaccionales (Transactional Funding a 1% de fee) con una compañía de título aliada en Chicago (ej. Title First Chicago o Greater Illinois Title).",
+            "Tu comprador final aporta los fondos de compra y tú retiras tu spread neto en el Settlement Statement (HUD-1 / Closing Disclosure)."
+          ],
+          "proTip": "En Chicago, muchos constructores hispanos y afroamericanos buscan activamente lotes de 25x125 en el South Side y West Side porque los subsidios de vivienda de la ciudad (City of Chicago Infill Housing Grants) financian hasta $50,000 de los costos de construcción.",
+          "sourceAttribution": "Austin Okafor (@okafor_austin1)",
+          "completed": false
+        },
+        {
+          "id": "cclba-step-5",
+          "order": 5,
+          "title": "Replicabilidad Nacional: Bancos de Tierras en Otros Estados",
+          "actionDescription": "Aplica el mismo modelo en los más de 250 bancos de tierras públicos en Estados Unidos.",
+          "exactCommandsOrClicks": [
+            "Visita Center for Community Progress (communityprogress.org) para acceder al directorio nacional de Land Banks.",
+            "Ejemplos líderes además de Cook County: Cuyahoga County Land Bank (Cleveland, OH - cuyahogalandbank.org), Detroit Land Bank Authority (Detroit, MI - buildingdetroit.org), Lucas County Land Bank (Toledo, OH), y Atlanta Land Bank (Fulton County, GA).",
+            "Replica exactamente el mismo proceso: inventario público, impuestos perdonados, precios de $1k a $10k, reventa a constructores locales."
+          ],
+          "proTip": "El Detroit Land Bank Authority (buildingdetroit.org) tiene miles de lotes baldíos a precios tan bajos como $1,000 a $2,500 que constructores compran en paquetes de 5 a 10 lotes.",
+          "sourceAttribution": "Austin Okafor & Center for Community Progress",
+          "completed": false
+        }
+      ],
+      "sources": []
     },
     {
       "id": "skill-12-muse-ai-offer-automation",
@@ -1878,7 +1957,69 @@
           "summaryOfNewKnowledge": "Estrategia de 83 ofertas automáticas con IA (Muse AI) mientras viajas, monetización rápida de $5k de principio a fin de Richard Taylor, y técnicas de adquisición a $0 (Free Houses) asumiendo gravámenes y back taxes."
         }
       ],
-      "agyExportedPath": ".agents/skills/wholesale-muse-ai-offer-automation-free-houses/SKILL.md"
+      "agyExportedPath": ".agents/skills/wholesale-muse-ai-offer-automation-free-houses/SKILL.md",
+      "steps": [
+        {
+          "id": "muse-step-1",
+          "order": 1,
+          "title": "Calibración de la Regla de Oferta Rápida (The 80% Rule & Formula de Richard Taylor $5k Profit)",
+          "actionDescription": "Define los parámetros matemáticos automáticos para que el agente IA calcule ofertas instantáneas sin análisis manual lento.",
+          "exactCommandsOrClicks": [
+            "Calcula el Max Offer rápido: (Zestimate o Comps recientes de casas vendidas * 0.70) - Reparaciones estimadas ($15,000 cosmético / $30,000 medio) - Fee mínimo ($5,000 USD).",
+            "Para casas listadas en Zillow con más de 45 días en el mercado (Stale Listings) o FSBO, fija la oferta de entrada al 65%-75% del precio de lista.",
+            "Configura la entidad legal compradora como: \"AI Automated Services LLC and/or assigns\"."
+          ],
+          "proTip": "Richard Taylor demuestra que buscando spreads de $5,000 a $7,000 la fricción con los vendedores disminuye un 80% y los compradores inversionistas compran el contrato en menos de 48 horas sin regatear.",
+          "sourceAttribution": "Richard Taylor (@richardgrandintaylor) — Reel Dd6tPg6imii",
+          "completed": false
+        },
+        {
+          "id": "muse-step-2",
+          "order": 2,
+          "title": "Configuración del Bot de Ofertas Autónomo (Muse AI / Agente Zillow Pipeline)",
+          "actionDescription": "Activa el flujo de trabajo de Olivia Schremmer para lanzar 80+ ofertas escritas en 7 horas mientras estás fuera de la oficina.",
+          "exactCommandsOrClicks": [
+            "El bot escanea propiedades filtradas en Zillow (Keywords: \"Fixer upper\", \"Handyman special\", \"TLC\", \"Motivated\", \"Cash only\", \"As-is\").",
+            "Extrae el número de teléfono o correo del agente o del propietario FSBO.",
+            "Genera un Letter of Intent (LOI) o Purchase Agreement simplificado de 1 página con inspección de 14 días y depósito EMD de $100.",
+            "Envía automáticamente el LOI pre-firmado por correo electrónico y notifica al vendedor por SMS: \"Hola [Nombre], acabamos de enviar una oferta formal en efectivo sin contingencias bancarias a su correo para [Dirección]. AI Automated Services LLC puede cerrar en 14 días.\""
+          ],
+          "proTip": "Enviar 80 ofertas genera un ratio de respuesta del 6% al 10% (5 a 8 negociaciones activas), asegurando de 1 a 2 contratos firmados cada semana en piloto automático.",
+          "sourceAttribution": "Olivia Schremmer (@olivia_schremmer) — Post DeGJC56FtMz (83 offers while driving)",
+          "completed": false
+        },
+        {
+          "id": "muse-step-3",
+          "order": 3,
+          "title": "Estrategia \"Casas Gratis\" ($0 Cash Out of Pocket / Subject-To & Lien Assumption)",
+          "actionDescription": "Estructuración para adquirir el control de propiedades sin pagar dinero en efectivo al vendedor.",
+          "exactCommandsOrClicks": [
+            "Filtra dueños con propiedades abandonadas, heredadas o con deudas de impuestos atrasados (Back Taxes) que superan su interés en conservar la casa.",
+            "Estructura la oferta de alivio: \"No te pago efectivo, pero AI Automated Services LLC se hace cargo de la deuda de impuestos atrasados ($4,000) y de las multas de la ciudad, liberándote de toda responsabilidad legal y daño a tu crédito.\"",
+            "Si la casa tiene hipoteca existente activa, asume las mensualidades bajo Subject-To ($0 down al vendedor, solo cubriendo atrasos ante el banco)."
+          ],
+          "proTip": "Al vendedor en esta situación no le importa el dinero en efectivo; su máxima prioridad es que la ciudad deje de enviarle multas o amenazas de cárcel por violaciones de código.",
+          "sourceAttribution": "Olivia Schremmer (@olivia_schremmer) — Post DW-cpNYAimV (How to get houses for FREE)",
+          "completed": false
+        },
+        {
+          "id": "muse-step-4",
+          "order": 4,
+          "title": "Cierre Exprés de $5,000 en 14 Días (The Richard Taylor Start-to-Finish Play)",
+          "actionDescription": "Cierra el ciclo completo de la transacción y cobra el cheque de $5,000 en la compañía de título.",
+          "exactCommandsOrClicks": [
+            "Una vez firmado el contrato por el vendedor, envía inmediatamente el PSA a la compañía de título aliada (ej. Title One Detroit o Fidelity).",
+            "Dispara la alerta de deal a tu base de 43 compradores verificados en la plataforma con el Buy Box correspondiente.",
+            "Firma el Assignment of Contract a $5,000 por encima del precio acordado con el vendedor.",
+            "El comprador deposita $2,500 de EMD no reembolsable en la compañía de título dentro de las 48 horas.",
+            "Día 14: La compañía de título transfiere el dinero al vendedor y te emite tu cheque o transferencia de $5,000 USD de ganancia neta."
+          ],
+          "proTip": "Mantener un objetivo constante de $5,000 de fee por deal te permite hacer volumen (4 a 6 tratos al mes = $20,000 a $30,000/mes) con mínima resistencia del mercado.",
+          "sourceAttribution": "Richard Taylor (@richardgrandintaylor) — Reel Dd6tPg6imii",
+          "completed": false
+        }
+      ],
+      "sources": []
     },
     {
       "id": "skill-13-ai-contract-flipping-government-seized",
@@ -2004,7 +2145,67 @@
           "summaryOfNewKnowledge": "Metodología de Mads para voltear contratos (Contract Flipping) mediante IA en propiedades confiscadas y embargadas por el gobierno (U.S. Marshals, Treasury, Tax Deeds y condados) asegurando el contrato y revendiéndolo a inversores con alta rentabilidad."
         }
       ],
-      "agyExportedPath": ".agents/skills/wholesale-ai-contract-flipping-government-seized/SKILL.md"
+      "agyExportedPath": ".agents/skills/wholesale-ai-contract-flipping-government-seized/SKILL.md",
+      "steps": [
+        {
+          "id": "seized-step-1",
+          "order": 1,
+          "title": "Localización Automatizada de Activos Confiscados por el Gobierno (Seized & Forfeiture Portals)",
+          "actionDescription": "Monitorea los repositorios oficiales donde el gobierno federal, estatal y del condado publica inmuebles confiscados y subastas públicas.",
+          "exactCommandsOrClicks": [
+            "Visita los portales oficiales de decomiso federal: U.S. Marshals Service Real Property Auctions (usmarshals.gov/assets/sales.htm) y U.S. Treasury Seized Real Property (treasury.gov/auctions/treasury/rp).",
+            "Monitorea portales de subastas judiciales y de impuestos del condado como Bid4Assets.com y RealAuction.com.",
+            "Filtra propiedades listadas con precio de reserva inferior al 50% del valor tasado o propiedades \"Post-Auction OTC\" (Over-The-Counter) que no se vendieron en la subasta y el gobierno liquida directamente."
+          ],
+          "proTip": "Las propiedades \"Over-The-Counter\" (OTC) en los condados son minas de oro porque el gobierno solo busca recuperar los impuestos atrasados (a menudo $2,000 a $8,000 en casas que valen $70,000).",
+          "sourceAttribution": "Mads (@makingmoneywithmads) — Reel Ddq8BHmRP4g",
+          "completed": false
+        },
+        {
+          "id": "seized-step-2",
+          "order": 2,
+          "title": "Evaluación de Título y Deudas Ocultas (Lien Scrubbing & Title Check)",
+          "actionDescription": "Verifica que la confiscación o subasta haya extinguido gravámenes hipotecarios anteriores o si existen deudas que deban negociarse.",
+          "exactCommandsOrClicks": [
+            "Revisa el reporte de título preliminar o el registro del County Recorder.",
+            "Verifica si el estado opera bajo \"Tax Deed\" (el título de la subasta extingue gravámenes anteriores) o \"Tax Lien\" (solo compras el certificado de deuda).",
+            "Confirma con la compañía de título aliada (ej. Title One o Fidelity) si la propiedad requiere una demanda de aclaración de título (\"Quiet Title Action\") o si se puede asegurar con una póliza de título de inmediato."
+          ],
+          "proTip": "Si requiere Quiet Title, muchas compañías de título amigas de inversionistas ofrecen seguros de título especiales vía Tax Title Services (taxtitleservices.com) en menos de 15 días sin ir a juicio prolongado.",
+          "sourceAttribution": "Mads & AI Contract Flipping Protocol",
+          "completed": false
+        },
+        {
+          "id": "seized-step-3",
+          "order": 3,
+          "title": "Aseguramiento del Contrato de Compraventa con Cláusula de Asignación",
+          "actionDescription": "Emite la oferta vinculante respaldada por AI Automated Services LLC and/or assigns.",
+          "exactCommandsOrClicks": [
+            "Prepara el Purchase and Sale Agreement (PSA) As-Is.",
+            "Incluye la cláusula de asignabilidad irrestricta: \"Buyer reserves the unencumbered right to assign this agreement to any third party or entity without requiring seller consent.\"",
+            "Fija un plazo de cierre de 14 a 21 días con un Earnest Money Deposit (EMD) protegido por contingencia de inspección satisfactoria."
+          ],
+          "proTip": "Tener la cláusula de asignabilidad clara desde el primer momento evita cualquier objeción legal en la compañía de título al momento de liquidar tu fee.",
+          "sourceAttribution": "Mads (@makingmoneywithmads)",
+          "completed": false
+        },
+        {
+          "id": "seized-step-4",
+          "order": 4,
+          "title": "Volteo del Contrato (Contract Flip) con Inversionistas Cash Registrados",
+          "actionDescription": "Transfiere el contrato a un comprador final de tu base de datos cobrando tu comisión de asignación.",
+          "exactCommandsOrClicks": [
+            "Empareja la propiedad confiscada con los 43 compradores activos en la plataforma según su Buy Box geográfico y de precio.",
+            "Envía el Deal Pack completo: fotos satelitales, registro del condado, precio de contrato y precio de cesión (Assignment Price).",
+            "Firma el Assignment of Contract estipulando que el comprador final paga un fee neto (ej. $10,000 USD) y deposita un EMD no reembolsable en la compañía de título.",
+            "La compañía de título cierra la transacción y deposita tu comisión directamente en tu cuenta de banco."
+          ],
+          "proTip": "Dado que las propiedades confiscadas por el gobierno tienen un descuento tan masivo (50%-70% bajo mercado), los inversionistas experimentados pagan fees de hasta $20,000 en menos de 24 horas.",
+          "sourceAttribution": "Mads (@makingmoneywithmads)",
+          "completed": false
+        }
+      ],
+      "sources": []
     },
     {
       "id": "skill-14-probate-70k-lawsuit-proof",
@@ -2120,7 +2321,68 @@
           "summaryOfNewKnowledge": "Metodología avanzada de Zach Ginn para cerrar tratos de sucesiones de $70,000 con blindaje contra demandas (Affidavit of Heirship y Letters of Administration) y visión agéntica de ejecución autónoma de Miss Dani AI."
         }
       ],
-      "agyExportedPath": ".agents/skills/wholesale-probate-70k-lawsuit-proof/SKILL.md"
+      "agyExportedPath": ".agents/skills/wholesale-probate-70k-lawsuit-proof/SKILL.md",
+      "steps": [
+        {
+          "id": "probate-70k-step-1",
+          "order": 1,
+          "title": "Extracción de la Petición de Sucesión (Probate Docket & Letters Testamentary)",
+          "actionDescription": "Descarga semanalmente los registros del Tribunal Testamentario (Probate Court / Surrogate Court) del condado.",
+          "exactCommandsOrClicks": [
+            "Ingresa al portal del tribunal de sucesiones del condado (ej. Wayne County Probate Court en MI, Cuyahoga County Probate en OH, o Dallas County Probate en TX).",
+            "Filtra casos iniciados en los últimos 30 a 90 días con categoría: \"Formal Administration\" o \"Petition for Administration\".",
+            "Abre el expediente del caso e identifica: 1) Nombre del difunto (Decedent), 2) Nombre y dirección del Representante Personal / Albacea (Personal Representative o PR), 3) Lista de bienes inmuebles declarados (Inventory of Real Estate)."
+          ],
+          "proTip": "En los casos donde la casa tiene equidad sustancial y está libre de hipoteca pero deteriorada, los herederos suelen vivir fuera del estado y buscan liquidar rápidamente para repartir el dinero.",
+          "sourceAttribution": "Zach Ginn (@flipwithzach) — Reel DeDFblQjNUI",
+          "completed": false
+        },
+        {
+          "id": "probate-70k-step-2",
+          "order": 2,
+          "title": "Contacto Empático con el Albacea (The Compassionate Executor Cold Call)",
+          "actionDescription": "Aborda al Representante Personal con respeto y profesionalismo, sin mencionar la muerte de forma agresiva.",
+          "exactCommandsOrClicks": [
+            "Skip-trace del Albacea en CyberBackgroundChecks.com o TruePeopleSearch.",
+            "Apertura empática: \"Hola [Nombre del Albacea], le habla Alex de AI Automated Services LLC. Le llamo con respecto a la propiedad familiar en [Dirección]. Primero que todo, mis sinceras condolencias por la pérdida de su familia. Sé que gestionar una sucesión conlleva muchos trámites y tensiones.\"",
+            "Propuesta de valor: \"Nuestra empresa ayuda a familias en proceso de sucesión comprando la propiedad exactamente en el estado en que se encuentra (As-Is), sin necesidad de que limpien muebles viejos, reparen nada ni paguen comisiones de realtor del 6%, permitiendo cerrar y liberar los fondos de la herencia rápidamente.\""
+          ],
+          "proTip": "Nunca utilices la palabra \"muerte\" o \"fallecido\" repetidamente. Enfréntalo como una solución logística para aliviar la carga administrativa de la familia.",
+          "sourceAttribution": "Zach Ginn — FreeWholesaling.com",
+          "completed": false
+        },
+        {
+          "id": "probate-70k-step-3",
+          "order": 3,
+          "title": "Protocolo de Blindaje Legal para Prevenir Demandas (\"Lawsuit-Proof Probate Protocol\")",
+          "actionDescription": "Garantiza que la venta cuente con la autorización judicial y de todos los herederos legítimos.",
+          "exactCommandsOrClicks": [
+            "Verifica si el tribunal ya emitió las \"Letters of Administration\" o \"Letters Testamentary\" que otorgan autoridad legal al Albacea para vender.",
+            "Si el testamento no otorga poder expreso de venta (Power of Sale), solicita al abogado de la sucesión o prepara la petición formal ante el juez: \"Order Authorizing Sale of Real Property\".",
+            "Si no hay testamento (Intestate), coordina con la compañía de título la firma de un \"Affidavit of Heirship\" firmado por dos testigos desinteresados para asegurar que ningún heredero omitido pueda demandar posteriormente.",
+            "Envía el contrato PSA As-Is a nombre de \"AI Automated Services LLC and/or assigns\" con un depósito EMD de $500 en la cuenta de custodia (Escrow)."
+          ],
+          "proTip": "El error que lleva a demandas (\"Lawsuit City\") es poner bajo contrato la casa con uno de los hijos cuando existen otros 3 hermanos que no han firmado. Todos los herederos o el Albacea con orden del juez deben ratificar la venta.",
+          "sourceAttribution": "Zach Ginn — Warning: How a $70k deal turns into Lawsuit City",
+          "completed": false
+        },
+        {
+          "id": "probate-70k-step-4",
+          "order": 4,
+          "title": "Asignación de Alto Margen ($70,000 Assignment Fee)",
+          "actionDescription": "Monetiza la tremenda brecha entre el precio pactado con la familia y el valor de mercado para compradores de Fix & Flip.",
+          "exactCommandsOrClicks": [
+            "Al haber adquirido la propiedad con un descuento profundo (ej. comprada en $50,000 en un vecindario donde el ARV es de $220,000 y requiere $40,000 de reparaciones).",
+            "Ofrece el trato a los 43 compradores verificados de la plataforma a un precio de $120,000 en efectivo.",
+            "Firma el Assignment of Contract estipulando un Assignment Fee neto de $70,000 USD para AI Automated Services LLC.",
+            "El comprador final aporta los $120,000 en la compañía de título: el tribunal/herederos reciben sus $50,000 pactados y la compañía de título gira tu cheque o transferencia bancaria de $70,000 USD limpios."
+          ],
+          "proTip": "Un solo trato de sucesión de este calibre puede representar los ingresos de todo un año de trabajo gracias al diferencial masivo de equidad.",
+          "sourceAttribution": "Zach Ginn (@flipwithzach) — Reel DeDFblQjNUI",
+          "completed": false
+        }
+      ],
+      "sources": []
     }
   ],
   "ingestionHistory": [

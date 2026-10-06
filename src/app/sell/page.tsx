@@ -395,9 +395,6 @@ export default function SellPropertyPage() {
             <Link href="/terms" className="hover:text-emerald-400 transition">
               Terms of Service
             </Link>
-            <Link href="/" className="hover:text-white transition">
-              Internal Platform
-            </Link>
           </div>
         </div>
       </footer>

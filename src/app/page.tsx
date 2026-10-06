@@ -132,7 +132,7 @@ export default function SkillForgeDashboard() {
     );
   }
 
-  const totalSteps = db.skills.reduce((acc, s) => acc + s.steps.length, 0);
+  const totalSteps = db.skills.reduce((acc, s) => acc + (s.steps?.length || (s as any).workflowSteps?.length || 0), 0);
   const totalBuyers = db.cashBuyers?.length || 0;
   const totalCreators = db.igCreators?.length || 0;
 
@@ -371,7 +371,8 @@ export default function SkillForgeDashboard() {
               </div>
               {db.skills.map((skill) => {
                 const isSelected = skill.slug === selectedSkill.slug;
-                const completedCount = skill.steps.filter((s) => s.completed).length;
+                const stepsList = skill.steps || (skill as any).workflowSteps || [];
+                const completedCount = stepsList.filter((s: any) => s.completed).length;
                 return (
                   <button
                     key={skill.id}
@@ -403,9 +404,9 @@ export default function SkillForgeDashboard() {
 
                     <div className="flex items-center justify-between text-[11px] text-slate-400">
                       <span>
-                        {skill.steps.length} pasos ({completedCount} completados)
+                        {stepsList.length} pasos ({completedCount} completados)
                       </span>
-                      <span>{skill.resources.length} links/portales</span>
+                      <span>{skill.resources?.length || 0} links/portales</span>
                     </div>
 
                     <div className="w-full h-1.5 bg-slate-800 rounded-full mt-2.5 overflow-hidden">
@@ -470,11 +471,11 @@ export default function SkillForgeDashboard() {
                 <div className="space-y-3">
                   <h3 className="text-sm font-bold text-white flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-emerald-400" />
-                    Procedimiento Paso a Paso Acumulado ({selectedSkill.steps.length} Pasos)
+                    Procedimiento Paso a Paso Acumulado ({(selectedSkill.steps || (selectedSkill as any).workflowSteps || []).length} Pasos)
                   </h3>
 
                   <div className="space-y-3">
-                    {selectedSkill.steps.map((step) => (
+                    {(selectedSkill.steps || (selectedSkill as any).workflowSteps || []).map((step: any) => (
                       <div
                         key={step.id}
                         className={`p-4 rounded-xl border transition ${
@@ -523,7 +524,7 @@ export default function SkillForgeDashboard() {
                                   Acciones exactas / Filtros / Clics:
                                 </span>
                                 <ul className="space-y-1 text-xs text-slate-300 list-disc list-inside">
-                                  {step.exactCommandsOrClicks.map((cmd, idx) => (
+                                  {step.exactCommandsOrClicks?.map((cmd: string, idx: number) => (
                                     <li key={idx}>{cmd}</li>
                                   ))}
                                 </ul>
