@@ -167,7 +167,9 @@ export interface MotivatedSellerLead {
     | 'deal_agreed_yes'
     | 'contract_signed'
     | 'renegotiation_pending'
-    | 'cancelled_mutual_release';
+    | 'cancelled_mutual_release'
+    | 'dead_dnc';
+  notes?: string;
   agreedPrice?: number;
   signedContractText?: string;
   priceAddendumText?: string;
