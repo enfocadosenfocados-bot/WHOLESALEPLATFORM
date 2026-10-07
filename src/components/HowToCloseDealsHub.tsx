@@ -147,24 +147,25 @@ export default function HowToCloseDealsHub() {
       title: 'Paso 5: Mesa de Cierre, Firma del HUD-1 / ALTA y Cobro del Cheque (Wire)',
       subtitle: 'La Compañía de Título Liquida los Fondos y te Transfiere tu Ganancia',
       timeline: 'Día 14 al Día 21 (Closing Date)',
-      responsible: 'Title Company -> Seller + Buyer + Wholesaler',
+      responsible: 'Title Company -> Mobile Notary / RON -> Wholesaler ($ Wire)',
       description:
-        'Llegó el día del cierre. El comprador final transfiere el 100% de los fondos de compra a la compañía de título. El vendedor firma la escritura (Deed). La compañía de título emite el documento oficial ALTA / Settlement Statement (HUD-1), donde aparece tu línea de pago: "Assignment Fee payable to AI Automated Services LLC".',
+        'Llegó el día del cierre. El vendedor NO tiene que viajar ni ir a una oficina física: la compañía de título contrata un Mobile Notary (Notario Móvil que va hasta la casa o trabajo del vendedor con los papeles impresos) o realizan un Remote Online Notary (RON / Notaría por Video llamada). El vendedor firma la escritura (Deed) ante el notario. El comprador transfiere los fondos de compra a Escrow y la compañía de título emite el documento oficial ALTA / HUD-1 donde liquida y envía tu Assignment Fee directo a la cuenta bancaria de tu LLC.',
       requiredDocs: [
         'ALTA Settlement Statement / HUD-1 Closing Statement',
-        'Special Warranty Deed o Quitclaim Deed (firmada por el vendedor)',
-        'Instrucciones de Transferencia Bancaria (Wire Instructions de tu LLC)',
+        'Special Warranty Deed o Quitclaim Deed (firmada ante Notario Móvil / RON)',
+        'Instrucciones de Transferencia Bancaria (Wire Instructions de AI Automated Services LLC)',
         'Formulario W-9 de tu LLC para impuestos federales de EE.UU.'
       ],
       exactActions: [
+        'Pedir a la compañía de título: "Please dispatch a Mobile Notary to the seller\'s address or set up Remote Online Notarization (RON)."',
         'Revisar el borrador del Settlement Statement 24 horas antes del cierre para verificar que tu Assignment Fee esté exacto en la línea correspondiente.',
-        'Firmar electrónicamente la confirmación de desembolso.',
-        'Verificar el ingreso del Wire en la cuenta bancaria de tu empresa (Mercury, Chase, Relay o Bank of America).'
+        'El Notario Móvil recolecta la firma del vendedor y devuelve el paquete firmado a la Title Company con envío nocturno (FedEx/UPS Overnight).',
+        'La Title Company confirma la recepción, dispersa el dinero al vendedor y emite la transferencia bancaria (Wire) de tu ganancia neta a AI Automated Services LLC.'
       ],
       warningNote:
         'CUIDADO CON EL FRAUDE BANCARIO: Nunca envíes instrucciones bancarias por texto informal. Confirma siempre por teléfono con el oficial de cierre las instrucciones antes de autorizar transferencias.',
       proTip:
-        '¡Felicidades! Una vez recibido el Wire, archivamos el expediente completo en la plataforma y notificamos a tu equipo para iniciar el siguiente ciclo de prospección.'
+        'El costo del Mobile Notary (usualmente $125 - $200 USD) se cobra como gasto de cierre al comprador final en el HUD-1, por lo que a ti te cuesta $0.'
     }
   ];
 
@@ -751,6 +752,173 @@ Direct: (555) 019-2834`
               de EMD no reembolsable depositados en menos de 24 horas</strong> en la compañía de título separa de
               inmediato a los aficionados de los verdaderos compradores que tienen el dinero listo para cerrar.
             </p>
+          </div>
+        </div>
+      </div>
+      {/* SECTION 4: DIRECTORIO DE COMPAÑÍAS DE TÍTULO & NOTARÍAS MÓVILES / ONLINE (RON) */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">
+                Directorio Oficial Verificado
+              </span>
+              <span className="text-xs text-slate-400 font-mono">
+                Mencionado por Zach Ginn & FreeWholesaling
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-white mt-1">
+              Empresas de Notaría Móvil, Notaría Online (RON) y Title Companies para Cerrar
+            </h3>
+            <p className="text-xs text-slate-300">
+              Estas son las empresas exactas que procesan las firmas a domicilio del vendedor y cierran contratos de Wholesale de forma 100% remota.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Snapdocs */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md">
+                  Notaría Móvil Líder en USA
+                </span>
+                <span className="text-[11px] text-slate-400">100k+ Notarios</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">Snapdocs (Snapdocs.com)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                La plataforma #1 utilizada por compañías de título para despachar <strong>Notarios Móviles (Mobile Notaries)</strong>. Envían a un notario certificado con los documentos impresos directamente a la sala de la casa del vendedor en cualquier código postal de EE.UU.
+              </p>
+            </div>
+            <a
+              href="https://www.snapdocs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Visitar Snapdocs.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Proof / Notarize */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-md">
+                  Notaría Online por Video (RON)
+                </span>
+                <span className="text-[11px] text-slate-400">100% Digital</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">Proof (Antes Notarize.com)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                La plataforma líder de <strong>Remote Online Notarization (RON)</strong> en EE.UU. El vendedor se conecta por videollamada desde su celular o computadora, muestra su ID, y el notario sella la escritura (Deed) digitalmente en 10 minutos. Legal en casi todos los 50 estados.
+              </p>
+            </div>
+            <a
+              href="https://www.proof.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Visitar Proof.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* SigningAgent.com */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-2.5 py-0.5 rounded-md">
+                  Directorio Nacional NNA
+                </span>
+                <span className="text-[11px] text-slate-400">Oficial</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">SigningAgent.com (NNA)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                El directorio oficial de la <strong>National Notary Association</strong>. Si tu vendedor vive en un área rural o lejana, puedes buscar por código postal y contratar directamente a un Notario Móvil certificado para que vaya a su puerta por $100-$150.
+              </p>
+            </div>
+            <a
+              href="https://www.signingagent.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Visitar SigningAgent.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Gold Key Title */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md">
+                  Investor-Friendly Title Co
+                </span>
+                <span className="text-[11px] text-slate-400">Nacional</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">Gold Key Title & Escrow</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Compañía de título especializada en <strong>Wholesaling, Assignment of Contract y Double Closings</strong>. Coordinan el Notario Móvil automáticamente y depositan tu Assignment Fee vía Wire directo a AI Automated Services LLC.
+              </p>
+            </div>
+            <a
+              href="https://www.goldkeytc.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Visitar GoldKeyTC.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Blueprint Title */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md">
+                  Cierres Digitales Tech
+                </span>
+                <span className="text-[11px] text-slate-400">Multi-Estado</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">Blueprint Title (Cierres 100% Online)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Agencia de título moderna construida específicamente para inversionistas y compradores institucionales. Permite seguimiento del depósito de Escrow en tiempo real y gestiona cierres con contratos de cesión sin trabas burocráticas.
+              </p>
+            </div>
+            <a
+              href="https://www.blueprinttitle.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Visitar BlueprintTitle.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* SignNow / DocuSign */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-pink-400 bg-pink-500/10 px-2.5 py-0.5 rounded-md">
+                  Firma Electrónica Inmediata
+                </span>
+                <span className="text-[11px] text-slate-400">Teléfono / SMS</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">SignNow / DocuSign / PandaDoc</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Para el <strong>Paso 1 (PSA)</strong> y <strong>Paso 4 (Assignment)</strong> no se necesita notario; se requiere firma electrónica inmediata. Subes el texto generado en esta bóveda y el vendedor o comprador lo firma con el dedo desde su celular en segundos.
+              </p>
+            </div>
+            <a
+              href="https://www.signnow.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Visitar SignNow.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
         </div>
       </div>
