@@ -38,6 +38,7 @@ import XLeadsPumpStackerHub from '@/components/XLeadsPumpStackerHub';
 import AdvancedWholesaleSuite from '@/components/AdvancedWholesaleSuite';
 import DailyAutomationHub from '@/components/DailyAutomationHub';
 import SaaSReplacementHub from '@/components/SaaSReplacementHub';
+import HowToCloseDealsHub from '@/components/HowToCloseDealsHub';
 import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
@@ -46,6 +47,7 @@ export default function SkillForgeDashboard() {
   const [activeTab, setActiveTab] = useState<
     | 'skills'
     | 'saas_replacement'
+    | 'how_to_close_deals'
     | 'daily_automation'
     | 'institutional_suite'
     | 'xleads_pumpstacker'
@@ -54,7 +56,7 @@ export default function SkillForgeDashboard() {
     | 'ig_creators'
     | 'executors'
     | 'history'
-  >('saas_replacement');
+  >('how_to_close_deals');
   const [runnerSkill, setRunnerSkill] = useState<SkillModule | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
@@ -241,6 +243,18 @@ export default function SkillForgeDashboard() {
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div className="flex flex-wrap gap-2">
             <button
+              onClick={() => setActiveTab('how_to_close_deals')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'how_to_close_deals'
+                  ? 'bg-gradient-to-r from-emerald-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-emerald-500/30 ring-2 ring-emerald-400'
+                  : 'bg-slate-900 text-emerald-300 hover:text-white border border-emerald-500/40'
+              }`}
+            >
+              <Award className="w-4 h-4 text-emerald-400" />
+              📜 Cómo se Cierran Deals & Documentos
+            </button>
+
+            <button
               onClick={() => setActiveTab('saas_replacement')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
                 activeTab === 'saas_replacement'
@@ -361,6 +375,9 @@ export default function SkillForgeDashboard() {
             </button>
           </div>
         </div>
+
+        {/* TAB: CÓMO SE CIERRAN DEALS & DOCUMENTOS */}
+        {activeTab === 'how_to_close_deals' && <HowToCloseDealsHub />}
 
         {/* TAB 1: SKILL TREE EXPLORER */}
         {activeTab === 'skills' && selectedSkill && (
