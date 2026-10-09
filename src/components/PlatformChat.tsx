@@ -39,6 +39,7 @@ interface ChatMessage {
 }
 
 export type DashboardTabKey =
+  | 'top_states_strategy'
   | 'how_to_close_deals'
   | 'saas_replacement'
   | 'daily_automation'
@@ -60,6 +61,7 @@ interface DashboardTabInfo {
 }
 
 const DASHBOARD_TABS: DashboardTabInfo[] = [
+  { key: 'top_states_strategy', label: '🌟 Top Estados & Estrategia', shortLabel: 'Top Estados', icon: '🌟', color: 'from-emerald-600 via-teal-600 to-indigo-600' },
   { key: 'how_to_close_deals', label: '📜 Cómo se Cierran Deals & Docs', shortLabel: 'Cerrar Deals', icon: '📜', color: 'from-emerald-600 via-indigo-600 to-purple-600' },
   { key: 'saas_replacement', label: '🔥 Motor Leads (Reemplazo SaaS $0)', shortLabel: 'Motor Leads', icon: '🔥', color: 'from-emerald-600 to-cyan-600' },
   { key: 'daily_automation', label: '🤖 Auto-Pilot Diario', shortLabel: 'Auto-Pilot', icon: '🤖', color: 'from-emerald-600 to-cyan-600' },

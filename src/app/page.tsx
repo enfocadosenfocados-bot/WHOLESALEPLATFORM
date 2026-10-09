@@ -39,6 +39,7 @@ import AdvancedWholesaleSuite from '@/components/AdvancedWholesaleSuite';
 import DailyAutomationHub from '@/components/DailyAutomationHub';
 import SaaSReplacementHub from '@/components/SaaSReplacementHub';
 import HowToCloseDealsHub from '@/components/HowToCloseDealsHub';
+import TopStatesAndStrategyHub from '@/components/TopStatesAndStrategyHub';
 import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
@@ -46,6 +47,7 @@ export default function SkillForgeDashboard() {
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
     | 'skills'
+    | 'top_states_strategy'
     | 'saas_replacement'
     | 'how_to_close_deals'
     | 'daily_automation'
@@ -56,7 +58,7 @@ export default function SkillForgeDashboard() {
     | 'ig_creators'
     | 'executors'
     | 'history'
-  >('how_to_close_deals');
+  >('top_states_strategy');
   const [runnerSkill, setRunnerSkill] = useState<SkillModule | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
@@ -243,6 +245,18 @@ export default function SkillForgeDashboard() {
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div className="flex flex-wrap gap-2">
             <button
+              onClick={() => setActiveTab('top_states_strategy')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'top_states_strategy'
+                  ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 text-white shadow-lg shadow-emerald-500/30 ring-2 ring-emerald-400'
+                  : 'bg-slate-900 text-emerald-300 hover:text-white border border-emerald-500/40'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              🌟 TOP ESTADOS FÁCILES Y ESTRATEGIA PARA COMENZAR
+            </button>
+
+            <button
               onClick={() => setActiveTab('how_to_close_deals')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
                 activeTab === 'how_to_close_deals'
@@ -375,6 +389,9 @@ export default function SkillForgeDashboard() {
             </button>
           </div>
         </div>
+
+        {/* TAB: TOP ESTADOS FÁCILES Y ESTRATEGIA PARA COMENZAR */}
+        {activeTab === 'top_states_strategy' && <TopStatesAndStrategyHub />}
 
         {/* TAB: CÓMO SE CIERRAN DEALS & DOCUMENTOS */}
         {activeTab === 'how_to_close_deals' && <HowToCloseDealsHub />}
