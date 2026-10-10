@@ -95,6 +95,11 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 
 const DEAL_PACK_ACTIONS = [
   { label: '⚡ Master Deal Pack (TODOS los 35 Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos', badge: 'MASTER' },
+  { label: '📑 Generar Flyer Dossier PDF para Buyers', prompt: 'Genera el Executive Deal Flyer en PDF para 18418 Joann St para presentar a los compradores', badge: 'Flyer PDF' },
+  { label: '⚖️ Memorandum of Agreement (Blindaje Legal)', prompt: 'Genera el Memorandum of Agreement para radicar en el condado y blindar el título en 18418 Joann St', badge: 'Blindaje' },
+  { label: '📊 Tablero Kanban de Deals (7 Etapas)', prompt: 'Llévame a ver el Tablero Kanban del pipeline', badge: 'Kanban' },
+  { label: '🗺️ Radar Satelital GIS (Top 5 Estados)', prompt: 'Abre el Radar Satelital GIS de los Top 5 Estados', badge: 'Radar GIS' },
+  { label: '📱 Centro de SMS 2-Vías (Twilio)', prompt: 'Abre el Centro de SMS de 2 vías para chatear con vendedores', badge: 'SMS Hub' },
   { label: '🎯 Emparejar Comprador Ideal (Match Buyer Palm Bay)', prompt: '¿A quién le vendo un lote baldío en Palm Bay FL listo para construir?', badge: 'Match Buyer' },
   { label: '🛡️ Superar Objeción: "Zillow dice que vale $200k"', prompt: 'El vendedor me dice que en Zillow su casa vale $200,000 y que mi oferta de $62,000 es muy baja. ¿Cómo le respondo?', badge: 'Objeción' },
   { label: '🧙‍♂️ Deal Wizard (Flujo Turnkey de 6 Fases)', prompt: 'Ejecuta el Deal Wizard completo de 6 fases para cerrar un deal llave en mano', badge: 'Wizard' },

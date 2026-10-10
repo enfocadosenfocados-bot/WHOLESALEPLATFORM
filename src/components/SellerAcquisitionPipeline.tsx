@@ -20,7 +20,16 @@ import {
   AlertTriangle,
   FileText,
   SlidersHorizontal,
+  Printer,
+  MapPin,
+  Kanban,
+  Flame,
 } from 'lucide-react';
+import ExecutiveDealFlyerModal from './ExecutiveDealFlyerModal';
+import LegalShieldMemorandumModal from './LegalShieldMemorandumModal';
+import DealsKanbanPipeline from './DealsKanbanPipeline';
+import InteractiveDealRadarMap from './InteractiveDealRadarMap';
+import TwoWaySMSHub from './TwoWaySMSHub';
 import {
   MotivatedSellerLead,
   SkillDatabase,
@@ -69,6 +78,11 @@ export default function SellerAcquisitionPipeline({
   const [executingPlanC, setExecutingPlanC] = useState<boolean>(false);
   const [generatedAddendum, setGeneratedAddendum] = useState<string>('');
   const [generatedRelease, setGeneratedRelease] = useState<string>('');
+
+  // Enhanced Platform Tools States
+  const [pipelineViewMode, setPipelineViewMode] = useState<'detail' | 'kanban' | 'radar' | 'sms'>('detail');
+  const [flyerLead, setFlyerLead] = useState<MotivatedSellerLead | null>(null);
+  const [memorandumLead, setMemorandumLead] = useState<MotivatedSellerLead | null>(null);
 
   const selectedLead =
     leads.find((l) => l.id === selectedLeadId) || leads[0] || null;
@@ -352,6 +366,105 @@ AI Automated Services LLC Acquisitions Team`;
         </button>
       </div>
 
+      {/* View Mode Sub-Navbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-950 p-2 rounded-2xl border border-slate-800">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            onClick={() => setPipelineViewMode('detail')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+              pipelineViewMode === 'detail'
+                ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+            Vista Detallada & Multi-Bot
+          </button>
+          <button
+            onClick={() => setPipelineViewMode('kanban')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+              pipelineViewMode === 'kanban'
+                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <Kanban className="w-3.5 h-3.5" />
+            Tablero Kanban (7 Etapas)
+          </button>
+          <button
+            onClick={() => setPipelineViewMode('radar')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+              pipelineViewMode === 'radar'
+                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <MapPin className="w-3.5 h-3.5" />
+            Radar Satelital GIS (Top 5 Estados)
+          </button>
+          <button
+            onClick={() => setPipelineViewMode('sms')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 ${
+              pipelineViewMode === 'sms'
+                ? 'bg-cyan-600 text-slate-950 shadow-md shadow-cyan-600/30'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+            Centro SMS 2-Vías (Twilio)
+          </button>
+        </div>
+
+        {selectedLead && pipelineViewMode === 'detail' && (
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setFlyerLead(selectedLead)}
+              className="px-3 py-1.5 bg-slate-900 hover:bg-cyan-950 hover:text-cyan-300 border border-slate-700 rounded-xl text-xs font-bold text-slate-300 flex items-center gap-1.5 transition"
+              title="Generar Flyer Dossier PDF para Cash Buyers"
+            >
+              <Printer className="w-3.5 h-3.5 text-cyan-400" />
+              Flyer PDF
+            </button>
+            <button
+              onClick={() => setMemorandumLead(selectedLead)}
+              className="px-3 py-1.5 bg-slate-900 hover:bg-emerald-950 hover:text-emerald-300 border border-slate-700 rounded-xl text-xs font-bold text-slate-300 flex items-center gap-1.5 transition"
+              title="Generar Memorandum de Acuerdo (Blindaje de Título)"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              Memorandum
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* RENDER KANBAN VIEW */}
+      {pipelineViewMode === 'kanban' && (
+        <DealsKanbanPipeline
+          leads={leads}
+          onOpenFlyer={(lead) => setFlyerLead(lead)}
+          onOpenMemorandum={(lead) => setMemorandumLead(lead)}
+        />
+      )}
+
+      {/* RENDER RADAR GIS VIEW */}
+      {pipelineViewMode === 'radar' && (
+        <InteractiveDealRadarMap
+          onSelectPropertyForCall={(prop, phone) => {
+            const matched = leads.find((l) => l.propertyAddress.includes(prop) || l.phone === phone);
+            if (matched) {
+              setSelectedLeadId(matched.id);
+              setPipelineViewMode('detail');
+            }
+          }}
+          onOpenFlyer={(lead) => setFlyerLead(lead)}
+        />
+      )}
+
+      {/* RENDER TWO-WAY SMS HUB VIEW */}
+      {pipelineViewMode === 'sms' && (
+        <TwoWaySMSHub />
+      )}
+
       {/* Add New Seller Lead Modal/Form */}
       {showAddForm && (
         <form
@@ -437,7 +550,8 @@ AI Automated Services LLC Acquisitions Team`;
         </form>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {pipelineViewMode === 'detail' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Seller Leads List */}
         <div className="lg:col-span-4 space-y-3">
           <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">
@@ -1103,6 +1217,22 @@ AI Automated Services LLC Acquisitions Team`;
           </div>
         </div>
       </div>
+      )}
+
+      {/* Modals for Executive Deal Flyer and Legal Shield Memorandum */}
+      {flyerLead && (
+        <ExecutiveDealFlyerModal
+          lead={flyerLead}
+          onClose={() => setFlyerLead(null)}
+        />
+      )}
+
+      {memorandumLead && (
+        <LegalShieldMemorandumModal
+          lead={memorandumLead}
+          onClose={() => setMemorandumLead(null)}
+        />
+      )}
     </div>
   );
 }

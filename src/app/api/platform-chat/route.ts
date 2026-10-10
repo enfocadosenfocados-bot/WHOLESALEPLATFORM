@@ -101,7 +101,7 @@ function detectTabNavigation(msg: string): string | null {
   if (m.includes('pumpstacker') || m.includes('xleads') || m.includes('obituary') || m.includes('curative')) {
     return 'xleads_pumpstacker';
   }
-  if (m.includes('pipeline') || m.includes('vendedores') || m.includes('lead') || m.includes('llamada')) {
+  if (m.includes('pipeline') || m.includes('vendedores') || m.includes('lead') || m.includes('llamada') || m.includes('kanban') || m.includes('radar') || m.includes('sms')) {
     return 'seller_pipeline';
   }
   if (m.includes('cash buyer') || m.includes('compradores') || m.includes('buyers')) {
@@ -132,6 +132,50 @@ async function tryExecuteAction(
   baseUrl: string
 ): Promise<{ actionTaken: string; actionResult: any; navigateToTab?: string } | null> {
   const msg = userMessage.toLowerCase();
+
+  // GENERATE EXECUTIVE DEAL FLYER
+  if (msg.includes('flyer') || msg.includes('dossier') || intent === 'generate_flyer') {
+    const lead = (db.sellerLeads || [])[0] || {
+      propertyAddress: '18418 Joann St, Detroit, MI',
+      ownerName: 'Marcus Vance',
+      estimatedArv: 135000,
+      recommendedMaoOffer: 62000,
+    };
+    const agreed = lead.recommendedMaoOffer || 62000;
+    const buyerPrice = agreed + 10000;
+    return {
+      actionTaken: 'generate_flyer',
+      actionResult: {
+        propertyAddress: lead.propertyAddress,
+        ownerName: lead.ownerName,
+        cashBuyerPrice: buyerPrice,
+        arv: lead.estimatedArv || 135000,
+        investorEquity: (lead.estimatedArv || 135000) - buyerPrice - 20000,
+        monthlyRent: 1250,
+        capRate: '11.8%',
+      },
+      navigateToTab: 'seller_pipeline',
+    };
+  }
+
+  // GENERATE MEMORANDUM OF AGREEMENT (CLOUD ON TITLE)
+  if (msg.includes('memorandum') || msg.includes('cloud on title') || msg.includes('blindaje') || intent === 'generate_memorandum') {
+    const lead = (db.sellerLeads || [])[0] || {
+      propertyAddress: '18418 Joann St, Detroit, MI',
+      ownerName: 'Marcus Vance',
+    };
+    return {
+      actionTaken: 'generate_memorandum',
+      actionResult: {
+        propertyAddress: lead.propertyAddress,
+        ownerName: lead.ownerName,
+        buyer: 'AI Automated Services LLC and/or assigns',
+        recordingFee: '$10 - $25 USD',
+        serviceRecommended: 'Simplifile.com o County Clerk e-recording',
+      },
+      navigateToTab: 'seller_pipeline',
+    };
+  }
 
   // 1. REVERSE WHOLESALING BUYER MATCHER (Emparejador de Compradores)
   if (
@@ -913,6 +957,40 @@ function buildSmartFallback(
 ): string {
   const leads = db.sellerLeads || [];
   const buyers = db.cashBuyers || [];
+
+  // GENERATE DEAL FLYER
+  if (actionTaken === 'generate_flyer' && actionData) {
+    return `📑 **¡EXECUTIVE WHOLESALE DEAL FLYER GENERADO!**
+
+Propiedad: **${actionData.propertyAddress}** (Propietario: **${actionData.ownerName}**)
+
+---
+
+### 📊 Resumen Ejecutivo para Cash Buyers:
+- 💰 **Precio de Venta al Comprador:** **$${actionData.cashBuyerPrice.toLocaleString()} CASH**
+- 📈 **ARV Confirmado:** **$${actionData.arv.toLocaleString()} USD**
+- 💎 **Equity Neto Estimado para el Comprador:** **$${actionData.investorEquity.toLocaleString()} USD**
+- 💵 **Renta Estimada (HUD FMR / Section 8):** **$${actionData.monthlyRent.toLocaleString()}/mes** (Cap Rate: **${actionData.capRate}**)
+- 🏢 **Entidad Asignante:** \`AI Automated Services LLC and/or assigns\`
+
+📍 *Hemos abierto la pestaña **2. Vendedores** donde puedes hacer clic en **"Flyer PDF"** para imprimirlo o guardarlo en 1 hoja carta.*`;
+  }
+
+  // GENERATE MEMORANDUM OF AGREEMENT (CLOUD ON TITLE)
+  if (actionTaken === 'generate_memorandum' && actionData) {
+    return `⚖️ **¡MEMORANDUM OF AGREEMENT (BLINDAJE DE TÍTULO) LISTO!**
+
+Propiedad: **${actionData.propertyAddress}** | Comprador: **${actionData.buyer}**
+
+---
+
+### 🛡️ ¿Cómo funciona este blindaje?
+1. Se firma y certifica ante Notario Público Online (ej. OneNotary o Notarize.com por $25).
+2. Se radica en el Clerk of Court del condado por una tarifa mínima (**${actionData.recordingFee}** vía **${actionData.serviceRecommended}**).
+3. Pone una **"Nube en el Título" (Cloud on Title)**: el vendedor no puede venderle a nadie más ni refinanciar sin antes liquidar tu Assignment Fee de $10,000+.
+
+📍 *En la pestaña **2. Vendedores**, haz clic en el botón verde **"Memorandum"** para ver el documento legal completo y la guía de radicación paso a paso.*`;
+  }
 
   // BUYER MATCH
   if (actionTaken === 'match_buyer' && actionData) {
