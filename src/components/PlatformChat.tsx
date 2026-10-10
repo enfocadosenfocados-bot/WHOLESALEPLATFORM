@@ -44,7 +44,12 @@ import {
   Building2,
   CheckCircle2,
   Share2,
+  Flame,
+  Award,
 } from 'lucide-react';
+import ExecutiveDealFlyerModal from './ExecutiveDealFlyerModal';
+import LegalShieldMemorandumModal from './LegalShieldMemorandumModal';
+import { MotivatedSellerLead } from '@/types/skill';
 
 interface ChatMessage {
   id: string;
@@ -95,6 +100,9 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 
 const DEAL_PACK_ACTIONS = [
   { label: '⚡ Master Deal Pack (TODOS los 35 Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos', badge: 'MASTER' },
+  { label: '🔑 Estructurar Creative Finance (SubTo / 2.8% Hipoteca)', prompt: 'Estructura una oferta de Creative Finance Subject-To asumiendo la hipoteca existente al 2.8% para 18418 Joann St con desglose de PITI, cashflow mensual, ganancia de asignación y comprador ideal', badge: 'Creative' },
+  { label: '📊 Auditar & Calificar Deal (Score 0-100 Speed-to-Lead)', prompt: 'Califica y audita el deal de 18418 Joann St con el Deal Score de 0 a 100 y dime si es Tier 1 para cerrar hoy mismo', badge: 'Score' },
+  { label: '⚖️ Blindaje Legal Multi-Estado (Equitable Interest)', prompt: 'Explícame el blindaje legal del wholesaling multi-estado en FL, OH, IN, AL, GA y cómo protegemos nuestro interés equitativo sin requerir licencia de realtor', badge: 'Legal' },
   { label: '📑 Generar Flyer Dossier PDF para Buyers', prompt: 'Genera el Executive Deal Flyer en PDF para 18418 Joann St para presentar a los compradores', badge: 'Flyer PDF' },
   { label: '⚖️ Memorandum of Agreement (Blindaje Legal)', prompt: 'Genera el Memorandum of Agreement para radicar en el condado y blindar el título en 18418 Joann St', badge: 'Blindaje' },
   { label: '📊 Tablero Kanban de Deals (7 Etapas)', prompt: 'Llévame a ver el Tablero Kanban del pipeline', badge: 'Kanban' },
@@ -167,6 +175,8 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
   const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
+  const [flyerModalLead, setFlyerModalLead] = useState<MotivatedSellerLead | null>(null);
+  const [memorandumModalLead, setMemorandumModalLead] = useState<MotivatedSellerLead | null>(null);
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -868,7 +878,183 @@ Tengo control operativo de élite sobre la plataforma:
                     </div>
                   )}
 
-                  {msg.actionExecuted && !['match_buyer', 'objection_buster', 'deal_wizard', 'skip_trace', 'curative_title_reduction', 'prepare_voice_call', 'calculate_mao', 'generate_contract'].includes(msg.actionTaken || '') && (
+                  {/* ── ACTION CARD: CREATIVE FINANCE ── */}
+                  {msg.actionTaken === 'creative_finance' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-teal-500/50 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-teal-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Zap className="w-3.5 h-3.5 text-teal-400" />
+                          Creative Finance: Subject-To (Tasa {msg.actionData.existingMortgage?.interestRate})
+                        </span>
+                        <span className="bg-teal-900/60 px-1.5 py-0.5 rounded text-[10px] text-teal-200 font-mono font-bold">
+                          Cash-on-Cash {msg.actionData.entryCapitalStructure?.buyerCashOnCashReturn}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5 text-[10px] bg-slate-900/70 p-2 rounded-lg text-slate-300">
+                        <div>🏦 <strong>Deuda SubTo:</strong> ${msg.actionData.existingMortgage?.loanBalance?.toLocaleString()}</div>
+                        <div>💵 <strong>PITI:</strong> ${msg.actionData.existingMortgage?.pitiMonthly}/mes</div>
+                        <div>📈 <strong>Renta HUD FMR:</strong> ${msg.actionData.marketPerformance?.marketRentMonthly}/mes</div>
+                        <div>💎 <strong>Cash Flow Neto:</strong> <span className="text-emerald-400 font-bold">+${msg.actionData.marketPerformance?.netCashFlowMonthly}/mes</span></div>
+                        <div>🚪 <strong>Cash al Vendedor:</strong> ${msg.actionData.entryCapitalStructure?.cashToSeller?.toLocaleString()}</div>
+                        <div>🎉 <strong>Assignment Fee:</strong> <span className="text-amber-300 font-bold">${msg.actionData.entryCapitalStructure?.wholesalerAssignmentFee?.toLocaleString()}</span></div>
+                      </div>
+                      <div className="text-[10px] text-teal-300 bg-teal-950/40 p-1.5 rounded border border-teal-800/40">
+                        👤 <strong>Comprador Ideal:</strong> {msg.actionData.matchedCashBuyer?.name} ({msg.actionData.matchedCashBuyer?.phone})
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => copyToClipboard(msg.actionData.matchedCashBuyer?.vipPitch, `subto-${msg.id}`)}
+                          className="px-2 py-1 bg-teal-600 hover:bg-teal-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          {copiedKey === `subto-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          {copiedKey === `subto-${msg.id}` ? '¡Pitch Copiado!' : 'Copiar Pitch SubTo para Samuel G'}
+                        </button>
+                        <button
+                          onClick={() => onSelectTab?.('seller_pipeline')}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          Ver en Pipeline
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: DEAL SCORE ── */}
+                  {msg.actionTaken === 'deal_score' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-amber-500/50 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-amber-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Award className="w-3.5 h-3.5 text-amber-400" />
+                          Speed-to-Lead Deal Score: {msg.actionData.totalScore}/100
+                        </span>
+                        <span className="bg-amber-900/60 px-1.5 py-0.5 rounded text-[10px] text-amber-200 font-bold">
+                          {msg.actionData.grade}
+                        </span>
+                      </div>
+                      <div className="space-y-1 bg-slate-900/70 p-2 rounded-lg text-[10px] text-slate-300">
+                        {msg.actionData.criteria?.map((c: any, ci: number) => (
+                          <div key={ci} className="flex justify-between items-center">
+                            <span>{c.name}:</span>
+                            <span className="font-bold text-amber-300">{c.score}/{c.max} pts</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-[10px] text-amber-300 bg-amber-950/40 p-1.5 rounded border border-amber-800/40 flex items-center gap-1">
+                        <Flame className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                        <span>{msg.actionData.speedToLeadMetric}</span>
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => sendMessage(`Prepara la llamada telefónica con Vapi para ${msg.actionData.ownerName} en ${msg.actionData.propertyAddress}`)}
+                          className="px-2 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          <PhoneCall className="w-3 h-3" />
+                          Llamar Inmediatamente con Vapi
+                        </button>
+                        <button
+                          onClick={() => copyToClipboard(JSON.stringify(msg.actionData, null, 2), `score-${msg.id}`)}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          {copiedKey === `score-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          Copiar Auditoría
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: GENERATE FLYER ── */}
+                  {msg.actionTaken === 'generate_flyer' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-sky-500/50 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-sky-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <FileText className="w-3.5 h-3.5 text-sky-400" />
+                          Executive Deal Flyer Dossier
+                        </span>
+                        <span className="bg-sky-900/60 px-1.5 py-0.5 rounded text-[10px] text-sky-200 font-bold">
+                          Cap Rate {msg.actionData.capRate}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5 text-[10px] bg-slate-900/70 p-2 rounded-lg text-slate-300">
+                        <div>🏠 <strong>Propiedad:</strong> {msg.actionData.propertyAddress}</div>
+                        <div>💰 <strong>Precio Buyer:</strong> ${msg.actionData.cashBuyerPrice?.toLocaleString()}</div>
+                        <div>📈 <strong>ARV:</strong> ${msg.actionData.arv?.toLocaleString()}</div>
+                        <div>💎 <strong>Investor Equity:</strong> <span className="text-emerald-400 font-bold">${msg.actionData.investorEquity?.toLocaleString()}</span></div>
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => setFlyerModalLead({
+                            id: 'lead-flyer-chat',
+                            ownerName: msg.actionData.ownerName || 'Marcus Vance',
+                            propertyAddress: msg.actionData.propertyAddress || '18418 Joann St, Detroit, MI',
+                            cityState: 'Detroit, MI',
+                            phone: '(313) 555-8291',
+                            leadSource: 'Code Violation / Tired Landlord',
+                            status: 'call_ready',
+                            estimatedArv: msg.actionData.arv || 135000,
+                            recommendedMaoOffer: 62000,
+                            rehabEstimate: 20000,
+                            agreedPrice: 62000,
+                          } as any)}
+                          className="px-2.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition shadow"
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          Abrir y Guardar Flyer PDF 📑
+                        </button>
+                        <button
+                          onClick={() => onSelectTab?.('seller_pipeline')}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          Ver en Pipeline
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: GENERATE MEMORANDUM ── */}
+                  {msg.actionTaken === 'generate_memorandum' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-emerald-500/50 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-emerald-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                          Memorandum of Agreement (Cloud on Title)
+                        </span>
+                        <span className="bg-emerald-900/60 px-1.5 py-0.5 rounded text-[10px] text-emerald-200">
+                          {msg.actionData.recordingFee}
+                        </span>
+                      </div>
+                      <div className="text-[10px] bg-slate-900/70 p-2 rounded-lg text-slate-300 space-y-1">
+                        <div>🛡️ <strong>Comprador Registrado:</strong> {msg.actionData.buyer}</div>
+                        <div>🏛️ <strong>Servicio e-Recording:</strong> {msg.actionData.serviceRecommended}</div>
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => setMemorandumModalLead({
+                            id: 'lead-memo-chat',
+                            ownerName: msg.actionData.ownerName || 'Marcus Vance',
+                            propertyAddress: msg.actionData.propertyAddress || '18418 Joann St, Detroit, MI',
+                            cityState: 'Detroit, MI',
+                            phone: '(313) 555-8291',
+                            leadSource: 'Code Violation / Tired Landlord',
+                            status: 'call_ready',
+                            estimatedArv: 135000,
+                            recommendedMaoOffer: 62000,
+                          } as any)}
+                          className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition shadow"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Abrir Memorandum de Blindaje Legal ⚖️
+                        </button>
+                        <button
+                          onClick={() => onSelectTab?.('seller_pipeline')}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          Ver en Pipeline
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {msg.actionExecuted && !['match_buyer', 'objection_buster', 'deal_wizard', 'skip_trace', 'curative_title_reduction', 'prepare_voice_call', 'calculate_mao', 'generate_contract', 'creative_finance', 'deal_score', 'generate_flyer', 'generate_memorandum'].includes(msg.actionTaken || '') && (
                     <div className="flex items-center gap-1 mt-2 pt-1.5 border-t border-slate-800 text-cyan-400">
                       <Zap className="w-3 h-3 text-cyan-400 animate-pulse" />
                       <span className="text-[10px] font-bold">Acción ejecutada con éxito en la plataforma</span>
@@ -942,6 +1128,19 @@ Tengo control operativo de élite sobre la plataforma:
             </button>
           </div>
         </div>
+      )}
+
+      {flyerModalLead && (
+        <ExecutiveDealFlyerModal
+          lead={flyerModalLead}
+          onClose={() => setFlyerModalLead(null)}
+        />
+      )}
+      {memorandumModalLead && (
+        <LegalShieldMemorandumModal
+          lead={memorandumModalLead}
+          onClose={() => setMemorandumModalLead(null)}
+        />
       )}
 
       <style jsx global>{`
