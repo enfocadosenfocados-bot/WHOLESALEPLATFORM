@@ -653,6 +653,204 @@ Offer a clean cash exit where our company pays off or settles the city code viol
           </div>
         </div>
       </div>
+
+      {/* SECTION 4: WEBS RECOMENDADAS POR CINDY WEST (@cindywest_) SCRAPEADAS CON OBSCURA */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-bold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                Extraído del Reel de Cindy West (@cindywest_)
+              </span>
+              <span className="text-xs text-slate-400 font-mono">
+                Scrapeado & Validado en Vivo con Obscura
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-white mt-1">
+              Las Webs Secretas para Encontrar y Analizar Deals en Minutos (&quot;No Gatekeep&quot;)
+            </h3>
+            <p className="text-xs text-slate-300">
+              Cindy West (abogada e inversionista con 80+ propiedades) compartió estas plataformas para calcular
+              números, estimar rentas Section 8 y filtrar compradores sin pagar licencias caras.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* DealCheck */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between hover:border-indigo-500/50 transition">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-md">
+                  Calculadora #1 en Minutos
+                </span>
+                <span className="text-[11px] text-emerald-400 font-mono">Obscura: 200 OK</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">DealCheck (dealcheck.io)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                La herramienta que permite analizar cualquier casa o terreno en menos de 60 segundos. Calcula
+                automáticamente el <strong>MAO (Oferta Máxima Aceptable)</strong>, Cap Rate, Cash-on-Cash Return
+                y genera reportes PDF profesionales para mandarle directo a tus Cash Buyers.
+              </p>
+              <div className="mt-2 text-[11px] text-slate-400">
+                💡 <strong>Uso Wholesale:</strong> Pones la dirección, estimas \$25k de rehab y te arroja tu oferta de anclaje.
+              </div>
+            </div>
+            <a
+              href="https://dealcheck.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Abrir DealCheck.io <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Rentometer */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between hover:border-emerald-500/50 transition">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md">
+                  Comps de Renta Reales
+                </span>
+                <span className="text-[11px] text-emerald-400 font-mono">Obscura: 200 OK</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">Rentometer (rentometer.com)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Compara al instante cuánto pagan de alquiler real los inquilinos en un radio de 0.5 a 1 milla de la
+                propiedad. Fundamental para convencer a tus compradores de rentas y Tired Landlords de cuánto
+                producirá la casa una vez remodelada.
+              </p>
+              <div className="mt-2 text-[11px] text-slate-400">
+                💡 <strong>Uso Wholesale:</strong> Muestra al Cash Buyer el potencial de renta para justificar tu Assignment Fee.
+              </div>
+            </div>
+            <a
+              href="https://www.rentometer.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Abrir Rentometer.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* HUD FMR */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between hover:border-amber-500/50 transition">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md">
+                  Tasas Oficiales del Gobierno
+                </span>
+                <span className="text-[11px] text-emerald-400 font-mono">Obscura: 200 OK</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">HUD Fair Market Rents (huduser.gov)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                El portal del Departamento de Vivienda de EE.UU. con las tarifas máximas garantizadas que el
+                gobierno paga a los propietarios bajo el programa de <strong>Section 8</strong>. En ciudades como
+                Birmingham AL o Cleveland OH, el gobierno paga por encima del mercado privado.
+              </p>
+              <div className="mt-2 text-[11px] text-slate-400">
+                💡 <strong>Uso Wholesale:</strong> Si HUD paga \$1,350/mes por 3 habitaciones, tu comprador recupera la inversión en 3 años.
+              </div>
+            </div>
+            <a
+              href="https://www.huduser.gov/portal/datasets/fmr.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Abrir HUD FMR Portal <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* AffordableHousing */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between hover:border-cyan-500/50 transition">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-md">
+                  Bolsa Section 8 #1
+                </span>
+                <span className="text-[11px] text-emerald-400 font-mono">Obscura: 200 OK</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">AffordableHousing.com</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                (Anteriormente SocialServe). La base de datos más grande de EE.UU. de viviendas asequibles y
+                familias con vouchers de Section 8 aprobados esperando mudarse. Te permite ver la demanda exacta
+                de inquilinos subsidiados por código postal.
+              </p>
+              <div className="mt-2 text-[11px] text-slate-400">
+                💡 <strong>Uso Wholesale:</strong> Conecta directamente a propietarios con compradores de viviendas de alquiler asequible.
+              </div>
+            </div>
+            <a
+              href="https://www.affordablehousing.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Abrir AffordableHousing.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Redfin Data Center */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between hover:border-red-500/50 transition">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-red-400 bg-red-500/10 px-2.5 py-0.5 rounded-md">
+                  Métricas de Mercado Gratis
+                </span>
+                <span className="text-[11px] text-emerald-400 font-mono">Obscura: 200 OK</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">Redfin Data Center (redfin.com)</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Estadísticas de mercado 100% descargables y gratuitas: Días promedio en el mercado (DOM),
+                porcentaje de ventas por encima del precio de lista y volumen de ventas en efectivo por código postal.
+              </p>
+              <div className="mt-2 text-[11px] text-slate-400">
+                💡 <strong>Uso Wholesale:</strong> Si los Días en Mercado (DOM) en un barrio son menos de 25, es una zona caliente para vender contratos.
+              </div>
+            </div>
+            <a
+              href="https://www.redfin.com/news/data-center/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Abrir Redfin Data Center <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* TenantDash / PropLab */}
+          <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between hover:border-purple-500/50 transition">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-2.5 py-0.5 rounded-md">
+                  Análisis Rápido de Inversión
+                </span>
+                <span className="text-[11px] text-emerald-400 font-mono">Verificado</span>
+              </div>
+              <h4 className="text-sm font-bold text-white">TenantDash & Calculadoras Rápidas</h4>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Herramienta ágil de cálculo que evalúa proyecciones de flujo de caja neto, costos de cierre y
+                desembolsos de hipotecas asumibles o compras al contado para inversionistas sin fórmulas manuales.
+              </p>
+              <div className="mt-2 text-[11px] text-slate-400">
+                💡 <strong>Uso Wholesale:</strong> Genera la hoja de números clara para presentarle al Cash Buyer en el Deal Pack.
+              </div>
+            </div>
+            <a
+              href="https://tenantdash.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-purple-400 hover:text-purple-300 flex items-center gap-1 pt-2 border-t border-slate-800/80"
+            >
+              Abrir TenantDash.com <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
