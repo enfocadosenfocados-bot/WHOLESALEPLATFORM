@@ -28,6 +28,12 @@ import {
   History,
   FileCheck2,
   Grid,
+  Copy,
+  Check,
+  Calculator,
+  FileText,
+  Search,
+  ExternalLink,
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -36,6 +42,8 @@ interface ChatMessage {
   content: string;
   timestamp: Date;
   actionExecuted?: boolean;
+  actionTaken?: string;
+  actionData?: any;
 }
 
 export type DashboardTabKey =
@@ -68,7 +76,7 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
   { key: 'institutional_suite', label: '⚡ Suite Institucional (E-Sign/Deals)', shortLabel: 'Suite Pro', icon: '⚡', color: 'from-cyan-600 to-indigo-600' },
   { key: 'xleads_pumpstacker', label: '⚡ PumpStacker & XLeads', shortLabel: 'PumpStacker', icon: '🔥', color: 'from-red-600 to-amber-600' },
   { key: 'seller_pipeline', label: '📞 2. Vendedores (SMS/Llamada IA)', shortLabel: 'Vendedores', icon: '📞', color: 'from-sky-600 to-blue-600' },
-  { key: 'cash_buyers', label: '👥 3. Cash Buyers (33)', shortLabel: 'Cash Buyers', icon: '👥', color: 'from-emerald-600 to-teal-600' },
+  { key: 'cash_buyers', label: '👥 3. Cash Buyers (35)', shortLabel: 'Cash Buyers', icon: '👥', color: 'from-emerald-600 to-teal-600' },
   { key: 'ig_creators', label: '📸 4. Creadores IG (8)', shortLabel: 'Creadores IG', icon: '📸', color: 'from-pink-600 to-rose-600' },
   { key: 'skills', label: '📚 1. Árbol de Skills', shortLabel: 'Skills', icon: '📚', color: 'from-indigo-600 to-purple-600' },
   { key: 'executors', label: '🛠️ 5. Calculadoras & FOIA', shortLabel: 'Calculadoras', icon: '🛠️', color: 'from-purple-600 to-pink-600' },
@@ -77,16 +85,18 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 
 const DEAL_PACK_ACTIONS = [
   { label: '⚡ Master Deal Pack (TODOS los 35 Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos', badge: 'MASTER' },
-  { label: '🎯 Deal Pack Richard Taylor (Detroit/Fourplex)', prompt: 'Para Richard Taylor (@richardgrandintaylor) encuéntrame las propiedades que necesita en Excel y Word con números de vendedores, scripts de SMS/Email, script del bot closer con la oferta calculada y contratos listos', badge: 'Section 8' },
-  { label: '🌴 Deal Pack Zach Ginn (Florida/Clarksville)', prompt: 'Para Zach Ginn (@flipwithzach) encuéntrame las propiedades de Fix & Flip en Florida y Clarksville TN con números de vendedores, scripts de SMS/Email, script del bot closer y contratos listos', badge: 'Fix & Flip' },
-  { label: '🌿 Deal Pack Carson (Land Flipping Lotes)', prompt: 'Para Carson (@carsonbuysland) encuéntrame los lotes baldíos de constructores en Palm Bay y Lehigh Acres FL con números de vendedores, scripts y contratos listos', badge: 'Terrenos' },
-  { label: '🔑 Deal Pack Samuel G (Hipotecas 2.8% Assumables)', prompt: 'Para Samuel G (@ownwithsam) encuéntrame las propiedades con hipotecas asumibles al 2.8% en Tampa y Texas con números de vendedores, scripts y contratos listos', badge: 'SubTo' },
-  { label: '💰 Deal Pack Jerry Norton ($10k Finder Fee)', prompt: 'Para Jerry Norton (@flippingmastery) encuéntrame las propiedades que cumplen su buy box con números de vendedores, scripts y contratos listos para cobrar $10k', badge: 'Finder Fee' },
-  { label: '🏢 Deal Pack Jamil Damji (KeyGlee Dispo)', prompt: 'Para Jamil Damji de KeyGlee encuéntrame propiedades con alto equity en Phoenix y Dallas con números de vendedores y contratos listos', badge: 'KeyGlee' },
+  { label: '📞 Preparar Llamada Vapi (Marcus Vance / Detroit)', prompt: 'Prepara la llamada telefónica con Vapi para Marcus Vance en 18418 Joann St Detroit con el guion de los 4 pilares y la oferta calculada', badge: 'Vapi Call' },
+  { label: '🧮 Calcular Oferta MAO (ARV $160k, Rehab $25k)', prompt: 'Calcula la oferta MAO y el anclaje inverso para una casa con ARV $160,000 y reparaciones estimadas de $25,000', badge: 'MAO Calc' },
+  { label: '📜 Generar Contrato PSA Asignable (AI Automated Services)', prompt: 'Genera el contrato PSA de compra para 18418 Joann St Detroit con la entidad AI Automated Services LLC and/or assigns e inspección de 14 días', badge: 'Contrato' },
+  { label: '🌟 Ver Top 5 Estados Fáciles y Terrenos', prompt: 'Llévame a ver los Top 5 Estados Fáciles para comenzar y explícame por qué el wholesaling de terrenos es el #1', badge: 'Estrategia' },
+  { label: '📜 Ver Guía de Cierre & Notarías Móviles', prompt: 'Abre la guía de cómo se cierran los deals y qué notarías móviles online recomiendan para no viajar', badge: 'Cierres' },
+  { label: '🔍 Buscar Violaciones de Código (SODA API)', prompt: 'Busca violaciones de código en vivo con el SODA API para sacar propiedades motivadas', badge: 'Open Data' },
   { label: '🤖 Ejecutar Auto-Pilot Diario Ahora', prompt: 'Ejecuta el auto-pilot ahora y busca propiedades para mis buyers', badge: 'Auto' },
+  { label: '🎯 Deal Pack Richard Taylor (Detroit/Fourplex)', prompt: 'Para Richard Taylor (@richardgrandintaylor) encuéntrame las propiedades que necesita en Excel y Word con números de vendedores, scripts y contratos listos', badge: 'Section 8' },
+  { label: '🌴 Deal Pack Zach Ginn (Florida/Clarksville)', prompt: 'Para Zach Ginn (@flipwithzach) encuéntrame las propiedades de Fix & Flip en Florida y Clarksville TN con números de vendedores y contratos listos', badge: 'Fix & Flip' },
+  { label: '🌿 Deal Pack Carson (Land Flipping Lotes)', prompt: 'Para Carson (@carsonbuysland) encuéntrame los lotes baldíos de constructores en Palm Bay y Lehigh Acres FL con números de vendedores y contratos listos', badge: 'Terrenos' },
+  { label: '🔑 Deal Pack Samuel G (Hipotecas 2.8% Assumables)', prompt: 'Para Samuel G (@ownwithsam) encuéntrame las propiedades con hipotecas asumibles al 2.8% en Tampa y Texas con números y scripts listos', badge: 'SubTo' },
   { label: '📊 Ver Estadísticas del Pipeline', prompt: '¿Cuántos leads, buyers y deals tengo en la plataforma?', badge: 'Stats' },
-  { label: '🔍 Scrape Buyers en Redes', prompt: 'Busca nuevos cash buyers en Facebook y Reddit ahora', badge: 'Scrape' },
-  { label: '🛰️ SkyDrive Vision en Propiedad', prompt: 'Analiza con SkyDrive Vision la propiedad en 4821 N Habana Ave Tampa FL', badge: 'Vision' },
 ];
 
 function renderContent(text: string) {
@@ -144,12 +154,22 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDockedLeft, setIsDockedLeft] = useState(false);
   const [showAllPills, setShowAllPills] = useState(false);
-  const [activePillSection, setActivePillSection] = useState<'tabs' | 'deals'>('tabs');
+  const [activePillSection, setActivePillSection] = useState<'tabs' | 'deals'>('deals');
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'assistant',
-      content: '¡Hola! Soy tu Asistente IA de WholesalePlatform 🤖\n\nTengo acceso completo a tu plataforma — puedo ejecutar el auto-pilot, generar deal packs para tus 35 buyers en Excel/Word con teléfonos de vendedores, mostrarte estadísticas y cambiar de pestaña.\n\n¿Qué quieres hacer?',
+      content: `¡Hola! Soy tu Asistente IA de **WholesalePlatform** 🤖
+
+Tengo control operativo completo sobre la plataforma:
+- 📞 Preparo llamadas salientes con Vapi/Twilio con guiones de 4 pilares.
+- 🧮 Calculo ofertas MAO al 70% con Reverse Price Anchor al instante.
+- 📜 Redacto contratos PSA y de asignación para **AI Automated Services LLC and/or assigns**.
+- 🔍 Scrapeo portales SODA y registros de condado en vivo.
+- 🚀 Cambio automáticamente a cualquier pestaña del dashboard cuando lo necesites.
+
+¿Qué quieres hacer hoy?`,
       timestamp: new Date(),
     },
   ]);
@@ -172,6 +192,12 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
 
   const scrollPills = (direction: 'left' | 'right') => {
     if (pillsScrollRef.current) {
@@ -212,12 +238,19 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
 
       const data = await res.json();
 
+      // Proactive tab navigation if instructed by the AI action
+      if (data.navigateToTab && onSelectTab) {
+        onSelectTab(data.navigateToTab as DashboardTabKey);
+      }
+
       const assistantMsg: ChatMessage = {
         id: `a-${Date.now()}`,
         role: 'assistant',
         content: data.reply || '❌ Error al procesar la respuesta.',
         timestamp: new Date(),
         actionExecuted: data.actionExecuted,
+        actionTaken: data.actionTaken,
+        actionData: data.actionData,
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
@@ -245,8 +278,8 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
     }
   };
 
-  const chatWidth = isExpanded ? 'w-[740px]' : 'w-[420px]';
-  const chatHeight = isExpanded ? 'h-[85vh]' : 'h-[620px]';
+  const chatWidth = isExpanded ? 'w-[780px]' : 'w-[440px]';
+  const chatHeight = isExpanded ? 'h-[86vh]' : 'h-[640px]';
   const dockPosition = isDockedLeft ? 'left-6' : 'right-6';
 
   return (
@@ -286,14 +319,14 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
                   <Bot className="w-4.5 h-4.5 text-white" />
                 </div>
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-950" />
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-950 animate-pulse" />
               </div>
               <div>
                 <div className="text-xs font-black text-white flex items-center gap-1.5">
-                  WholesalePlatform AI
+                  WholesalePlatform AI Master
                   <Sparkles className="w-3 h-3 text-cyan-400" />
                 </div>
-                <div className="text-[10px] text-emerald-400 font-medium">● En línea — Control de Pestañas & Deals</div>
+                <div className="text-[10px] text-emerald-400 font-medium">● En línea — Control Total, Vapi, MAO & Cierres</div>
               </div>
             </div>
 
@@ -323,20 +356,9 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
             </div>
           </div>
 
-          {/* Sub-Header: Mode Selector Tabs (Dashboard Tabs vs Deal Packs) */}
+          {/* Sub-Header: Mode Selector Tabs (Dashboard Tabs vs Quick Actions) */}
           <div className="bg-slate-900/90 border-b border-slate-800/80 px-3 py-1.5 flex items-center justify-between gap-2 shrink-0 text-[11px]">
             <div className="flex items-center gap-1 bg-slate-950 p-0.5 rounded-lg border border-slate-800">
-              <button
-                onClick={() => setActivePillSection('tabs')}
-                className={`px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1.5 ${
-                  activePillSection === 'tabs'
-                    ? 'bg-indigo-600 text-white shadow'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Layers className="w-3 h-3" />
-                Pestañas del Dashboard ({DASHBOARD_TABS.length})
-              </button>
               <button
                 onClick={() => setActivePillSection('deals')}
                 className={`px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1.5 ${
@@ -346,7 +368,18 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
                 }`}
               >
                 <Zap className="w-3 h-3 text-cyan-300" />
-                Deal Packs & Acciones ({DEAL_PACK_ACTIONS.length})
+                Acciones Rápidas & Deals ({DEAL_PACK_ACTIONS.length})
+              </button>
+              <button
+                onClick={() => setActivePillSection('tabs')}
+                className={`px-2.5 py-1 rounded-md font-bold transition flex items-center gap-1.5 ${
+                  activePillSection === 'tabs'
+                    ? 'bg-indigo-600 text-white shadow'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Layers className="w-3 h-3" />
+                Navegar Pestañas ({DASHBOARD_TABS.length})
               </button>
             </div>
 
@@ -380,7 +413,7 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
             </div>
           </div>
 
-          {/* SECTION 1: DASHBOARD TABS (Live Navigator to all 9 tabs) */}
+          {/* SECTION 1: DASHBOARD TABS */}
           {activePillSection === 'tabs' && (
             <div className="bg-slate-950/95 border-b border-slate-800/80 px-3 py-2 shrink-0">
               <div
@@ -416,7 +449,7 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
             </div>
           )}
 
-          {/* SECTION 2: DEAL PACKS & AI ACTIONS */}
+          {/* SECTION 2: QUICK ACTIONS & DEAL PACKS */}
           {activePillSection === 'deals' && (
             <div className="bg-slate-950/95 border-b border-slate-800/80 px-3 py-2 shrink-0">
               <div
@@ -435,6 +468,12 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
                     className={`shrink-0 text-[10px] font-bold px-2.5 py-1.5 rounded-lg border transition flex items-center justify-between gap-1.5 whitespace-nowrap disabled:opacity-50 ${
                       action.badge === 'MASTER'
                         ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white border-amber-400/40 shadow-sm'
+                        : action.badge === 'Vapi Call'
+                        ? 'bg-emerald-950/80 hover:bg-emerald-900 border-emerald-500/40 text-emerald-200'
+                        : action.badge === 'MAO Calc'
+                        ? 'bg-purple-950/80 hover:bg-purple-900 border-purple-500/40 text-purple-200'
+                        : action.badge === 'Contrato'
+                        ? 'bg-indigo-950/80 hover:bg-indigo-900 border-indigo-500/40 text-indigo-200'
                         : 'bg-slate-900 hover:bg-slate-800 border-slate-800 text-slate-300 hover:text-white'
                     }`}
                   >
@@ -450,7 +489,7 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
             </div>
           )}
 
-          {/* Messages */}
+          {/* Messages Container */}
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
             {messages.map((msg) => (
               <div
@@ -474,14 +513,114 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
 
                 {/* Bubble */}
                 <div
-                  className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed space-y-0.5 ${
+                  className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed space-y-1 ${
                     msg.role === 'user'
                       ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-tr-sm shadow-md'
                       : 'bg-slate-900/90 text-slate-200 rounded-tl-sm border border-slate-800 shadow-lg'
                   }`}
                 >
                   {msg.role === 'assistant' ? renderContent(msg.content) : <span>{msg.content}</span>}
-                  {msg.actionExecuted && (
+
+                  {/* ── ACTION CARD: PREPARE VOICE CALL ── */}
+                  {msg.actionTaken === 'prepare_voice_call' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-emerald-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-emerald-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+                          Llamada Calibrada Lista (Vapi / Twilio)
+                        </span>
+                        <span className="bg-emerald-900/60 px-1.5 py-0.5 rounded text-[10px] text-emerald-300">
+                          {msg.actionData.targetPhone}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300">
+                        <strong>Vendedor:</strong> {msg.actionData.ownerName} | <strong>Oferta:</strong> ${Number(msg.actionData.maoOffer).toLocaleString()}
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => copyToClipboard(JSON.stringify(msg.actionData.vapiPayload, null, 2), `vapi-${msg.id}`)}
+                          className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          {copiedKey === `vapi-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          {copiedKey === `vapi-${msg.id}` ? '¡Payload Copiado!' : 'Copiar Payload Vapi'}
+                        </button>
+                        <button
+                          onClick={() => onSelectTab?.('seller_pipeline')}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Abrir Telefonía IA
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: CALCULATE MAO ── */}
+                  {msg.actionTaken === 'calculate_mao' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-purple-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-purple-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Calculator className="w-3.5 h-3.5 text-purple-400" />
+                          Resultado de la Fórmula MAO 70%
+                        </span>
+                        <span className="bg-purple-900/60 px-1.5 py-0.5 rounded text-[10px] text-purple-300">
+                          Fee: ${msg.actionData.assignmentFee?.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5 text-[11px] bg-slate-900/60 p-2 rounded-lg">
+                        <div>ARV: <strong className="text-white">${msg.actionData.arv?.toLocaleString()}</strong></div>
+                        <div>Reparaciones: <strong className="text-amber-400">-${msg.actionData.repairs?.toLocaleString()}</strong></div>
+                        <div>MAO Objetivo: <strong className="text-emerald-400">${msg.actionData.maoTarget?.toLocaleString()}</strong></div>
+                        <div>Anclaje Inverso: <strong className="text-cyan-400">${msg.actionData.reverseAnchorOffer?.toLocaleString()}</strong></div>
+                      </div>
+                      <button
+                        onClick={() => sendMessage(`Genera el contrato PSA para la oferta acordada de $${msg.actionData.maoTarget}`)}
+                        className="w-full py-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-lg text-[10px] font-bold flex items-center justify-center gap-1.5 transition"
+                      >
+                        <FileText className="w-3 h-3" />
+                        Redactar Contrato PSA con esta Oferta ($${msg.actionData.maoTarget?.toLocaleString()})
+                      </button>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: GENERATE CONTRACT ── */}
+                  {msg.actionTaken === 'generate_contract' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-indigo-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-indigo-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <FileText className="w-3.5 h-3.5 text-indigo-400" />
+                          Contrato Listo: {msg.actionData.type}
+                        </span>
+                        <span className="bg-indigo-900/60 px-1.5 py-0.5 rounded text-[10px] text-indigo-200">
+                          AI Automated Services LLC
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300">
+                        {msg.actionData.propertyAddress || msg.actionData.property} — ${(msg.actionData.purchasePrice || msg.actionData.originalPrice)?.toLocaleString()} USD
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => copyToClipboard(msg.actionData.contractSnippet, `contract-${msg.id}`)}
+                          className="px-2 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          {copiedKey === `contract-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          {copiedKey === `contract-${msg.id}` ? '¡Contrato Copiado!' : 'Copiar Texto Legal'}
+                        </button>
+                        <a
+                          href={msg.actionData.eSignUrl || '/sign/lead-canton-realtor'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Abrir Portal E-Sign
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* General action executed indicator */}
+                  {msg.actionExecuted && !['prepare_voice_call', 'calculate_mao', 'generate_contract'].includes(msg.actionTaken || '') && (
                     <div className="flex items-center gap-1 mt-2 pt-1.5 border-t border-slate-800 text-cyan-400">
                       <Zap className="w-3 h-3 text-cyan-400 animate-pulse" />
                       <span className="text-[10px] font-bold">Acción ejecutada con éxito en la plataforma</span>
@@ -501,7 +640,7 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
                   <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                   <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                   <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  <span className="text-[11px] text-slate-400 ml-1 font-mono">Procesando y generando documentos…</span>
+                  <span className="text-[11px] text-slate-400 ml-1 font-mono">Consultando datos y ejecutando acción…</span>
                 </div>
               </div>
             )}
@@ -515,7 +654,7 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Escribe lo que quieras (ej: Deal Pack para todos los buyers en Excel)..."
+              placeholder="Pregunta o comanda (ej: Prepara la llamada para Marcus Vance con Vapi)..."
               rows={1}
               className="flex-1 bg-slate-950 border border-slate-700/70 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 resize-none focus:outline-none focus:border-cyan-500 transition max-h-24 min-h-[38px]"
               style={{ height: 'auto' }}
@@ -529,7 +668,7 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
               onClick={() => sendMessage()}
               disabled={!input.trim() || isLoading}
               className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-600 to-indigo-600 flex items-center justify-center hover:from-cyan-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition shrink-0 shadow-md shadow-cyan-600/30"
-              title="Enviar mensaje"
+              title="Enviar comando a la IA"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 text-white animate-spin" />
