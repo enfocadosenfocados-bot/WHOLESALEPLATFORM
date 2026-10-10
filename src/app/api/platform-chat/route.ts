@@ -83,6 +83,9 @@ ${lastRun
 // ─────────────────────────────────────────────────────────────────────────────
 function detectTabNavigation(msg: string): string | null {
   const m = msg.toLowerCase();
+  if (m.includes('reverse') || m.includes('sourcing') || m.includes('caza') || m.includes('constructores') || m.includes('county deeds') || m.includes('escrituras al contado')) {
+    return 'reverse_sourcing';
+  }
   if (m.includes('top estado') || m.includes('estados faciles') || m.includes('cindy west') || m.includes('terrenos') || m.includes('estrategia para comenzar')) {
     return 'top_states_strategy';
   }

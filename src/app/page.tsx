@@ -24,6 +24,7 @@ import {
   Instagram,
   Zap,
   Bot,
+  Target,
 } from 'lucide-react';
 import { SkillDatabase, SkillModule } from '@/types/skill';
 import IngestCenter from '@/components/IngestCenter';
@@ -40,12 +41,14 @@ import DailyAutomationHub from '@/components/DailyAutomationHub';
 import SaaSReplacementHub from '@/components/SaaSReplacementHub';
 import HowToCloseDealsHub from '@/components/HowToCloseDealsHub';
 import TopStatesAndStrategyHub from '@/components/TopStatesAndStrategyHub';
+import ReverseWholesalingEngine from '@/components/ReverseWholesalingEngine';
 import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
   const [db, setDb] = useState<SkillDatabase | null>(null);
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
+    | 'reverse_sourcing'
     | 'skills'
     | 'top_states_strategy'
     | 'saas_replacement'
@@ -58,7 +61,7 @@ export default function SkillForgeDashboard() {
     | 'ig_creators'
     | 'executors'
     | 'history'
-  >('top_states_strategy');
+  >('reverse_sourcing');
   const [runnerSkill, setRunnerSkill] = useState<SkillModule | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
@@ -244,6 +247,18 @@ export default function SkillForgeDashboard() {
         {/* 2. Navigation Tabs */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveTab('reverse_sourcing')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'reverse_sourcing'
+                  ? 'bg-gradient-to-r from-cyan-600 via-teal-600 to-indigo-600 text-white shadow-lg shadow-cyan-500/30 ring-2 ring-cyan-400'
+                  : 'bg-slate-900 text-cyan-300 hover:text-white border border-cyan-500/40'
+              }`}
+            >
+              <Target className="w-4 h-4 text-cyan-400" />
+              🎯 REVERSE SOURCING (BUYERS ACTIVOS & CAZA AUTOMÁTICA)
+            </button>
+
             <button
               onClick={() => setActiveTab('top_states_strategy')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
@@ -699,6 +714,11 @@ export default function SkillForgeDashboard() {
               )}
             </div>
           </div>
+        )}
+
+        {/* TAB: 🎯 REVERSE WHOLESALING ENGINE (BUYER-FIRST PROPERTY SOURCING) */}
+        {activeTab === 'reverse_sourcing' && (
+          <ReverseWholesalingEngine cashBuyers={db?.cashBuyers || []} />
         )}
 
         {/* TAB: 🔥 SAAS REPLACEMENT HUB (PROPSTREAM / BATCHLEADS / TRANCHI REPLACEMENT) */}

@@ -160,6 +160,29 @@ Looking for serious Cash Buyers or JV Partners actively buying in ${market}.
     <div className="space-y-6">
       {/* Header & Live Deep Scraper Form */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/40 border border-emerald-500/30 rounded-2xl p-6 shadow-xl space-y-5">
+        {/* Reverse Sourcing Callout Banner */}
+        <div className="bg-gradient-to-r from-cyan-950/80 via-indigo-950/80 to-slate-950 border border-cyan-500/40 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-black text-white flex items-center gap-1.5">
+                🎯 MOTOR REVERSE SOURCING DISPONIBLE
+                <span className="text-[10px] px-2 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-bold">
+                  98.2% Aceptación del Buyer
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300">
+                El sistema ya analiza el Buy Box de estos compradores y <strong>caza automáticamente las propiedades que quieren</strong>. Tu único trabajo es llamar al vendedor con la oferta calculada.
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-cyan-400 bg-cyan-950/60 px-3 py-1.5 rounded-lg border border-cyan-500/30">
+            Pestaña activa: 🎯 REVERSE SOURCING en el menú superior
+          </span>
+        </div>
+
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-2xl bg-emerald-500/20 text-emerald-400">

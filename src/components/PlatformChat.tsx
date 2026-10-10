@@ -62,6 +62,7 @@ interface ChatMessage {
 }
 
 export type DashboardTabKey =
+  | 'reverse_sourcing'
   | 'top_states_strategy'
   | 'how_to_close_deals'
   | 'saas_replacement'
@@ -84,6 +85,7 @@ interface DashboardTabInfo {
 }
 
 const DASHBOARD_TABS: DashboardTabInfo[] = [
+  { key: 'reverse_sourcing', label: '🎯 Reverse Sourcing (Caza Guiada)', shortLabel: 'Reverse Sourcing', icon: '🎯', color: 'from-cyan-600 via-teal-600 to-indigo-600' },
   { key: 'top_states_strategy', label: '🌟 Top Estados & Estrategia', shortLabel: 'Top Estados', icon: '🌟', color: 'from-emerald-600 via-teal-600 to-indigo-600' },
   { key: 'how_to_close_deals', label: '📜 Cómo se Cierran Deals & Docs', shortLabel: 'Cerrar Deals', icon: '📜', color: 'from-emerald-600 via-indigo-600 to-purple-600' },
   { key: 'saas_replacement', label: '🔥 Motor Leads (Reemplazo SaaS $0)', shortLabel: 'Motor Leads', icon: '🔥', color: 'from-emerald-600 to-cyan-600' },
@@ -99,6 +101,8 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 ];
 
 const DEAL_PACK_ACTIONS = [
+  { label: '🎯 Reverse Sourcing: Cazar Propiedades para Compradores', prompt: 'Abre el motor de Reverse Sourcing y muéstrame los deals pre-emparejados para Carson, Richard Taylor y Samuel G', badge: 'Reverse' },
+  { label: '🏗️ Ver Compradores y Constructores Activos (County Deeds)', prompt: 'Muéstrame el Rastreador de Constructores y Cash Deeds de condados para ver quién está comprando hoy', badge: 'Deeds' },
   { label: '⚡ Master Deal Pack (TODOS los 35 Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos', badge: 'MASTER' },
   { label: '🔑 Estructurar Creative Finance (SubTo / 2.8% Hipoteca)', prompt: 'Estructura una oferta de Creative Finance Subject-To asumiendo la hipoteca existente al 2.8% para 18418 Joann St con desglose de PITI, cashflow mensual, ganancia de asignación y comprador ideal', badge: 'Creative' },
   { label: '📊 Auditar & Calificar Deal (Score 0-100 Speed-to-Lead)', prompt: 'Califica y audita el deal de 18418 Joann St con el Deal Score de 0 a 100 y dime si es Tier 1 para cerrar hoy mismo', badge: 'Score' },
