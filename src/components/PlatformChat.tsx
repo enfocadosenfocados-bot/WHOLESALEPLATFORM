@@ -34,6 +34,16 @@ import {
   FileText,
   Search,
   ExternalLink,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  ShieldAlert,
+  Target,
+  Wand2,
+  Building2,
+  CheckCircle2,
+  Share2,
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -85,6 +95,11 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 
 const DEAL_PACK_ACTIONS = [
   { label: '⚡ Master Deal Pack (TODOS los 35 Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos', badge: 'MASTER' },
+  { label: '🎯 Emparejar Comprador Ideal (Match Buyer Palm Bay)', prompt: '¿A quién le vendo un lote baldío en Palm Bay FL listo para construir?', badge: 'Match Buyer' },
+  { label: '🛡️ Superar Objeción: "Zillow dice que vale $200k"', prompt: 'El vendedor me dice que en Zillow su casa vale $200,000 y que mi oferta de $62,000 es muy baja. ¿Cómo le respondo?', badge: 'Objeción' },
+  { label: '🧙‍♂️ Deal Wizard (Flujo Turnkey de 6 Fases)', prompt: 'Ejecuta el Deal Wizard completo de 6 fases para cerrar un deal llave en mano', badge: 'Wizard' },
+  { label: '🔍 Skip-Trace Instantáneo (Arthur Pendleton)', prompt: 'Haz skip trace a Arthur Pendleton en Palm Bay FL para sacar sus números de celular reales', badge: 'Skip-Trace' },
+  { label: '🏛️ Reducción de Multas Municipales (85%-90%)', prompt: 'Genera una carta formal para el magistrado de código pidiendo reducir multas de $18,450 a $850 en 18418 Joann St', badge: 'Curative' },
   { label: '📞 Preparar Llamada Vapi (Marcus Vance / Detroit)', prompt: 'Prepara la llamada telefónica con Vapi para Marcus Vance en 18418 Joann St Detroit con el guion de los 4 pilares y la oferta calculada', badge: 'Vapi Call' },
   { label: '🧮 Calcular Oferta MAO (ARV $160k, Rehab $25k)', prompt: 'Calcula la oferta MAO y el anclaje inverso para una casa con ARV $160,000 y reparaciones estimadas de $25,000', badge: 'MAO Calc' },
   { label: '📜 Generar Contrato PSA Asignable (AI Automated Services)', prompt: 'Genera el contrato PSA de compra para 18418 Joann St Detroit con la entidad AI Automated Services LLC and/or assigns e inspección de 14 días', badge: 'Contrato' },
@@ -92,27 +107,18 @@ const DEAL_PACK_ACTIONS = [
   { label: '📜 Ver Guía de Cierre & Notarías Móviles', prompt: 'Abre la guía de cómo se cierran los deals y qué notarías móviles online recomiendan para no viajar', badge: 'Cierres' },
   { label: '🔍 Buscar Violaciones de Código (SODA API)', prompt: 'Busca violaciones de código en vivo con el SODA API para sacar propiedades motivadas', badge: 'Open Data' },
   { label: '🤖 Ejecutar Auto-Pilot Diario Ahora', prompt: 'Ejecuta el auto-pilot ahora y busca propiedades para mis buyers', badge: 'Auto' },
-  { label: '🎯 Deal Pack Richard Taylor (Detroit/Fourplex)', prompt: 'Para Richard Taylor (@richardgrandintaylor) encuéntrame las propiedades que necesita en Excel y Word con números de vendedores, scripts y contratos listos', badge: 'Section 8' },
-  { label: '🌴 Deal Pack Zach Ginn (Florida/Clarksville)', prompt: 'Para Zach Ginn (@flipwithzach) encuéntrame las propiedades de Fix & Flip en Florida y Clarksville TN con números de vendedores y contratos listos', badge: 'Fix & Flip' },
-  { label: '🌿 Deal Pack Carson (Land Flipping Lotes)', prompt: 'Para Carson (@carsonbuysland) encuéntrame los lotes baldíos de constructores en Palm Bay y Lehigh Acres FL con números de vendedores y contratos listos', badge: 'Terrenos' },
-  { label: '🔑 Deal Pack Samuel G (Hipotecas 2.8% Assumables)', prompt: 'Para Samuel G (@ownwithsam) encuéntrame las propiedades con hipotecas asumibles al 2.8% en Tampa y Texas con números y scripts listos', badge: 'SubTo' },
-  { label: '📊 Ver Estadísticas del Pipeline', prompt: '¿Cuántos leads, buyers y deals tengo en la plataforma?', badge: 'Stats' },
 ];
 
 function renderContent(text: string) {
   const lines = text.split('\n');
   return lines.map((line, i) => {
-    // Markdown links: [text](url)
     let processed = line.replace(
       /\[(.*?)\]\((.*?)\)/g,
       '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-cyan-400 font-bold underline hover:text-cyan-300 inline-flex items-center gap-0.5">$1 ↗</a>'
     );
-    // Bold
     processed = processed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    // Code blocks / inline code
     processed = processed.replace(/`([^`]+)`/g, '<code class="bg-slate-900 px-1 py-0.5 rounded text-amber-300 font-mono text-[11px]">$1</code>');
 
-    // Bullet
     if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
       return (
         <div key={i} className="flex gap-1.5 items-start">
@@ -121,13 +127,11 @@ function renderContent(text: string) {
         </div>
       );
     }
-    // Blockquote
     if (line.trim().startsWith('>')) {
       return (
         <div key={i} className="border-l-2 border-cyan-500/50 pl-2.5 py-1 my-1 bg-slate-900/60 rounded-r text-slate-300 italic" dangerouslySetInnerHTML={{ __html: processed.replace(/^>\s*/, '') }} />
       );
     }
-    // Heading-like
     if (line.startsWith('###')) {
       return (
         <div key={i} className="font-bold text-cyan-300 text-[12px] mt-2 mb-1" dangerouslySetInnerHTML={{ __html: processed.replace(/^###\s*/, '') }} />
@@ -156,20 +160,24 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
   const [showAllPills, setShowAllPills] = useState(false);
   const [activePillSection, setActivePillSection] = useState<'tabs' | 'deals'>('deals');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'assistant',
-      content: `¡Hola! Soy tu Asistente IA de **WholesalePlatform** 🤖
+      content: `¡Hola! Soy tu Copiloto IA de **WholesalePlatform** 🤖🎙️
 
-Tengo control operativo completo sobre la plataforma:
-- 📞 Preparo llamadas salientes con Vapi/Twilio con guiones de 4 pilares.
-- 🧮 Calculo ofertas MAO al 70% con Reverse Price Anchor al instante.
-- 📜 Redacto contratos PSA y de asignación para **AI Automated Services LLC and/or assigns**.
-- 🔍 Scrapeo portales SODA y registros de condado en vivo.
-- 🚀 Cambio automáticamente a cualquier pestaña del dashboard cuando lo necesites.
+Tengo control operativo de élite sobre la plataforma:
+- 🎯 **Match Buyer**: Emparejo propiedades al instante con tus 35+ Cash Buyers.
+- 🛡️ **Objection Buster**: Guiones psicológicos para demoler objeciones de vendedores.
+- 📞 **Vapi & Twilio**: Preparo llamadas con análisis de 4 pilares de motivación.
+- 🧮 **MAO & Anclaje**: Corro la fórmula del 70% y anclaje inverso para ganar $10k-$18k.
+- 🔍 **Skip-Trace & Curative**: Enlaces directos a números gratis y reducción de multas.
+- 🎙️ **Voz Activa**: Puedes hablarme por micrófono o pedirme que lea las respuestas en voz alta.
 
-¿Qué quieres hacer hoy?`,
+¿Qué quieres ejecutar ahora?`,
       timestamp: new Date(),
     },
   ]);
@@ -197,6 +205,59 @@ Tengo control operativo completo sobre la plataforma:
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+    const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert('Reconocimiento de voz soportado en Google Chrome o Microsoft Edge.');
+      return;
+    }
+    try {
+      const recognition = new SpeechRec();
+      recognition.lang = 'es-US';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      setIsListening(true);
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
+        setIsListening(false);
+      };
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+      recognition.start();
+    } catch {
+      setIsListening(false);
+    }
+  };
+
+  const speakText = (text: string, id: string) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (speakingMessageId === id) {
+      window.speechSynthesis.cancel();
+      setSpeakingMessageId(null);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const clean = text
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+      .replace(/[*#`_>|]/g, '')
+      .replace(/{.*?}/g, '')
+      .slice(0, 400);
+
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.lang = 'es-US';
+    utterance.rate = 1.05;
+    utterance.onend = () => setSpeakingMessageId(null);
+    utterance.onerror = () => setSpeakingMessageId(null);
+    setSpeakingMessageId(id);
+    window.speechSynthesis.speak(utterance);
   };
 
   const scrollPills = (direction: 'left' | 'right') => {
@@ -238,7 +299,6 @@ Tengo control operativo completo sobre la plataforma:
 
       const data = await res.json();
 
-      // Proactive tab navigation if instructed by the AI action
       if (data.navigateToTab && onSelectTab) {
         onSelectTab(data.navigateToTab as DashboardTabKey);
       }
@@ -278,8 +338,8 @@ Tengo control operativo completo sobre la plataforma:
     }
   };
 
-  const chatWidth = isExpanded ? 'w-[780px]' : 'w-[440px]';
-  const chatHeight = isExpanded ? 'h-[86vh]' : 'h-[640px]';
+  const chatWidth = isExpanded ? 'w-[820px]' : 'w-[460px]';
+  const chatHeight = isExpanded ? 'h-[88vh]' : 'h-[660px]';
   const dockPosition = isDockedLeft ? 'left-6' : 'right-6';
 
   return (
@@ -292,7 +352,7 @@ Tengo control operativo completo sobre la plataforma:
             ? 'bg-slate-800 border border-slate-700 rotate-180'
             : 'bg-gradient-to-br from-cyan-600 to-indigo-600 hover:scale-110 shadow-cyan-500/40'
         }`}
-        title="Asistente IA WholesalePlatform"
+        title="Copiloto IA WholesalePlatform"
       >
         {isOpen ? (
           <ChevronDown className="w-6 h-6 text-slate-300" />
@@ -323,10 +383,10 @@ Tengo control operativo completo sobre la plataforma:
               </div>
               <div>
                 <div className="text-xs font-black text-white flex items-center gap-1.5">
-                  WholesalePlatform AI Master
+                  WholesalePlatform AI Ultra-Copilot
                   <Sparkles className="w-3 h-3 text-cyan-400" />
                 </div>
-                <div className="text-[10px] text-emerald-400 font-medium">● En línea — Control Total, Vapi, MAO & Cierres</div>
+                <div className="text-[10px] text-emerald-400 font-medium">● En línea — Matcher, Vapi, Objeciones & Cierres</div>
               </div>
             </div>
 
@@ -356,7 +416,7 @@ Tengo control operativo completo sobre la plataforma:
             </div>
           </div>
 
-          {/* Sub-Header: Mode Selector Tabs (Dashboard Tabs vs Quick Actions) */}
+          {/* Sub-Header: Mode Selector Tabs */}
           <div className="bg-slate-900/90 border-b border-slate-800/80 px-3 py-1.5 flex items-center justify-between gap-2 shrink-0 text-[11px]">
             <div className="flex items-center gap-1 bg-slate-950 p-0.5 rounded-lg border border-slate-800">
               <button
@@ -368,7 +428,7 @@ Tengo control operativo completo sobre la plataforma:
                 }`}
               >
                 <Zap className="w-3 h-3 text-cyan-300" />
-                Acciones Rápidas & Deals ({DEAL_PACK_ACTIONS.length})
+                Acciones Élite ({DEAL_PACK_ACTIONS.length})
               </button>
               <button
                 onClick={() => setActivePillSection('tabs')}
@@ -379,7 +439,7 @@ Tengo control operativo completo sobre la plataforma:
                 }`}
               >
                 <Layers className="w-3 h-3" />
-                Navegar Pestañas ({DASHBOARD_TABS.length})
+                Pestañas ({DASHBOARD_TABS.length})
               </button>
             </div>
 
@@ -468,6 +528,12 @@ Tengo control operativo completo sobre la plataforma:
                     className={`shrink-0 text-[10px] font-bold px-2.5 py-1.5 rounded-lg border transition flex items-center justify-between gap-1.5 whitespace-nowrap disabled:opacity-50 ${
                       action.badge === 'MASTER'
                         ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white border-amber-400/40 shadow-sm'
+                        : action.badge === 'Match Buyer'
+                        ? 'bg-teal-950/80 hover:bg-teal-900 border-teal-500/40 text-teal-200'
+                        : action.badge === 'Objeción'
+                        ? 'bg-rose-950/80 hover:bg-rose-900 border-rose-500/40 text-rose-200'
+                        : action.badge === 'Wizard'
+                        ? 'bg-amber-950/80 hover:bg-amber-900 border-amber-500/40 text-amber-200'
                         : action.badge === 'Vapi Call'
                         ? 'bg-emerald-950/80 hover:bg-emerald-900 border-emerald-500/40 text-emerald-200'
                         : action.badge === 'MAO Calc'
@@ -513,13 +579,191 @@ Tengo control operativo completo sobre la plataforma:
 
                 {/* Bubble */}
                 <div
-                  className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed space-y-1 ${
+                  className={`max-w-[90%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed space-y-1 relative group ${
                     msg.role === 'user'
                       ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-tr-sm shadow-md'
                       : 'bg-slate-900/90 text-slate-200 rounded-tl-sm border border-slate-800 shadow-lg'
                   }`}
                 >
+                  {/* Speaker audio button on assistant messages */}
+                  {msg.role === 'assistant' && (
+                    <button
+                      onClick={() => speakText(msg.content, msg.id)}
+                      className={`absolute top-2 right-2 p-1 rounded-md transition ${
+                        speakingMessageId === msg.id
+                          ? 'bg-cyan-500 text-slate-950 animate-pulse'
+                          : 'text-slate-500 hover:text-cyan-300 opacity-60 hover:opacity-100'
+                      }`}
+                      title={speakingMessageId === msg.id ? 'Detener lectura' : 'Escuchar respuesta en voz alta'}
+                    >
+                      {speakingMessageId === msg.id ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                    </button>
+                  )}
+
                   {msg.role === 'assistant' ? renderContent(msg.content) : <span>{msg.content}</span>}
+
+                  {/* ── ACTION CARD: BUYER MATCH ── */}
+                  {msg.actionTaken === 'match_buyer' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-teal-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-teal-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Target className="w-3.5 h-3.5 text-teal-400" />
+                          Comprador Ideal: {msg.actionData.topBuyer.name}
+                        </span>
+                        <span className="bg-teal-900/60 px-1.5 py-0.5 rounded text-[10px] text-teal-200 font-mono font-bold">
+                          {msg.actionData.topBuyer.matchScore} Match
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300 bg-slate-900/60 p-2 rounded-lg">
+                        <strong>Buy Box:</strong> {msg.actionData.topBuyer.buyBox} | <strong>Tel:</strong> {msg.actionData.topBuyer.phone}
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <button
+                          onClick={() => copyToClipboard(msg.actionData.topBuyer.vipPitch, `pitch-${msg.id}`)}
+                          className="px-2 py-1 bg-teal-600 hover:bg-teal-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          {copiedKey === `pitch-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                          {copiedKey === `pitch-${msg.id}` ? '¡Mensaje Copiado!' : 'Copiar Pitch al Comprador'}
+                        </button>
+                        <button
+                          onClick={() => onSelectTab?.('cash_buyers')}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Ver en Directorio
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: OBJECTION BUSTER ── */}
+                  {msg.actionTaken === 'objection_buster' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-rose-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-rose-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+                          Battle-Card de Objeción
+                        </span>
+                        <span className="bg-rose-900/60 px-1.5 py-0.5 rounded text-[10px] text-rose-200">
+                          Psicología de Cierre
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300 bg-slate-900/60 p-2 rounded-lg italic">
+                        "{msg.actionData.rebuttalScript}"
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(msg.actionData.rebuttalScript, `rebuttal-${msg.id}`)}
+                        className="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                      >
+                        {copiedKey === `rebuttal-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        {copiedKey === `rebuttal-${msg.id}` ? '¡Guion Copiado!' : 'Copiar Respuesta al Vendedor'}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: DEAL WIZARD ── */}
+                  {msg.actionTaken === 'deal_wizard' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-amber-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-amber-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Wand2 className="w-3.5 h-3.5 text-amber-400" />
+                          Deal Wizard: Ciclo de 6 Fases Completado
+                        </span>
+                        <span className="bg-amber-900/60 px-1.5 py-0.5 rounded text-[10px] text-amber-200 font-bold">
+                          {msg.actionData.step6_Payout.netProfitCheck}
+                        </span>
+                      </div>
+                      <div className="text-[10px] grid grid-cols-2 gap-1.5 bg-slate-900/70 p-2 rounded-lg text-slate-300">
+                        <div>🏠 <strong>Propiedad:</strong> {msg.actionData.step1_Lead.property}</div>
+                        <div>📞 <strong>Teléfono:</strong> {msg.actionData.step2_SkipTrace.phone}</div>
+                        <div>💰 <strong>Oferta MAO:</strong> ${msg.actionData.step3_Numbers.purchasePrice?.toLocaleString()}</div>
+                        <div>👥 <strong>Buyer:</strong> {msg.actionData.step4_CashBuyer.buyer}</div>
+                      </div>
+                      <div className="flex gap-1.5 pt-1">
+                        <a
+                          href={msg.actionData.step5_Contract.eSignUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-1 bg-amber-600 hover:bg-amber-500 text-slate-950 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Abrir Contrato E-Sign
+                        </a>
+                        <button
+                          onClick={() => onSelectTab?.('institutional_suite')}
+                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                        >
+                          Ver en Suite Pro
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: SKIP TRACE ── */}
+                  {msg.actionTaken === 'skip_trace' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-cyan-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-cyan-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Search className="w-3.5 h-3.5 text-cyan-400" />
+                          Skip-Trace: {msg.actionData.ownerName}
+                        </span>
+                        <span className="bg-cyan-900/60 px-1.5 py-0.5 rounded text-[10px] text-cyan-200">
+                          {msg.actionData.verifiedPhones[0]}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        <a
+                          href={msg.actionData.truePeopleSearchUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-1 bg-cyan-950 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-900 rounded-lg text-[10px] font-bold flex items-center gap-1"
+                        >
+                          TruePeopleSearch ↗
+                        </a>
+                        <a
+                          href={msg.actionData.fastPeopleSearchUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-1 bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 rounded-lg text-[10px] font-bold flex items-center gap-1"
+                        >
+                          FastPeopleSearch ↗
+                        </a>
+                        <a
+                          href={msg.actionData.legacyObituaryUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-1 bg-purple-950 border border-purple-500/40 text-purple-300 hover:bg-purple-900 rounded-lg text-[10px] font-bold flex items-center gap-1"
+                        >
+                          Obituarios Legacy ↗
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── ACTION CARD: CURATIVE TITLE REDUCTION ── */}
+                  {msg.actionTaken === 'curative_title_reduction' && msg.actionData && (
+                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-emerald-500/40 rounded-xl space-y-2">
+                      <div className="flex items-center justify-between text-emerald-400 font-bold text-[11px]">
+                        <span className="flex items-center gap-1.5">
+                          <Building2 className="w-3.5 h-3.5 text-emerald-400" />
+                          Petición de Reducción de Multas
+                        </span>
+                        <span className="bg-emerald-900/60 px-1.5 py-0.5 rounded text-[10px] text-emerald-200 font-bold">
+                          Ahorro {msg.actionData.savingsRate}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-300">
+                        De <strong>${msg.actionData.originalLienAmount?.toLocaleString()}</strong> a solo <strong>${msg.actionData.settlementOffer?.toLocaleString()}</strong> en el cierre.
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(msg.actionData.reductionLetterText, `letter-${msg.id}`)}
+                        className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                      >
+                        {copiedKey === `letter-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        {copiedKey === `letter-${msg.id}` ? '¡Carta Copiada!' : 'Copiar Carta para el Magistrado'}
+                      </button>
+                    </div>
+                  )}
 
                   {/* ── ACTION CARD: PREPARE VOICE CALL ── */}
                   {msg.actionTaken === 'prepare_voice_call' && msg.actionData && (
@@ -529,7 +773,7 @@ Tengo control operativo completo sobre la plataforma:
                           <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
                           Llamada Calibrada Lista (Vapi / Twilio)
                         </span>
-                        <span className="bg-emerald-900/60 px-1.5 py-0.5 rounded text-[10px] text-emerald-300">
+                        <span className="bg-emerald-900/60 px-1.5 py-0.5 rounded text-[10px] text-emerald-300 font-mono">
                           {msg.actionData.targetPhone}
                         </span>
                       </div>
@@ -563,7 +807,7 @@ Tengo control operativo completo sobre la plataforma:
                           <Calculator className="w-3.5 h-3.5 text-purple-400" />
                           Resultado de la Fórmula MAO 70%
                         </span>
-                        <span className="bg-purple-900/60 px-1.5 py-0.5 rounded text-[10px] text-purple-300">
+                        <span className="bg-purple-900/60 px-1.5 py-0.5 rounded text-[10px] text-purple-300 font-mono">
                           Fee: ${msg.actionData.assignmentFee?.toLocaleString()}
                         </span>
                       </div>
@@ -619,8 +863,7 @@ Tengo control operativo completo sobre la plataforma:
                     </div>
                   )}
 
-                  {/* General action executed indicator */}
-                  {msg.actionExecuted && !['prepare_voice_call', 'calculate_mao', 'generate_contract'].includes(msg.actionTaken || '') && (
+                  {msg.actionExecuted && !['match_buyer', 'objection_buster', 'deal_wizard', 'skip_trace', 'curative_title_reduction', 'prepare_voice_call', 'calculate_mao', 'generate_contract'].includes(msg.actionTaken || '') && (
                     <div className="flex items-center gap-1 mt-2 pt-1.5 border-t border-slate-800 text-cyan-400">
                       <Zap className="w-3 h-3 text-cyan-400 animate-pulse" />
                       <span className="text-[10px] font-bold">Acción ejecutada con éxito en la plataforma</span>
@@ -647,16 +890,31 @@ Tengo control operativo completo sobre la plataforma:
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
+          {/* Input & Voice Bar */}
           <div className="border-t border-slate-800 bg-slate-900/60 px-3 py-2.5 flex items-end gap-2 shrink-0">
+            {/* Microphone button */}
+            <button
+              onClick={toggleListening}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition shrink-0 border ${
+                isListening
+                  ? 'bg-red-600 border-red-400 text-white animate-pulse'
+                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50'
+              }`}
+              title={isListening ? 'Detener micrófono' : 'Hablar por micrófono (Dictado por voz)'}
+            >
+              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            </button>
+
             <textarea
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Pregunta o comanda (ej: Prepara la llamada para Marcus Vance con Vapi)..."
+              placeholder={isListening ? 'Escuchando tu voz...' : 'Pregunta o comanda (ej: ¿A quién le vendo este lote en Palm Bay?)...'}
               rows={1}
-              className="flex-1 bg-slate-950 border border-slate-700/70 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 resize-none focus:outline-none focus:border-cyan-500 transition max-h-24 min-h-[38px]"
+              className={`flex-1 bg-slate-950 border rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 resize-none focus:outline-none transition max-h-24 min-h-[38px] ${
+                isListening ? 'border-red-500/70 shadow-sm shadow-red-500/30' : 'border-slate-700/70 focus:border-cyan-500'
+              }`}
               style={{ height: 'auto' }}
               onInput={(e) => {
                 const t = e.target as HTMLTextAreaElement;
@@ -664,6 +922,7 @@ Tengo control operativo completo sobre la plataforma:
                 t.style.height = `${Math.min(t.scrollHeight, 96)}px`;
               }}
             />
+
             <button
               onClick={() => sendMessage()}
               disabled={!input.trim() || isLoading}
