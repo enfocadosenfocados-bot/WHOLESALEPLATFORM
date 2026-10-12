@@ -25,6 +25,7 @@ import {
   Zap,
   Bot,
   Target,
+  Mic,
 } from 'lucide-react';
 import { SkillDatabase, SkillModule } from '@/types/skill';
 import IngestCenter from '@/components/IngestCenter';
@@ -42,6 +43,7 @@ import SaaSReplacementHub from '@/components/SaaSReplacementHub';
 import HowToCloseDealsHub from '@/components/HowToCloseDealsHub';
 import TopStatesAndStrategyHub from '@/components/TopStatesAndStrategyHub';
 import ReverseWholesalingEngine from '@/components/ReverseWholesalingEngine';
+import VoiceAgentPromptsHub from '@/components/VoiceAgentPromptsHub';
 import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
@@ -49,6 +51,7 @@ export default function SkillForgeDashboard() {
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
     | 'reverse_sourcing'
+    | 'voice_agent_prompts'
     | 'skills'
     | 'top_states_strategy'
     | 'saas_replacement'
@@ -260,6 +263,18 @@ export default function SkillForgeDashboard() {
             </button>
 
             <button
+              onClick={() => setActiveTab('voice_agent_prompts')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'voice_agent_prompts'
+                  ? 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30 ring-2 ring-violet-400 animate-pulse-slow'
+                  : 'bg-slate-900 text-violet-300 hover:text-white border border-violet-500/40'
+              }`}
+            >
+              <Mic className="w-4 h-4 text-violet-400" />
+              🎙️ PROMPTS PARA AGENTES DE VOZ
+            </button>
+
+            <button
               onClick={() => setActiveTab('top_states_strategy')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
                 activeTab === 'top_states_strategy'
@@ -404,6 +419,9 @@ export default function SkillForgeDashboard() {
             </button>
           </div>
         </div>
+
+        {/* TAB: 🎙️ PROMPTS PARA AGENTES DE VOZ */}
+        {activeTab === 'voice_agent_prompts' && <VoiceAgentPromptsHub />}
 
         {/* TAB: TOP ESTADOS FÁCILES Y ESTRATEGIA PARA COMENZAR */}
         {activeTab === 'top_states_strategy' && <TopStatesAndStrategyHub />}

@@ -58,18 +58,20 @@ ${lastRun
   : 'Pendiente de ejecución inicial'}
 
 🏛️ PESTAÑAS DISPONIBLES EN EL DASHBOARD:
-1. 'top_states_strategy' — Top 5 Estados Fáciles (FL, IN, AL, OH, GA), Ranking de Categorías (1. Terrenos baldíos, 2. Tired Landlords, 3. Code Violations), 6 Webs de Cindy West (DealCheck, Rentometer, HUD FMR, AffordableHousing, Redfin Data Center, TenantDash) y Motor Obscura Stealth Scraper.
-2. 'how_to_close_deals' — Guía Maestra de Cierre en 6 Pasos, EMD $100-$500, Compañías de Título, Notarías Móviles (Snapdocs, Notarize/Proof, OneNotary) y 4 Documentos Legales (PSA, Assignment, Memorandum of Agreement, Seller Authorization).
-3. 'saas_replacement' — Motor de Leads Gratis ($0/mo) reemplazando PropStream/BatchLeads con County GIS, Clerk of Courts y SODA APIs.
-4. 'daily_automation' — Auto-Pilot Diario de Prospección, Enriquecimiento y Llamadas.
-5. 'institutional_suite' — Suite Institucional con Portal E-Sign (/sign/[id]) y Deal Landing Pages (/deal/[id]).
-6. 'xleads_pumpstacker' — AI Death Scrubbing, Obituary Scraper, Curative Title & Reducción de Multas Municipales (85-90%).
-7. 'seller_pipeline' — Pipeline de Adquisiciones con Telefonía Vapi.ai / Retell AI y Análisis de Motivación (4 Pilares).
-8. 'cash_buyers' — Directorio de 35+ Cash Buyers filtrable por mercado y Buy Box.
-9. 'ig_creators' — Alianzas JV y outreach a inversores en Instagram.
-10. 'skills' — Árbol de Conocimiento de FreeWholesaling.com.
-11. 'executors' — Calculadora MAO (70% Rule & Reverse Price Anchor) y Cartas FOIA.
-12. 'history' — Archivo de Reels, Transcripciones y OCR.
+1. 'voice_agent_prompts' — Hub de Prompts para Agentes de Voz (Vapi.ai, Retell AI, Bland AI y Closer Humano) para Infill Lots, Herencias/Probate, Code Violations, Creative Finance Sub-To, FSBOs y Pre-Foreclosure, con Matriz de 10 Objeciones Difíciles (DNC, precio inamovible, quiénes son, fondos POF, sospecha de estafa, pensarlo, lidiar con reatlor, inquilinos hostiles, título enredado).
+2. 'reverse_sourcing' — Motor de Reverse Sourcing: Partir de lo que compran constructores y cash buyers para buscarles lotes y casas exactas.
+3. 'top_states_strategy' — Top 5 Estados Fáciles (FL, IN, AL, OH, GA), Ranking de Categorías (1. Terrenos baldíos, 2. Tired Landlords, 3. Code Violations), 6 Webs de Cindy West (DealCheck, Rentometer, HUD FMR, AffordableHousing, Redfin Data Center, TenantDash) y Motor Obscura Stealth Scraper.
+4. 'how_to_close_deals' — Guía Maestra de Cierre en 6 Pasos, EMD $100-$500, Compañías de Título, Notarías Móviles (Snapdocs, Notarize/Proof, OneNotary) y 4 Documentos Legales (PSA, Assignment, Memorandum of Agreement, Seller Authorization).
+5. 'saas_replacement' — Motor de Leads Gratis ($0/mo) reemplazando PropStream/BatchLeads con County GIS, Clerk of Courts y SODA APIs.
+6. 'daily_automation' — Auto-Pilot Diario de Prospección, Enriquecimiento y Llamadas.
+7. 'institutional_suite' — Suite Institucional con Portal E-Sign (/sign/[id]) y Deal Landing Pages (/deal/[id]).
+8. 'xleads_pumpstacker' — AI Death Scrubbing, Obituary Scraper, Curative Title & Reducción de Multas Municipales (85-90%).
+9. 'seller_pipeline' — Pipeline de Adquisiciones con Telefonía Vapi.ai / Retell AI y Análisis de Motivación (4 Pilares).
+10. 'cash_buyers' — Directorio de 35+ Cash Buyers filtrable por mercado y Buy Box.
+11. 'ig_creators' — Alianzas JV y outreach a inversores en Instagram.
+12. 'skills' — Árbol de Conocimiento de FreeWholesaling.com.
+13. 'executors' — Calculadora MAO (70% Rule & Reverse Price Anchor) y Cartas FOIA.
+14. 'history' — Archivo de Reels, Transcripciones y OCR.
 
 🧮 FÓRMULAS OFICIALES:
 - Casas (SFH): MAO = (ARV * 0.70) - Reparaciones - Fee ($10,000)
@@ -83,6 +85,9 @@ ${lastRun
 // ─────────────────────────────────────────────────────────────────────────────
 function detectTabNavigation(msg: string): string | null {
   const m = msg.toLowerCase();
+  if (m.includes('prompt') || m.includes('agente de voz') || m.includes('bot de voz') || m.includes('vapi') || m.includes('retell') || m.includes('bland') || m.includes('objecion') || m.includes('objeciones') || m.includes('guion') || m.includes('guiones')) {
+    return 'voice_agent_prompts';
+  }
   if (m.includes('reverse') || m.includes('sourcing') || m.includes('caza') || m.includes('constructores') || m.includes('county deeds') || m.includes('escrituras al contado')) {
     return 'reverse_sourcing';
   }

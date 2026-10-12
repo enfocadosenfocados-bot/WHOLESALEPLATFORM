@@ -63,6 +63,7 @@ interface ChatMessage {
 
 export type DashboardTabKey =
   | 'reverse_sourcing'
+  | 'voice_agent_prompts'
   | 'top_states_strategy'
   | 'how_to_close_deals'
   | 'saas_replacement'
@@ -86,6 +87,7 @@ interface DashboardTabInfo {
 
 const DASHBOARD_TABS: DashboardTabInfo[] = [
   { key: 'reverse_sourcing', label: '🎯 Reverse Sourcing (Caza Guiada)', shortLabel: 'Reverse Sourcing', icon: '🎯', color: 'from-cyan-600 via-teal-600 to-indigo-600' },
+  { key: 'voice_agent_prompts', label: '🎙️ Prompts para Agentes de Voz & Objeciones', shortLabel: 'Voice Bots', icon: '🎙️', color: 'from-violet-600 via-purple-600 to-indigo-600' },
   { key: 'top_states_strategy', label: '🌟 Top Estados & Estrategia', shortLabel: 'Top Estados', icon: '🌟', color: 'from-emerald-600 via-teal-600 to-indigo-600' },
   { key: 'how_to_close_deals', label: '📜 Cómo se Cierran Deals & Docs', shortLabel: 'Cerrar Deals', icon: '📜', color: 'from-emerald-600 via-indigo-600 to-purple-600' },
   { key: 'saas_replacement', label: '🔥 Motor Leads (Reemplazo SaaS $0)', shortLabel: 'Motor Leads', icon: '🔥', color: 'from-emerald-600 to-cyan-600' },
@@ -101,6 +103,7 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 ];
 
 const DEAL_PACK_ACTIONS = [
+  { label: '🎙️ Prompts Bots de Voz & 10 Objeciones (Lots/Probates)', prompt: 'Abre la pestaña de Prompts para Agentes de Voz y muéstrame los guiones para Infill Lots y Probates junto a las respuestas para objeciones difíciles', badge: 'Voice Bots' },
   { label: '🎯 Reverse Sourcing: Cazar Propiedades para Compradores', prompt: 'Abre el motor de Reverse Sourcing y muéstrame los deals pre-emparejados para Carson, Richard Taylor y Samuel G', badge: 'Reverse' },
   { label: '🏗️ Ver Compradores y Constructores Activos (County Deeds)', prompt: 'Muéstrame el Rastreador de Constructores y Cash Deeds de condados para ver quién está comprando hoy', badge: 'Deeds' },
   { label: '⚡ Master Deal Pack (TODOS los 35 Buyers en Excel+Word)', prompt: 'Genera el Master Deal Pack para TODOS los cash buyers que tengo en el dashboard en Excel y Word con números de vendedores, scripts de SMS/Email, scripts del bot closer con ofertas calculadas y contratos listos', badge: 'MASTER' },
