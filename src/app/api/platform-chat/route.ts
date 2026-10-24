@@ -58,20 +58,21 @@ ${lastRun
   : 'Pendiente de ejecución inicial'}
 
 🏛️ PESTAÑAS DISPONIBLES EN EL DASHBOARD:
-1. 'voice_agent_prompts' — Hub de Prompts para Agentes de Voz (Vapi.ai, Retell AI, Bland AI y Closer Humano) para Infill Lots, Herencias/Probate, Code Violations, Creative Finance Sub-To, FSBOs y Pre-Foreclosure, con Matriz de 10 Objeciones Difíciles (DNC, precio inamovible, quiénes son, fondos POF, sospecha de estafa, pensarlo, lidiar con reatlor, inquilinos hostiles, título enredado).
-2. 'reverse_sourcing' — Motor de Reverse Sourcing: Partir de lo que compran constructores y cash buyers para buscarles lotes y casas exactas.
-3. 'top_states_strategy' — Top 5 Estados Fáciles (FL, IN, AL, OH, GA), Ranking de Categorías (1. Terrenos baldíos, 2. Tired Landlords, 3. Code Violations), 6 Webs de Cindy West (DealCheck, Rentometer, HUD FMR, AffordableHousing, Redfin Data Center, TenantDash) y Motor Obscura Stealth Scraper.
-4. 'how_to_close_deals' — Guía Maestra de Cierre en 6 Pasos, EMD $100-$500, Compañías de Título, Notarías Móviles (Snapdocs, Notarize/Proof, OneNotary) y 4 Documentos Legales (PSA, Assignment, Memorandum of Agreement, Seller Authorization).
-5. 'saas_replacement' — Motor de Leads Gratis ($0/mo) reemplazando PropStream/BatchLeads con County GIS, Clerk of Courts y SODA APIs.
-6. 'daily_automation' — Auto-Pilot Diario de Prospección, Enriquecimiento y Llamadas.
-7. 'institutional_suite' — Suite Institucional con Portal E-Sign (/sign/[id]) y Deal Landing Pages (/deal/[id]).
-8. 'xleads_pumpstacker' — AI Death Scrubbing, Obituary Scraper, Curative Title & Reducción de Multas Municipales (85-90%).
-9. 'seller_pipeline' — Pipeline de Adquisiciones con Telefonía Vapi.ai / Retell AI y Análisis de Motivación (4 Pilares).
-10. 'cash_buyers' — Directorio de 35+ Cash Buyers filtrable por mercado y Buy Box.
-11. 'ig_creators' — Alianzas JV y outreach a inversores en Instagram.
-12. 'skills' — Árbol de Conocimiento de FreeWholesaling.com.
-13. 'executors' — Calculadora MAO (70% Rule & Reverse Price Anchor) y Cartas FOIA.
-14. 'history' — Archivo de Reels, Transcripciones y OCR.
+1. 'passive_pilot' — Suite Passive Pilot de Aryone Thomas (@aryone.wholesales) con 19 Calculadoras Interactivas (MAO, Infill Land 40%, 3-Tier Rehab, SubTo Cashflow, BRRRR, Speed-to-Lead Score 0-100, Code Lien Reduction), Pilot AI Deal Auditor & Prompt Vault, The Deal Desk (JV Dispo 60/40 para vender contratos sin dinero) y Generador Formal de Proof of Funds (POF) de hasta $1,000,000.
+2. 'voice_agent_prompts' — Hub de Prompts para Agentes de Voz (Vapi.ai, Retell AI, Bland AI y Closer Humano) para Infill Lots, Herencias/Probate, Code Violations, Creative Finance Sub-To, FSBOs y Pre-Foreclosure, con Matriz de 10 Objeciones Difíciles (DNC, precio inamovible, quiénes son, fondos POF, sospecha de estafa, pensarlo, lidiar con realtor, inquilinos hostiles, título enredado).
+3. 'reverse_sourcing' — Motor de Reverse Sourcing: Partir de lo que compran constructores y cash buyers para buscarles lotes y casas exactas.
+4. 'top_states_strategy' — Top 5 Estados Fáciles (FL, IN, AL, OH, GA), Ranking de Categorías (1. Terrenos baldíos, 2. Tired Landlords, 3. Code Violations), 6 Webs de Cindy West (DealCheck, Rentometer, HUD FMR, AffordableHousing, Redfin Data Center, TenantDash) y Motor Obscura Stealth Scraper.
+5. 'how_to_close_deals' — Guía Maestra de Cierre en 6 Pasos, EMD $100-$500, Compañías de Título, Notarías Móviles (Snapdocs, Notarize/Proof, OneNotary) y 4 Documentos Legales (PSA, Assignment, Memorandum of Agreement, Seller Authorization).
+6. 'saas_replacement' — Motor de Leads Gratis ($0/mo) reemplazando PropStream/BatchLeads con County GIS, Clerk of Courts y SODA APIs.
+7. 'daily_automation' — Auto-Pilot Diario de Prospección, Enriquecimiento y Llamadas.
+8. 'institutional_suite' — Suite Institucional con Portal E-Sign (/sign/[id]) y Deal Landing Pages (/deal/[id]).
+9. 'xleads_pumpstacker' — AI Death Scrubbing, Obituary Scraper, Curative Title & Reducción de Multas Municipales (85-90%).
+10. 'seller_pipeline' — Pipeline de Adquisiciones con Telefonía Vapi.ai / Retell AI y Análisis de Motivación (4 Pilares).
+11. 'cash_buyers' — Directorio de 35+ Cash Buyers filtrable por mercado y Buy Box.
+12. 'ig_creators' — Alianzas JV y outreach a inversores en Instagram (incluyendo Aryone Thomas @aryone.wholesales).
+13. 'skills' — Árbol de Conocimiento de FreeWholesaling.com.
+14. 'executors' — Calculadora MAO (70% Rule & Reverse Price Anchor) y Cartas FOIA.
+15. 'history' — Archivo de Reels, Transcripciones y OCR.
 
 🧮 FÓRMULAS OFICIALES:
 - Casas (SFH): MAO = (ARV * 0.70) - Reparaciones - Fee ($10,000)
@@ -85,6 +86,9 @@ ${lastRun
 // ─────────────────────────────────────────────────────────────────────────────
 function detectTabNavigation(msg: string): string | null {
   const m = msg.toLowerCase();
+  if (m.includes('pilot') || m.includes('passive pilot') || m.includes('aryone') || m.includes('deal desk') || m.includes('proof of funds') || m.includes('pof') || m.includes('19 calculadora')) {
+    return 'passive_pilot';
+  }
   if (m.includes('prompt') || m.includes('agente de voz') || m.includes('bot de voz') || m.includes('vapi') || m.includes('retell') || m.includes('bland') || m.includes('objecion') || m.includes('objeciones') || m.includes('guion') || m.includes('guiones')) {
     return 'voice_agent_prompts';
   }
@@ -163,6 +167,25 @@ async function tryExecuteAction(
         capRate: '11.8%',
       },
       navigateToTab: 'seller_pipeline',
+    };
+  }
+
+  // GENERATE PROOF OF FUNDS (POF LETTER - PASSIVE PILOT STYLE)
+  if (msg.includes('proof of funds') || msg.includes('pof') || msg.includes('carta de fondos') || intent === 'generate_pof') {
+    const lead = (db.sellerLeads || [])[0] || {
+      propertyAddress: '1420 Oak Ave, Tampa, FL',
+    };
+    return {
+      actionTaken: 'generate_pof',
+      actionResult: {
+        entity: 'AI Automated Services LLC and/or assigns',
+        certifiedAmount: '$350,000 USD',
+        maxLimit: '$1,000,000 USD',
+        facility: 'Capital Asset Alliance & Private Transactional Funding',
+        propertyTarget: lead.propertyAddress,
+        validity: 'Aprobado para presentación a Vendedores y Agentes',
+      },
+      navigateToTab: 'passive_pilot',
     };
   }
 

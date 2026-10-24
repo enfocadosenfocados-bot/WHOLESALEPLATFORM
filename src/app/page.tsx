@@ -26,6 +26,7 @@ import {
   Bot,
   Target,
   Mic,
+  Compass,
 } from 'lucide-react';
 import { SkillDatabase, SkillModule } from '@/types/skill';
 import IngestCenter from '@/components/IngestCenter';
@@ -44,6 +45,7 @@ import HowToCloseDealsHub from '@/components/HowToCloseDealsHub';
 import TopStatesAndStrategyHub from '@/components/TopStatesAndStrategyHub';
 import ReverseWholesalingEngine from '@/components/ReverseWholesalingEngine';
 import VoiceAgentPromptsHub from '@/components/VoiceAgentPromptsHub';
+import PassivePilotAISuite from '@/components/PassivePilotAISuite';
 import PlatformChat from '@/components/PlatformChat';
 
 export default function SkillForgeDashboard() {
@@ -51,6 +53,7 @@ export default function SkillForgeDashboard() {
   const [selectedSkillSlug, setSelectedSkillSlug] = useState<string>('');
   const [activeTab, setActiveTab] = useState<
     | 'reverse_sourcing'
+    | 'passive_pilot'
     | 'voice_agent_prompts'
     | 'skills'
     | 'top_states_strategy'
@@ -263,6 +266,18 @@ export default function SkillForgeDashboard() {
             </button>
 
             <button
+              onClick={() => setActiveTab('passive_pilot')}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
+                activeTab === 'passive_pilot'
+                  ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 text-white shadow-lg shadow-indigo-500/30 ring-2 ring-indigo-400 animate-pulse-slow'
+                  : 'bg-slate-900 text-indigo-300 hover:text-white border border-indigo-500/40'
+              }`}
+            >
+              <Compass className="w-4 h-4 text-indigo-400" />
+              ✈️ PASSIVE PILOT (19 CALCULADORAS & PILOT AI)
+            </button>
+
+            <button
               onClick={() => setActiveTab('voice_agent_prompts')}
               className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ${
                 activeTab === 'voice_agent_prompts'
@@ -419,6 +434,9 @@ export default function SkillForgeDashboard() {
             </button>
           </div>
         </div>
+
+        {/* TAB: ✈️ PASSIVE PILOT (19 CALCULADORAS & PILOT AI) */}
+        {activeTab === 'passive_pilot' && <PassivePilotAISuite />}
 
         {/* TAB: 🎙️ PROMPTS PARA AGENTES DE VOZ */}
         {activeTab === 'voice_agent_prompts' && <VoiceAgentPromptsHub />}

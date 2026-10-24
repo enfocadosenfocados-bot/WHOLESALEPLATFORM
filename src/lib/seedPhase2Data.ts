@@ -213,6 +213,37 @@ I have a network of Detroit Fix & Flip and Section 8 buyers (including Richard T
 Tengo compradores activos de Fix & Flip y Section 8 en Detroit. Envíame los detalles y fotos de la propiedad para moverla con mis compradores y hagamos JV.`,
     outreachStatus: 'pending',
   },
+  {
+    id: 'ig-aryone-wholesales',
+    handle: '@aryone.wholesales',
+    fullName: 'Aryone Thomas (Passive Pilot / Pilot AI & Deal Desk)',
+    profileUrl: 'https://www.instagram.com/aryone.wholesales/',
+    reelsCount: 1,
+    reelUrls: ['https://www.instagram.com/reel/DekJjGtJUqz/'],
+    role: 'Fundador de Passive Pilot (10K Miembros), Creador de Pilot AI y Operador de The Deal Desk (JV Dispo)',
+    marketsTheyBuy: 'Nacional (EE.UU.): Florida, Ohio, Indiana, Texas, Georgia, Carolina del Norte y Michigan',
+    whatTheyLookFor:
+      'Contratos firmados de Wholesaling con descuento comprobado para compra directa o co-dispo en The Deal Desk (reparto 60/40 o 50/50), además de compradores para la red de Passive Pilot.',
+    dealStructurePreference:
+      'Recibe contratos bajo acuerdo de compra (PSA firmado) a través de The Deal Desk para asignarlos a su red de compradores en efectivo, hedge funds e inversionistas privados con Proof of Funds institucional.',
+    customDmEnglish: `Hey Aryone! Loved your Reel on Passive Pilot approaching 10K members. I love how you streamlined the wholesaling process with deal analysis, Pilot AI, and The Deal Desk.
+
+I’m locking up wholesale contracts in strong Midwest and Sunbelt markets and I’d love to plug into your network:
+1. What are the hottest markets and deal criteria for your buyers on The Deal Desk right now?
+2. If I lock up a solid contract under PSA with 14-day inspection, what is the best workflow to submit it to your team for a priority 60/40 JV dispo?
+
+Keep crushing it with Pilot!`,
+    customDmSpanish: `¡Hola Aryone! Me encantó tu Reel sobre Passive Pilot y cómo están llegando a 10K miembros con la suite de IA y The Deal Desk.
+
+Estoy cerrando contratos de wholesale en mercados con alta liquidez y quiero colaborar con ustedes:
+1. ¿Cuáles son los mercados más calientes y los criterios de compra más demandados por tus inversionistas en The Deal Desk hoy?
+2. Si tengo un contrato firmado bajo PSA con 14 días de inspección, ¿cuál es el mejor canal para enviárselo a tu equipo y hacer un co-wholesale / JV dispo al 60/40?
+
+¡Gran trabajo con la plataforma Pilot!`,
+    outreachStatus: 'pending',
+    notes:
+      'Creador de PassivePilot.io y comunidad Whop/Discord con 10,000 miembros. Enseña a cerrar deals sin capital propio usando Pilot AI, generador de Proof of Funds, 19 calculadoras y The Deal Desk para dispo compartida.',
+  },
 ];
 
 export const INITIAL_CASH_BUYERS: VerifiedCashBuyer[] = [

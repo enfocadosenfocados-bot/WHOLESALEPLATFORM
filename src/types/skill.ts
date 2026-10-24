@@ -192,6 +192,7 @@ export interface InstagramCreatorPartner {
   customDmEnglish: string;
   customDmSpanish: string;
   outreachStatus: 'pending' | 'dm_sent' | 'replied_buybox' | 'active_partner';
+  notes?: string;
 }
 
 export interface SkillDatabase {

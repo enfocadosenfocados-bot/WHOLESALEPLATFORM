@@ -63,6 +63,7 @@ interface ChatMessage {
 
 export type DashboardTabKey =
   | 'reverse_sourcing'
+  | 'passive_pilot'
   | 'voice_agent_prompts'
   | 'top_states_strategy'
   | 'how_to_close_deals'
@@ -87,6 +88,7 @@ interface DashboardTabInfo {
 
 const DASHBOARD_TABS: DashboardTabInfo[] = [
   { key: 'reverse_sourcing', label: '🎯 Reverse Sourcing (Caza Guiada)', shortLabel: 'Reverse Sourcing', icon: '🎯', color: 'from-cyan-600 via-teal-600 to-indigo-600' },
+  { key: 'passive_pilot', label: '✈️ Passive Pilot (19 Calculadoras & Pilot AI)', shortLabel: 'Passive Pilot', icon: '✈️', color: 'from-indigo-600 via-purple-600 to-emerald-600' },
   { key: 'voice_agent_prompts', label: '🎙️ Prompts para Agentes de Voz & Objeciones', shortLabel: 'Voice Bots', icon: '🎙️', color: 'from-violet-600 via-purple-600 to-indigo-600' },
   { key: 'top_states_strategy', label: '🌟 Top Estados & Estrategia', shortLabel: 'Top Estados', icon: '🌟', color: 'from-emerald-600 via-teal-600 to-indigo-600' },
   { key: 'how_to_close_deals', label: '📜 Cómo se Cierran Deals & Docs', shortLabel: 'Cerrar Deals', icon: '📜', color: 'from-emerald-600 via-indigo-600 to-purple-600' },
@@ -96,13 +98,16 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
   { key: 'xleads_pumpstacker', label: '⚡ PumpStacker & XLeads', shortLabel: 'PumpStacker', icon: '🔥', color: 'from-red-600 to-amber-600' },
   { key: 'seller_pipeline', label: '📞 2. Vendedores (SMS/Llamada IA)', shortLabel: 'Vendedores', icon: '📞', color: 'from-sky-600 to-blue-600' },
   { key: 'cash_buyers', label: '👥 3. Cash Buyers (35)', shortLabel: 'Cash Buyers', icon: '👥', color: 'from-emerald-600 to-teal-600' },
-  { key: 'ig_creators', label: '📸 4. Creadores IG (8)', shortLabel: 'Creadores IG', icon: '📸', color: 'from-pink-600 to-rose-600' },
+  { key: 'ig_creators', label: '📸 4. Creadores IG (13)', shortLabel: 'Creadores IG', icon: '📸', color: 'from-pink-600 to-rose-600' },
   { key: 'skills', label: '📚 1. Árbol de Skills', shortLabel: 'Skills', icon: '📚', color: 'from-indigo-600 to-purple-600' },
   { key: 'executors', label: '🛠️ 5. Calculadoras & FOIA', shortLabel: 'Calculadoras', icon: '🛠️', color: 'from-purple-600 to-pink-600' },
   { key: 'history', label: '📜 6. Historial Reels & OCR', shortLabel: 'Historial', icon: '📜', color: 'from-amber-600 to-orange-600' },
 ];
 
 const DEAL_PACK_ACTIONS = [
+  { label: '✈️ Passive Pilot: 19 Calculadoras, Pilot AI & The Deal Desk', prompt: 'Abre la suite de Passive Pilot y muéstrame las 19 calculadoras, el auditor Pilot AI y cómo funciona The Deal Desk', badge: 'Pilot AI' },
+  { label: '🛡️ Generar Prueba de Fondos Oficial (POF $350k - $1M)', prompt: 'Genera una carta formal de Proof of Funds de $350,000 para AI Automated Services LLC and/or assigns para presentar una oferta', badge: 'POF Letter' },
+  { label: '🤝 The Deal Desk: Subir Contrato para Co-Dispo 60/40', prompt: 'Muéstrame cómo funciona The Deal Desk para subir un contrato firmado y venderlo con compradores de la plataforma', badge: 'Deal Desk' },
   { label: '🎙️ Prompts Bots de Voz & 10 Objeciones (Lots/Probates)', prompt: 'Abre la pestaña de Prompts para Agentes de Voz y muéstrame los guiones para Infill Lots y Probates junto a las respuestas para objeciones difíciles', badge: 'Voice Bots' },
   { label: '🎯 Reverse Sourcing: Cazar Propiedades para Compradores', prompt: 'Abre el motor de Reverse Sourcing y muéstrame los deals pre-emparejados para Carson, Richard Taylor y Samuel G', badge: 'Reverse' },
   { label: '🏗️ Ver Compradores y Constructores Activos (County Deeds)', prompt: 'Muéstrame el Rastreador de Constructores y Cash Deeds de condados para ver quién está comprando hoy', badge: 'Deeds' },
