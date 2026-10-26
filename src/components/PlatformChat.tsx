@@ -105,6 +105,8 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 ];
 
 const DEAL_PACK_ACTIONS = [
+  { label: '🏗️ Carson: Arbitraje Lotes $10k a Constructores (Cape Coral)', prompt: 'Abre la estrategia de Carson Wiener y muéstrame los 21 constructores de Cape Coral FL y el arbitraje de lotes con filtro de $10,000 para ganar $30k por lote', badge: 'Carson Lots' },
+  { label: '⚡ Zach: Top 50 Zillow FSBOs (Cannot Qualify FHA Lowball)', prompt: 'Abre el detector de desesperación de Zach Ginn y muéstrame el Top 50 de FSBOs en Zillow que no califican para crédito FHA y las ofertas bajas calculadas', badge: 'Zach FSBO' },
   { label: '✈️ Passive Pilot: 19 Calculadoras, Pilot AI & The Deal Desk', prompt: 'Abre la suite de Passive Pilot y muéstrame las 19 calculadoras, el auditor Pilot AI y cómo funciona The Deal Desk', badge: 'Pilot AI' },
   { label: '🛡️ Generar Prueba de Fondos Oficial (POF $350k - $1M)', prompt: 'Genera una carta formal de Proof of Funds de $350,000 para AI Automated Services LLC and/or assigns para presentar una oferta', badge: 'POF Letter' },
   { label: '🤝 The Deal Desk: Subir Contrato para Co-Dispo 60/40', prompt: 'Muéstrame cómo funciona The Deal Desk para subir un contrato firmado y venderlo con compradores de la plataforma', badge: 'Deal Desk' },

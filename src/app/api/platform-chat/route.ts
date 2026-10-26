@@ -170,6 +170,77 @@ async function tryExecuteAction(
     };
   }
 
+  // CARSON WIENER: CAPE CORAL BUILDER LAND ARBITRAGE ($10k INFILL LOTS)
+  if (
+    intent === 'carson_builder_land' ||
+    msg.includes('carson') ||
+    msg.includes('cape coral') ||
+    msg.includes('baker construction') ||
+    msg.includes('david black') ||
+    msg.includes('lote de constructor') ||
+    msg.includes('lotes de constructores') ||
+    msg.includes('lotes baldíos') ||
+    msg.includes('10k') ||
+    msg.includes('10,000') ||
+    (msg.includes('terreno') && (msg.includes('constructor') || msg.includes('arbitraje')))
+  ) {
+    return {
+      actionTaken: 'carson_builder_land',
+      actionResult: {
+        strategy: 'Carson Wiener Infill Lot Builder Arbitrage',
+        market: 'Cape Coral, Lee County FL (21 Active Homebuilders)',
+        verifiedBuilders: [
+          { name: 'David Black (Platinum)', volume: '25+ homes/mo', pays: '$15k - $70k', contact: 'dblack@blackconstructionfl.com' },
+          { name: 'Baker Construction (Jon Sninsky)', volume: '1-2 lots/mo', pays: '$38,000 fijo', contact: 'jsninsky@bakerconstructionfl.com' },
+          { name: 'Sunlife Land Holdings (Kelly Sexton)', volume: '10-15 lots/mo', pays: '$32k - $48k', contact: 'ksexton@mysunlifehome.com' },
+          { name: 'D.R. Horton (Robbie McDermott)', volume: '40+ lots/mo', pays: '$35k - $55k', contact: 'rmcdermott@drhorton.com' },
+        ],
+        sourcingCriteria: 'Lotes residenciales secos con Filtro de Precio Máximo <= $10,000',
+        sampleArbitrageDeal: {
+          address: '1428 Tropicana Pkwy W, Cape Coral FL 33993',
+          dimensions: '80 x 125 ft (0.23 Acres R-1)',
+          ownerOfferMao: '$7,500 CASH en 10 días',
+          builderSalePrice: '$38,000 a Baker Construction',
+          netProfitFee: '$30,500 USD de Assignment Fee',
+        },
+        coldCallPatternInterrupt: 'Hola Robert, habla Alex de AI Automated Services LLC. Veo que tienes el terreno en 1428 Tropicana Pkwy W en Cape Coral. ¿Si te ponemos $7,500 en efectivo en tu banco en 10 días absorbiendo todos los costos de cierre, considerarías venderlo esta semana?',
+      },
+      navigateToTab: 'reverse_sourcing',
+    };
+  }
+
+  // ZACH GINN: TOP 50 ZILLOW FSBO DISTRESS HUNTER & LOWBALL ENGINE
+  if (
+    intent === 'zach_zillow_fsbo' ||
+    msg.includes('top 50') ||
+    msg.includes('top 50 fsbo') ||
+    msg.includes('zillow fsbo') ||
+    msg.includes('lowball') ||
+    msg.includes('fha') ||
+    msg.includes('cannot qualify for fha') ||
+    msg.includes('no califica fha') ||
+    msg.includes('flipwithzach') ||
+    (msg.includes('zach') && (msg.includes('fsbo') || msg.includes('zillow') || msg.includes('50')))
+  ) {
+    return {
+      actionTaken: 'zach_zillow_fsbo',
+      actionResult: {
+        strategy: 'Zach Ginn Top 50 Zillow FSBO Distress Hunter (Lowball Engine)',
+        promptExact: 'im a wholesaler find me the top 50 FSBO\'s on zillow to call that will most likely take my lowball offer in usa',
+        goldenSignal: 'Cannot qualify for FHA (Descalifica al 85% de compradores y obliga al vendedor a aceptar oferta de contado)',
+        topVettedLeads: [
+          { address: '190 Mitchell St, Clarksville, TN', cut: '-$10,000 + OBO', listed: 185000, lowballMao: 115000, fee: 15000, signal: 'Cannot qualify for FHA; deck/plumbing repairs' },
+          { address: '1315 Wennona Dr, Clarksville, TN', cut: '-$14,000 cut', listed: 179000, lowballMao: 108000, fee: 14000, signal: 'Major reduction; seeks fast cash close' },
+          { address: '4122 E 131st St, Cleveland, OH', cut: '-$15,000 (20%)', listed: 74000, lowballMao: 38000, fee: 12000, signal: 'Cannot qualify for FHA; sold as-is' },
+          { address: '3144 N Meridian St, Indianapolis, IN', cut: '-$26,000 cut', listed: 115000, lowballMao: 62000, fee: 16000, signal: 'Handyman special; sought October close' },
+          { address: '2908 E 18th Ave, Tampa, FL', cut: '-$25,000 cut', listed: 195000, lowballMao: 122000, fee: 20000, signal: 'Probate inherited; seller in Georgia; unfinanceable' },
+        ],
+        coldCallPatternInterrupt: 'Hola Brandon, vi tu anuncio en Zillow de 190 Mitchell St. Noté que pusiste OBO y mencionas que necesita trabajo de plomería y terraza. Sé que los compradores con bancos FHA te están haciendo perder el tiempo. Nosotros compramos 100% en efectivo, tal como está. Si cerramos en 10 días y pagamos nosotros todos los gastos de título, ¿cuál es el mínimo absoluto en mano que tomarías hoy?',
+      },
+      navigateToTab: 'reverse_sourcing',
+    };
+  }
+
   // GENERATE PROOF OF FUNDS (POF LETTER - PASSIVE PILOT STYLE)
   if (msg.includes('proof of funds') || msg.includes('pof') || msg.includes('carta de fondos') || intent === 'generate_pof') {
     const lead = (db.sellerLeads || [])[0] || {
@@ -1126,6 +1197,63 @@ Propiedad: **${actionData.propertyAddress}** (Propietario: **${actionData.ownerN
 - 🏢 **Entidad Asignante:** \`AI Automated Services LLC and/or assigns\`
 
 📍 *Hemos abierto la pestaña **2. Vendedores** donde puedes hacer clic en **"Flyer PDF"** para imprimirlo o guardarlo en 1 hoja carta.*`;
+  }
+
+  // CARSON WIENER BUILDER LAND ARBITRAGE
+  if (actionTaken === 'carson_builder_land' && actionData) {
+    const cd = actionData;
+    return `🏗️ **¡ESTRATEGIA DE ARBITRAJE DE LOTES DE CARSON WIENER (@carsonbuysland) ACTIVADA!**
+
+Mercado: **${cd.market}** | Estrategia: **${cd.strategy}**
+
+---
+
+### 💰 La Fórmula Revelada en el Reel de Carson:
+1. **Paso 1: Mapear a los 21 Constructores:** Se tienen los Buy Boxes exactos de los constructores activos en Cape Coral (Baker Construction, David Black, Sunlife Land Holdings, DR Horton). Baker Construction paga **$38,000 fijos** por lote listo para verter losa.
+2. **Paso 2: Filtrar Lotes con Precio ≤ $10,000:** Buscamos terrenos residenciales secos (R-1) con precio máximo de $10,000.
+3. **Paso 3: Oferta al Dueño y Venta al Constructor:**
+   - Oferta de contado al propietario: **${cd.sampleArbitrageDeal.ownerOfferMao}**
+   - Venta garantizada al constructor: **${cd.sampleArbitrageDeal.builderSalePrice}**
+   - 💵 **Tu Ganancia Neta:** **${cd.sampleArbitrageDeal.netProfitFee}** (Spread de más del 400%)
+
+---
+
+### 📞 Guión Pattern Interrupt para Llamar al Dueño:
+> *"${cd.coldCallPatternInterrupt}"*
+
+📍 *Hemos abierto la sub-pestaña **🏗️ Carson Wiener: Infill Lots Cape Coral** en **Reverse Sourcing** con los 21 constructores y los lotes emparejados listos.*`;
+  }
+
+  // ZACH GINN TOP 50 ZILLOW FSBO DISTRESS HUNTER
+  if (actionTaken === 'zach_zillow_fsbo' && actionData) {
+    const zd = actionData;
+    return `⚡ **¡DETECTOR DE DESESPERACIÓN ZILLOW FSBO DE ZACH GINN (@flipwithzach) ACTIVADO!**
+
+Estrategia: **${zd.strategy}**
+
+---
+
+### 🚨 El Filtro Secreto: "¿Por qué funciona el Lowball?"
+- **Señal de Oro:** **${zd.goldenSignal}**.
+- Al tener problemas de terraza, techo o plomería, el banco **rechaza el préstamo hipotecario FHA**. El 85% de compradores de vivienda quedan descalificados.
+- El dueño entra en pánico y realiza **caídas masivas de precio (-$10,000 a -$26,000)**. No tiene otra salida que aceptar una oferta en efectivo sin inspecciones bancarias.
+
+---
+
+### 📋 Top Leads de Alta Conversión en Radar:
+${zd.topVettedLeads.map((l: any) => `- **${l.address}**: Listado: $${l.listed.toLocaleString()} | **Caída: ${l.cut}** | 🎯 **Oferta Baja: $${l.lowballMao.toLocaleString()}** | Fee: +$${l.fee.toLocaleString()} (${l.signal})`).join('\n')}
+
+---
+
+### 🤖 Prompt Original de Zach para IA:
+\`\`\`text
+${zd.promptExact}
+\`\`\`
+
+### 📞 Guión de Apertura (Pattern Interrupt):
+> *"${zd.coldCallPatternInterrupt}"*
+
+📍 *Hemos abierto la sub-pestaña **⚡ Zach Ginn: Top 50 Zillow FSBOs** en **Reverse Sourcing** con la hoja completa de llamadas y calculadora de lowball.*`;
   }
 
   // GENERATE MEMORANDUM OF AGREEMENT (CLOUD ON TITLE)

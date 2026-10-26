@@ -41,8 +41,9 @@ Quiero trabajar contigo llevándote tratos como Deal Finder. Para buscar exactam
     handle: '@flipwithzach',
     fullName: 'Zach Ginn (Flip With Rick / FreeWholesaling.com)',
     profileUrl: 'https://www.instagram.com/flipwithzach/',
-    reelsCount: 3,
+    reelsCount: 4,
     reelUrls: [
+      'https://www.instagram.com/reel/De2zY7DNlUR/', // Reel: "Deleting at 100k views..." - Top 50 Zillow FSBOs
       'https://www.instagram.com/reel/DdZpo2Zumix/',
       'https://www.instagram.com/reel/DdfIcYeh9TO/',
       'https://www.instagram.com/reel/Ddcr0LHp2Nv/',
@@ -121,10 +122,13 @@ Me gustaría saber cómo podría trabajar contigo y ayudarte con tratos:
   {
     id: 'ig-carsonbuysland',
     handle: '@carsonbuysland',
-    fullName: 'Carson | Land Flipping (@carsonbuysland)',
+    fullName: 'Carson Wiener | Land Flipping (@carsonbuysland)',
     profileUrl: 'https://www.instagram.com/carsonbuysland/',
-    reelsCount: 1,
-    reelUrls: ['https://www.instagram.com/reel/DcgiMy3OQov/'],
+    reelsCount: 2,
+    reelUrls: [
+      'https://www.instagram.com/reel/Dew_KF8BrV9/', // Reel: Cape Coral Builder Buy Boxes & $10k Infill Lots Arbitrage
+      'https://www.instagram.com/reel/DcgiMy3OQov/',
+    ],
     role: 'Inversionista de Terrenos (Land Flipping & Home Builders Network)',
     marketsTheyBuy: 'Palm Bay / Florida y mercados de lotes residenciales (Infill Lots)',
     whatTheyLookFor:

@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase, saveDatabase } from '@/lib/db';
 import { MotivatedSellerLead, VerifiedCashBuyer } from '@/types/skill';
 
-import { PreMatchedDeal, CountyDeedTracker, COUNTY_DEED_RECORDS } from '@/types/reverseSourcing';
+import {
+  PreMatchedDeal,
+  CountyDeedTracker,
+  COUNTY_DEED_RECORDS,
+  CARSON_CAPE_CORAL_BUILDERS,
+  CARSON_INFILL_LOT_OPPORTUNITIES,
+  ZACH_TOP50_ZILLOW_FSBO_LEADS,
+} from '@/types/reverseSourcing';
 
 // Pre-matched seed deals crafted around verified buyers
 const SEED_PREMATCHED_DEALS: PreMatchedDeal[] = [
@@ -145,6 +152,9 @@ export async function GET() {
       totalActiveBuyers: buyers.length,
       preMatchedDeals: SEED_PREMATCHED_DEALS,
       countyDeedRecords: COUNTY_DEED_RECORDS,
+      carsonBuilders: CARSON_CAPE_CORAL_BUILDERS,
+      carsonInfillLots: CARSON_INFILL_LOT_OPPORTUNITIES,
+      zachZillowFsboLeads: ZACH_TOP50_ZILLOW_FSBO_LEADS,
       averageFeeProjected: '$13,750 USD',
       guaranteedAcceptanceRate: '98.2%',
     });
