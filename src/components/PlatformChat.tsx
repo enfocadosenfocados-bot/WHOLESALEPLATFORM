@@ -105,6 +105,7 @@ const DASHBOARD_TABS: DashboardTabInfo[] = [
 ];
 
 const DEAL_PACK_ACTIONS = [
+  { label: '🌟 Escógeme el Deal Más Fácil para Hoy (Números Reales y Todo Listo)', prompt: 'Escógeme cuál es la mejor opción y lo más fácil para hacer un deal hoy mismo, analízame las opciones con números reales y dame todo listo para cerrar', badge: 'DEAL HOY' },
   { label: '🏗️ Carson: Arbitraje Lotes $10k a Constructores (Cape Coral)', prompt: 'Abre la estrategia de Carson Wiener y muéstrame los 21 constructores de Cape Coral FL y el arbitraje de lotes con filtro de $10,000 para ganar $30k por lote', badge: 'Carson Lots' },
   { label: '⚡ Zach: Top 50 Zillow FSBOs (Cannot Qualify FHA Lowball)', prompt: 'Abre el detector de desesperación de Zach Ginn y muéstrame el Top 50 de FSBOs en Zillow que no califican para crédito FHA y las ofertas bajas calculadas', badge: 'Zach FSBO' },
   { label: '✈️ Passive Pilot: 19 Calculadoras, Pilot AI & The Deal Desk', prompt: 'Abre la suite de Passive Pilot y muéstrame las 19 calculadoras, el auditor Pilot AI y cómo funciona The Deal Desk', badge: 'Pilot AI' },
