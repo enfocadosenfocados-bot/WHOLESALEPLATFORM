@@ -176,6 +176,10 @@ export interface MotivatedSellerLead {
   mutualReleaseText?: string;
   assignedBuyerName?: string;
   assignmentFeeProjected?: number;
+  lastContactedAt?: string;
+  lastCallId?: string;
+  county?: string;
+  parcelId?: string;
 }
 
 export interface InstagramCreatorPartner {

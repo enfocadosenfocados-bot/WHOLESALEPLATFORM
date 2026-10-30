@@ -190,6 +190,66 @@ export default function PlatformChat({ apiKey = '', activeTab, onSelectTab }: Pl
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
   const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
+  const [activeCallingKey, setActiveCallingKey] = useState<string | null>(null);
+  const [callStatusTracker, setCallStatusTracker] = useState<{ [key: string]: { status: 'idle' | 'calling' | 'connected' | 'error'; message: string; callId?: string } }>({});
+
+  const handleTriggerRealCall = async (callData: any, cardKey: string) => {
+    try {
+      setActiveCallingKey(cardKey);
+      setCallStatusTracker((prev) => ({
+        ...prev,
+        [cardKey]: { status: 'calling', message: 'Conectando con Telnyx (+1 870-912-8303) y Vapi...' }
+      }));
+
+      const payload = {
+        action: 'trigger_telephony_call',
+        callTargetType: callData.callTargetType || 'seller',
+        phoneNumber: callData.targetPhone,
+        ownerName: callData.ownerName,
+        propertyAddress: callData.propertyAddress,
+        county: callData.county,
+        maoOffer: callData.maoOffer,
+        anchorOffer: callData.anchorOffer,
+        builderPrice: callData.builderPrice,
+        projectedFee: callData.projectedFee,
+        minimumFeeFloor: callData.minimumFeeFloor || 5000,
+        builderName: callData.builderName,
+      };
+
+      const res = await fetch('/api/voice-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCallStatusTracker((prev) => ({
+          ...prev,
+          [cardKey]: {
+            status: 'connected',
+            callId: data.callId,
+            message: `¡Llamada en curso! ID: ${data.callId?.slice(0, 8)}... | Caller ID: +1 (870) 912-8303 (Telnyx) | Voz: Pace Morby`,
+          }
+        }));
+      } else {
+        setCallStatusTracker((prev) => ({
+          ...prev,
+          [cardKey]: {
+            status: 'error',
+            message: data.error || 'Error al iniciar la llamada en Vapi',
+          }
+        }));
+      }
+    } catch (err: any) {
+      setCallStatusTracker((prev) => ({
+        ...prev,
+        [cardKey]: { status: 'error', message: err.message || 'Error de red' }
+      }));
+    } finally {
+      setActiveCallingKey(null);
+    }
+  };
   const [flyerModalLead, setFlyerModalLead] = useState<MotivatedSellerLead | null>(null);
   const [memorandumModalLead, setMemorandumModalLead] = useState<MotivatedSellerLead | null>(null);
 
@@ -795,35 +855,166 @@ Tengo control operativo de élite sobre la plataforma:
                     </div>
                   )}
 
+                  {/* ── ACTION CARD: PICK BEST DEAL TODAY ── */}
+                  {msg.actionTaken === 'pick_best_deal_today' && msg.actionData && (
+                    <div className="mt-3 p-3 bg-slate-950/95 border-2 border-amber-500/50 rounded-2xl space-y-3 shadow-xl shadow-amber-500/10">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-amber-400 font-black text-xs">
+                          <Flame className="w-4 h-4 text-amber-400 animate-pulse" />
+                          <span>DEAL GANADOR DEL DÍA (SPREAD MÁXIMO)</span>
+                        </div>
+                        <span className="bg-emerald-950 border border-emerald-500/60 px-2 py-0.5 rounded text-[11px] text-emerald-300 font-bold font-mono">
+                          Spread: +$30,500 USD (Piso: $5,000)
+                        </span>
+                      </div>
+
+                      <div className="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1.5 text-[11px]">
+                        <div className="text-white font-bold text-xs">
+                          {msg.actionData.winnerDeal?.propertyAddress}
+                        </div>
+                        <div className="text-slate-400 text-[10px]">
+                          {msg.actionData.winnerDeal?.specs}
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800 text-[11px]">
+                          <div>
+                            <span className="text-slate-400">Oferta MAO al Dueño:</span>{' '}
+                            <strong className="text-emerald-400 font-mono">$7,500 CASH</strong>
+                          </div>
+                          <div>
+                            <span className="text-slate-400">Compra Constructor:</span>{' '}
+                            <strong className="text-sky-400 font-mono">$38,000 CASH</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Direct Call Status Banner */}
+                      {callStatusTracker[`deal-${msg.id}`] && (
+                        <div className={`p-2 rounded-xl text-[10px] font-mono ${
+                          callStatusTracker[`deal-${msg.id}`].status === 'connected'
+                            ? 'bg-emerald-950/80 border border-emerald-500 text-emerald-300'
+                            : callStatusTracker[`deal-${msg.id}`].status === 'calling'
+                            ? 'bg-amber-950/80 border border-amber-500 text-amber-300 animate-pulse'
+                            : 'bg-rose-950/80 border border-rose-500 text-rose-300'
+                        }`}>
+                          {callStatusTracker[`deal-${msg.id}`].message}
+                        </div>
+                      )}
+
+                      {/* Quick 1-Click Call Buttons */}
+                      <div className="grid grid-cols-2 gap-2 pt-0.5">
+                        <button
+                          disabled={activeCallingKey === `deal-${msg.id}`}
+                          onClick={() => handleTriggerRealCall({
+                            callTargetType: 'seller',
+                            targetPhone: msg.actionData.winnerDeal?.sellerLead?.phone || '(239) 555-9201',
+                            ownerName: msg.actionData.winnerDeal?.sellerLead?.ownerName || 'Robert Vance McCallister',
+                            propertyAddress: msg.actionData.winnerDeal?.propertyAddress || '1428 Tropicana Pkwy W, Cape Coral, FL',
+                            county: 'Lee County, FL',
+                            maoOffer: 7500,
+                            anchorOffer: 6500,
+                            projectedFee: 30500,
+                            minimumFeeFloor: 5000,
+                          }, `deal-${msg.id}`)}
+                          className="px-2.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 transition shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+                        >
+                          <PhoneCall className="w-3.5 h-3.5" />
+                          {activeCallingKey === `deal-${msg.id}` ? 'Marcando...' : 'Llamar al Vendedor (Pace)'}
+                        </button>
+
+                        <button
+                          disabled={activeCallingKey === `deal-${msg.id}`}
+                          onClick={() => handleTriggerRealCall({
+                            callTargetType: 'buyer',
+                            targetPhone: msg.actionData.winnerDeal?.buyerPartner?.phone || '(239) 555-4420',
+                            ownerName: msg.actionData.winnerDeal?.buyerPartner?.name || 'Jon Sninsky',
+                            builderName: 'Baker Construction Corp',
+                            propertyAddress: msg.actionData.winnerDeal?.propertyAddress || '1428 Tropicana Pkwy W, Cape Coral, FL',
+                            county: 'Lee County, FL',
+                            builderPrice: 38000,
+                            projectedFee: 30500,
+                            minimumFeeFloor: 5000,
+                          }, `deal-${msg.id}`)}
+                          className="px-2.5 py-2 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 transition shadow-lg shadow-sky-600/20 disabled:opacity-50"
+                        >
+                          <Building2 className="w-3.5 h-3.5" />
+                          {activeCallingKey === `deal-${msg.id}` ? 'Marcando...' : 'Llamar al Builder (Pace)'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {/* ── ACTION CARD: PREPARE VOICE CALL ── */}
                   {msg.actionTaken === 'prepare_voice_call' && msg.actionData && (
-                    <div className="mt-2.5 p-2.5 bg-slate-950/90 border border-emerald-500/40 rounded-xl space-y-2">
-                      <div className="flex items-center justify-between text-emerald-400 font-bold text-[11px]">
+                    <div className="mt-2.5 p-3 bg-slate-950/90 border border-emerald-500/50 rounded-2xl space-y-2.5 shadow-lg shadow-emerald-500/10">
+                      <div className="flex items-center justify-between text-emerald-400 font-black text-xs">
                         <span className="flex items-center gap-1.5">
-                          <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
-                          Llamada Calibrada Lista (Vapi / Twilio)
+                          <PhoneCall className="w-4 h-4 text-emerald-400 animate-pulse" />
+                          Llamada en Vivo Calibrada (Pace Morby + Telnyx)
                         </span>
-                        <span className="bg-emerald-900/60 px-1.5 py-0.5 rounded text-[10px] text-emerald-300 font-mono">
+                        <span className="bg-emerald-950 border border-emerald-500/40 px-2 py-0.5 rounded text-[10px] text-emerald-300 font-mono font-bold">
                           {msg.actionData.targetPhone}
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-300">
-                        <strong>Vendedor:</strong> {msg.actionData.ownerName} | <strong>Oferta:</strong> ${Number(msg.actionData.maoOffer).toLocaleString()}
+
+                      <div className="bg-slate-900/70 p-2 rounded-xl text-[11px] text-slate-300 space-y-1">
+                        <div>
+                          <strong>{msg.actionData.callTargetType === 'buyer' ? 'Comprador/Builder:' : 'Vendedor:'}</strong> {msg.actionData.ownerName}
+                        </div>
+                        <div className="text-slate-400 text-[10px]">
+                          <strong>Propiedad:</strong> {msg.actionData.propertyAddress}
+                        </div>
+                        <div className="text-emerald-400 text-[10px] font-mono">
+                          <strong>Oferta Neta:</strong> ${Number(msg.actionData.maoOffer || msg.actionData.builderPrice || 7500).toLocaleString()} USD | <strong>Spread Ganancia:</strong> +${Number(msg.actionData.projectedFee || 15000).toLocaleString()} USD (Piso: $5k)
+                        </div>
                       </div>
-                      <div className="flex gap-1.5 pt-1">
+
+                      {/* First Spoken Message Display */}
+                      <div className="p-2 bg-emerald-950/30 border border-emerald-800/40 rounded-xl text-[10px] text-emerald-200 italic">
+                        "{msg.actionData.firstMessage || 'Hey, good afternoon! ...Yeah, sorry to catch you out of nowhere, my name is Pace with the acquisitions team...'}"
+                      </div>
+
+                      {/* Live Call Status Tracker */}
+                      {callStatusTracker[`call-${msg.id}`] && (
+                        <div className={`p-2 rounded-xl text-[10px] font-mono ${
+                          callStatusTracker[`call-${msg.id}`].status === 'connected'
+                            ? 'bg-emerald-950/80 border border-emerald-500 text-emerald-300'
+                            : callStatusTracker[`call-${msg.id}`].status === 'calling'
+                            ? 'bg-amber-950/80 border border-amber-500 text-amber-300 animate-pulse'
+                            : 'bg-rose-950/80 border border-rose-500 text-rose-300'
+                        }`}>
+                          {callStatusTracker[`call-${msg.id}`].message}
+                        </div>
+                      )}
+
+                      {/* 1-Click Trigger Call Button */}
+                      <div className="flex gap-2 pt-0.5">
+                        <button
+                          disabled={activeCallingKey === `call-${msg.id}`}
+                          onClick={() => handleTriggerRealCall({
+                            callTargetType: msg.actionData.callTargetType || 'seller',
+                            targetPhone: msg.actionData.targetPhone,
+                            ownerName: msg.actionData.ownerName,
+                            propertyAddress: msg.actionData.propertyAddress,
+                            county: msg.actionData.county,
+                            maoOffer: msg.actionData.maoOffer,
+                            anchorOffer: msg.actionData.anchorOffer,
+                            builderPrice: msg.actionData.builderPrice,
+                            projectedFee: msg.actionData.projectedFee,
+                            minimumFeeFloor: msg.actionData.minimumFeeFloor || 5000,
+                            builderName: msg.actionData.builderName,
+                          }, `call-${msg.id}`)}
+                          className="flex-1 py-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white rounded-xl text-[11px] font-black flex items-center justify-center gap-1.5 transition shadow-lg shadow-emerald-600/30 disabled:opacity-50"
+                        >
+                          <PhoneCall className="w-3.5 h-3.5" />
+                          {activeCallingKey === `call-${msg.id}` ? 'Marcando con Telnyx...' : '📞 Iniciar Llamada Real con Pace Morby'}
+                        </button>
+
                         <button
                           onClick={() => copyToClipboard(JSON.stringify(msg.actionData.vapiPayload, null, 2), `vapi-${msg.id}`)}
-                          className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
+                          className="px-2.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-[10px] font-bold flex items-center gap-1 transition"
                         >
-                          {copiedKey === `vapi-${msg.id}` ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                          {copiedKey === `vapi-${msg.id}` ? '¡Payload Copiado!' : 'Copiar Payload Vapi'}
-                        </button>
-                        <button
-                          onClick={() => onSelectTab?.('seller_pipeline')}
-                          className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold flex items-center gap-1 transition"
-                        >
-                          <ExternalLink className="w-3 h-3" />
-                          Abrir Telefonía IA
+                          {copiedKey === `vapi-${msg.id}` ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                          {copiedKey === `vapi-${msg.id}` ? 'Copiado' : 'Payload'}
                         </button>
                       </div>
                     </div>
@@ -1069,7 +1260,7 @@ Tengo control operativo de élite sobre la plataforma:
                     </div>
                   )}
 
-                  {msg.actionExecuted && !['match_buyer', 'objection_buster', 'deal_wizard', 'skip_trace', 'curative_title_reduction', 'prepare_voice_call', 'calculate_mao', 'generate_contract', 'creative_finance', 'deal_score', 'generate_flyer', 'generate_memorandum'].includes(msg.actionTaken || '') && (
+                  {msg.actionExecuted && !['match_buyer', 'objection_buster', 'deal_wizard', 'skip_trace', 'curative_title_reduction', 'prepare_voice_call', 'calculate_mao', 'generate_contract', 'creative_finance', 'deal_score', 'generate_flyer', 'generate_memorandum', 'pick_best_deal_today'].includes(msg.actionTaken || '') && (
                     <div className="flex items-center gap-1 mt-2 pt-1.5 border-t border-slate-800 text-cyan-400">
                       <Zap className="w-3 h-3 text-cyan-400 animate-pulse" />
                       <span className="text-[10px] font-bold">Acción ejecutada con éxito en la plataforma</span>

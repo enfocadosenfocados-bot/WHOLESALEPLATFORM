@@ -1,202 +1,256 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase, saveDatabase } from '@/lib/db';
 import { callSkillForgeAI } from '@/lib/aiClient';
+import {
+  generateSellerCloserPrompt,
+  generateBuyerCloserPrompt,
+  buildPaceOpeningGreeting,
+  DealSpecs,
+} from '@/lib/voiceCloserPrompt';
+
+const VAPI_BASE_URL = 'https://api.vapi.ai';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const {
       action,
+      callId,
       leadId,
-      provider,
-      apiKey,
-      phoneNumber,
-      assistantId,
+      provider = 'vapi',
+      apiKey: customApiKey,
+      phoneNumberId: customPhoneId,
+      phoneNumber: customPhoneNumber,
+      assistantId: customAssistantId,
       transcript,
-      audioPrompt,
-      botType = 'initial_outreach',
+      botType = 'master_closer',
+      callTargetType = 'seller', // 'seller' | 'buyer'
       reductionAmount = 12000,
       strategyName: customStrategyName,
+      // Dynamic Deal Specs passed directly from chat or pipeline:
+      ownerName: rawOwnerName,
+      propertyAddress: rawPropertyAddress,
+      county: rawCounty,
+      parcelId: rawParcelId,
+      specs: rawSpecs,
+      arv: rawArv,
+      repairs: rawRepairs,
+      maoOffer: rawMaoOffer,
+      anchorOffer: rawAnchorOffer,
+      builderPrice: rawBuilderPrice,
+      projectedFee: rawProjectedFee,
+      minimumFeeFloor: rawMinFeeFloor,
+      builderName: rawBuilderName,
     } = body;
 
     const db = getDatabase();
     const lead = db.sellerLeads?.find((l) => l.id === leadId);
 
-    // 1. Trigger Outbound Call via Vapi.ai / Retell AI / Twilio
-    if (action === 'trigger_telephony_call') {
-      const targetPhone = phoneNumber || lead?.phone || '(555) 000-0000';
-      const ownerName = lead?.ownerName || 'Propietario';
-      const propertyAddr = lead?.propertyAddress || 'su propiedad';
+    // ─────────────────────────────────────────────────────────────────────────
+    // ACTION: Check Live Call Status & Transcript from Vapi
+    // ─────────────────────────────────────────────────────────────────────────
+    if (action === 'get_call_status' || action === 'check_call') {
+      const targetCallId = callId || body.id;
+      if (!targetCallId) {
+        return NextResponse.json({ error: 'Falta callId para consultar estado' }, { status: 400 });
+      }
+      const vapiKey = process.env.VAPI_API_KEY || customApiKey;
+      if (!vapiKey) {
+        return NextResponse.json({ error: 'VAPI_API_KEY no configurado' }, { status: 500 });
+      }
 
-      // If user provided a real Vapi API Key
-      if (provider === 'vapi' && apiKey) {
+      const res = await fetch(`${VAPI_BASE_URL}/call/${targetCallId}`, {
+        headers: { Authorization: `Bearer ${vapiKey}` },
+      });
+      const data = await res.json();
+      return NextResponse.json({ success: true, call: data });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ACTION: Trigger Outbound Call (Vapi.ai with Cloned Pace Morby Voice & Telnyx)
+    // ─────────────────────────────────────────────────────────────────────────
+    if (action === 'trigger_telephony_call') {
+      const vapiKey = process.env.VAPI_API_KEY || customApiKey;
+      const vapiPhoneId = process.env.VAPI_PHONE_NUMBER_ID || customPhoneId || '174882b4-adb6-4417-a37e-3de8de0c5291';
+      const vapiAssistantId = process.env.VAPI_ASSISTANT_ID || customAssistantId || '68ba22c6-0efa-49df-98a7-88b2febaa3a5';
+      const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID || 'bRxD1Ek8rBfVQeKVLQSs'; // Pace Morby cloned voice
+
+      const targetPhone = customPhoneNumber || lead?.phone || body.targetPhone || '+18004444444';
+      const ownerName = rawOwnerName || lead?.ownerName || (callTargetType === 'buyer' ? 'Constructor VIP' : 'Propietario');
+      const propertyAddr = rawPropertyAddress || lead?.propertyAddress || '1428 Tropicana Pkwy W, Cape Coral, FL 33993';
+      const county = rawCounty || (lead as any)?.county || 'Lee County, FL';
+      const parcelId = rawParcelId || (lead as any)?.parcelId || '22-43-23-C2-03102.0450';
+      const specs = rawSpecs || '80x125 ft High & Dry lot, ready for slab construction';
+      const arv = Number(rawArv) || lead?.estimatedArv || 150000;
+      const repairs = Number(rawRepairs) || 15000;
+      const maoOffer = Number(rawMaoOffer) || lead?.recommendedMaoOffer || 65000;
+      const anchorOffer = Number(rawAnchorOffer) || Math.round(maoOffer * 0.88);
+      const builderPrice = Number(rawBuilderPrice) || 38000;
+      const projectedFee = Number(rawProjectedFee) || Math.max(5000, builderPrice - maoOffer);
+      const minFee = Number(rawMinFeeFloor) || 5000;
+      const builderName = rawBuilderName || 'Jon Sninsky (Baker Construction Corp)';
+
+      const dealData: DealSpecs = {
+        callTargetType,
+        ownerName,
+        propertyAddress: propertyAddr,
+        targetPhone,
+        county,
+        parcelId,
+        specs,
+        arv,
+        repairs,
+        maoOffer,
+        anchorOffer,
+        builderPrice,
+        projectedFee,
+        minimumFeeFloor: minFee,
+        builderName,
+      };
+
+      // 1. Build First Message & Master System Prompt
+      const firstMessage = buildPaceOpeningGreeting(propertyAddr, callTargetType, county);
+      let systemPrompt = '';
+
+      if (callTargetType === 'buyer') {
+        systemPrompt = generateBuyerCloserPrompt(dealData);
+      } else if (botType === 'plan_b_renegotiation') {
+        const reductionAmt = Number(reductionAmount) || 12000;
+        const targetDropOffer = Math.max(10000, maoOffer - reductionAmt);
+        systemPrompt = `You are Pace Morby, Master Acquisitions Closer at AI Automated Services LLC calling ${ownerName} regarding ${propertyAddr}.
+GOAL: Renegotiate purchase price from $${maoOffer.toLocaleString()} down to $${targetDropOffer.toLocaleString()} (a $${reductionAmt.toLocaleString()} reduction) due to severe unexpected maintenance (roof decking rot and cracked HVAC exchanger) uncovered by our licensed inspection team.
+Use Good Cop / Bad Cop: "My investment committee refused to approve closing at $${maoOffer.toLocaleString()} and ordered a cancellation under Section 4. But I went to bat for you: if we sign a 1-page Price Amendment Addendum at $${targetDropOffer.toLocaleString()} net cash, I have authority to waive all contingencies and fund the deal next week."`;
+      } else if (botType === 'plan_c_cancellation') {
+        systemPrompt = `You are Pace Morby, Master Acquisitions Closer at AI Automated Services LLC calling ${ownerName} regarding ${propertyAddr}.
+GOAL: Amicably and professionally notify the seller that under Section 4 (Inspection Contingency) we are canceling the agreement due to unfeasible contractor rehabilitation estimates.
+Instruct title company to release Earnest Money Deposit 100% to Buyer, leave the door open for future deals, and maintain total professionalism.`;
+      } else {
+        // Default: Master Seller Closer (4 Pillars + Reverse Price Anchor + $5k-$20k Fee Floor + Full Objections)
+        systemPrompt = generateSellerCloserPrompt(dealData);
+      }
+
+      // If Vapi API Key is available, make the live PSTN call via Vapi + Telnyx
+      if (vapiKey) {
         try {
-          const vapiRes = await fetch('https://api.vapi.ai/call/phone', {
+          const vapiPayload = {
+            phoneNumberId: vapiPhoneId,
+            customer: {
+              number: targetPhone,
+              name: ownerName,
+            },
+            assistantId: vapiAssistantId,
+            assistantOverrides: {
+              firstMessage,
+              model: {
+                provider: 'openai',
+                model: 'gpt-4o',
+                messages: [
+                  {
+                    role: 'system',
+                    content: systemPrompt,
+                  },
+                ],
+              },
+              voice: {
+                provider: '11labs',
+                model: 'eleven_turbo_v2_5',
+                voiceId: elevenLabsVoiceId,
+                stability: 0.3,
+                similarityBoost: 0.85,
+                style: 0.08,
+              },
+              backgroundSound: 'office',
+              backchannelingEnabled: true,
+            },
+          };
+
+          const vapiRes = await fetch(`${VAPI_BASE_URL}/call/phone`, {
             method: 'POST',
             headers: {
-              Authorization: `Bearer ${apiKey}`,
+              Authorization: `Bearer ${vapiKey}`,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              phoneNumberId: phoneNumber,
-              customer: { number: targetPhone, name: ownerName },
-              assistantId: assistantId || undefined,
-            }),
+            body: JSON.stringify(vapiPayload),
           });
+
           const vapiData = await vapiRes.json();
+
+          if (!vapiRes.ok) {
+            return NextResponse.json(
+              {
+                success: false,
+                error: `Vapi HTTP ${vapiRes.status}: ${JSON.stringify(vapiData)}`,
+                payloadUsed: vapiPayload,
+              },
+              { status: vapiRes.status }
+            );
+          }
+
+          // Update lead status in database if available
+          if (lead) {
+            lead.status = 'in_call';
+            lead.lastContactedAt = new Date().toISOString();
+            (lead as any).lastCallId = vapiData.id;
+            saveDatabase(db);
+          }
+
           return NextResponse.json({
             success: true,
             provider: 'vapi',
             callId: vapiData.id,
-            status: 'calling',
-            message: `Llamada iniciada con Vapi.ai al número ${targetPhone}`,
+            status: vapiData.status || 'queued',
+            callerId: '+18709128303 (Telnyx)',
+            targetPhone,
+            ownerName,
+            propertyAddress: propertyAddr,
+            callTargetType,
+            firstMessage,
+            maoOffer,
+            anchorOffer,
+            projectedFee,
+            voiceUsed: `ElevenLabs Cloned: Pace Morby (${elevenLabsVoiceId})`,
+            message: `Llamada telefónica iniciada exitosamente hacia ${ownerName} (${targetPhone}) con la voz clonada de Pace Morby y número Telnyx +1 (870) 912-8303.`,
           });
         } catch (vapiErr: any) {
-          return NextResponse.json({ error: `Error en Vapi.ai: ${vapiErr.message}` }, { status: 500 });
+          return NextResponse.json(
+            { error: `Error conectando con API de Vapi: ${vapiErr.message}` },
+            { status: 500 }
+          );
         }
       }
 
-      // If user provided Retell AI Key
-      if (provider === 'retell' && apiKey) {
-        try {
-          const retellRes = await fetch('https://api.retellai.com/v2/create-phone-call', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              from_number: phoneNumber,
-              to_number: targetPhone,
-              override_agent_id: assistantId,
-            }),
-          });
-          const retellData = await retellRes.json();
-          return NextResponse.json({
-            success: true,
-            provider: 'retell',
-            callId: retellData.call_id,
-            status: 'calling',
-            message: `Llamada iniciada con Retell AI al número ${targetPhone}`,
-          });
-        } catch (retellErr: any) {
-          return NextResponse.json({ error: `Error en Retell AI: ${retellErr.message}` }, { status: 500 });
-        }
-      }
-
-      const reductionAmt = Number(reductionAmount) || 12000;
-      const originalOffer = lead?.agreedPrice || lead?.recommendedMaoOffer || 62000;
-      const targetDropOffer = Math.max(10000, originalOffer - reductionAmt);
-      const strategyName = customStrategyName || lead?.leadSource || 'Wholesale Direct';
-
-      // ─── BOT 2: PLAN B — THE INSPECTION PRICE DROP (RENEGOTIATION) ───────────────
-      if (botType === 'plan_b_renegotiation') {
-        const planBPrompt = `You are Alex, an elite Wholesale Acquisitions Partner at AI Automated Services LLC calling ${ownerName} regarding the pending Purchase Agreement on ${propertyAddr}.
-GOAL: Renegotiate the purchase price from $${originalOffer.toLocaleString()} down to $${targetDropOffer.toLocaleString()} (a $${Number(reductionAmt).toLocaleString()} haircut) based on unexpected contractor inspection findings, while maintaining total rapport and keeping the closing date alive.
-
-CALL FRAMEWORK (PLAN B - INSPECTION PRICE DROP):
-1. COURTEOUS RAPPORT & CONTRACTOR WALK UPDATE:
-"Hey ${ownerName}, it's Alex from AI Automated Services LLC following up on ${propertyAddr}. Hope you're having a productive week! I wanted to call you directly because our technical inspection crew and contractor team just finished their comprehensive on-site walk of the property."
-
-2. THE INSPECTION DISCOVERY & PARTNER VETO:
-"Look, the neighborhood and bones are great. However, once our mechanical technicians got into the attic and crawlspace, they uncovered significant unexpected deferred maintenance — specifically, the HVAC furnace heat exchanger is cracked and the rear roof decking has hidden water rot. The licensed contractor estimate came in at $${Number(reductionAmt).toLocaleString()} to $15,000 above our initial underwriting budget. 
-Because of this, our investment committee and underwriting partners met this morning and they refused to approve closing at our original $${originalOffer.toLocaleString()} figure. In fact, they instructed me to issue a formal termination notice under Section 4 of our Inspection Contingency."
-
-3. THE WIN-WIN COMPROMISE OFFER (REVERSE ANCHOR):
-"However, ${ownerName}, I told my partners that you've been wonderful to work with, and I know you want this closed quickly without the headache of fixing anything or relisting on the MLS. I went to bat for you and got them to agree to this: If we can execute a quick 1-page Price Amendment Addendum adjusting the purchase price to $${targetDropOffer.toLocaleString()} net to you, I have full authority to immediately waive all remaining inspection contingencies and fund the deal next week in cash. Does that work so we can keep closing on track for you?"
-
-4. HANDLING THE SELLER OBJECTION ("That's too big of a drop"):
-"I completely understand ${ownerName}. But consider this: If we cancel and you list with an agent, any retail buyer getting an FHA or conventional mortgage will hire an inspector who will flag this exact same roof and furnace issue, and the bank will decline their loan unless you pay $15,000 out of pocket. Then you lose 60 to 90 days and pay 6% realtor commissions. With us, $${targetDropOffer.toLocaleString()} is 100% net cash in your pocket in 7 days, zero fees. Let's get this wrapped up today."
-
-5. CLOSING TIE-DOWN:
-"Can I text you the 1-page Price Amendment Addendum right now so you can sign it on your phone and keep closing on schedule?"`;
-
-        return NextResponse.json({
-          success: true,
-          provider: 'built_in_ai_agent',
-          botType: 'plan_b_renegotiation',
-          status: 'simulated_connected',
-          systemPromptForTelephony: planBPrompt,
-          spokenScript: `Hey ${ownerName}, it's Alex from AI Automated Services LLC calling regarding ${propertyAddr}. Our technical inspection crew finished the on-site walk, but uncovered $${Number(reductionAmt).toLocaleString()} in urgent roof and furnace replacements. My partners vetoed our original price, but I fought to keep the deal alive: if we adjust to $${targetDropOffer.toLocaleString()} net cash, we waive all contingencies and close in 7 days. Can we make that happen?`,
-          suggestedSms: `Hola ${ownerName}, soy Alex de AI Automated Services LLC. Nuestro equipo técnico completó la inspección en ${propertyAddr}. Se detectaron reparaciones imprevistas en techo y calefacción por $${Number(reductionAmt).toLocaleString()}. Mis socios autorizaron cerrar al 100% en efectivo en 7 días si ajustamos el precio a $${targetDropOffer.toLocaleString()} netos. ¿Hablamos 2 minutos?`,
-          message: `Bot Plan B (Renegociación de Precio por Inspección) activado para ${ownerName}. Oferta ajustada a $${targetDropOffer.toLocaleString()}.`,
-        });
-      }
-
-      // ─── BOT 3: PLAN C — CLEAN CANCELLATION & MUTUAL RELEASE (WALK AWAY) ─────────
-      if (botType === 'plan_c_cancellation') {
-        const planCPrompt = `You are Alex, an elite Wholesale Acquisitions Partner at AI Automated Services LLC calling ${ownerName} regarding the Purchase Agreement on ${propertyAddr}.
-GOAL: Professionally notify the seller that under Section 4 (Inspection & Due Diligence Contingency) the buyer is electing to cancel the contract and release all claims, keeping an amicable relationship, instructing the title company to release the Earnest Money Deposit (EMD) 100% to Buyer, and leaving the door open for future deals.
-
-CALL FRAMEWORK (PLAN C - CLEAN CANCELLATION & MUTUAL RELEASE):
-1. COURTEOUS NOTICE:
-"Hello ${ownerName}, this is Alex with AI Automated Services LLC calling regarding ${propertyAddr}. I hope you're doing well today."
-
-2. THE DUE DILIGENCE CONCLUSION:
-"I'm calling to provide our formal update regarding our inspection and partner due diligence contingency under Section 4 of our Purchase Agreement. As our 14-day inspection window comes to a close, our engineering reports and underwriting team reviewed the structural and title costs. Unfortunately, based on the high renovation requirements, our investment committee has formally decided not to proceed with the acquisition at this time."
-
-3. PROFESSIONAL RELEASE & EMD REFUND INSTRUCTION:
-"Pursuant to the terms of Section 4 of our agreement, we are sending over a formal 1-page Cancellation and Mutual Release of Purchase Agreement today. This document completely releases all of our equitable interest in the property, giving you full freedom to market it to any other party immediately, and authorizes the title company to return our escrow deposit without penalty. We truly appreciate your time and transparency throughout this process."
-
-4. LEAVING THE DOOR OPEN:
-"If your timeline or price expectations adjust down the road, or if you'd ever like to revisit a cash offer, please keep my direct number handy. We wish you the absolute best with the home."`;
-
-        return NextResponse.json({
-          success: true,
-          provider: 'built_in_ai_agent',
-          botType: 'plan_c_cancellation',
-          status: 'simulated_connected',
-          systemPromptForTelephony: planCPrompt,
-          spokenScript: `Hello ${ownerName}, this is Alex with AI Automated Services LLC. I am calling to give you an update regarding our inspection period on ${propertyAddr}. Due to the contractor renovation bids, our investment committee has decided not to proceed with the purchase. We are issuing the formal Mutual Release today so you have complete freedom to market the property, and instructing title to release escrow. We thank you for your time.`,
-          suggestedSms: `Hola ${ownerName}, soy Alex de AI Automated Services LLC. Siguiendo el periodo de inspección en ${propertyAddr}, nuestros socios no aprobaron los costos técnicos de remodelación. Hemos enviado la Cancelación y Liberación Mutua a la compañía de título para liberar tu propiedad de inmediato. Muchas gracias por tu atención.`,
-          message: `Bot Plan C (Cancelación Limpia y Liberación Mutua) activado para ${ownerName}. Cero penalidad y 100% reembolso de EMD.`,
-        });
-      }
-
-      // ─── BOT 1: INITIAL OUTREACH CLOSER (RICHARD TAYLOR LIVE CALL FRAMEWORK) ──────
+      // Fallback: If no API Key configured, return generated prompt payload
       return NextResponse.json({
         success: true,
-        provider: 'built_in_ai_agent',
-        botType: 'initial_outreach',
-        status: 'simulated_connected',
-        systemPromptForTelephony: `You are Alex, an elite Wholesale Real Estate Acquisitions Closer at AI Automated Services LLC calling ${ownerName} regarding the property at ${propertyAddr}. Strategy: ${strategyName}.
-You follow the exact Start-to-Finish Live Call Closing Framework of Richard Taylor (@richardgrandintaylor — Hold My Hand Wholesale / Reel DdpMUHvyuZZ):
-
-1. PATTERN INTERRUPT & AI EXECUTIVE ASSISTANT TRANSPARENCY OPENER (OPTION A):
-"Hi ${ownerName}, this is Alex, the AI executive assistant for AI Automated Services LLC. I’m helping our acquisitions partners connect with homeowners in the area. We noticed your property on ${propertyAddr} and wanted to see if you'd be open to a quick, all-cash offer with zero commissions?"
-If seller asks if you're an AI: "Yes, I am! I’m an AI assistant helping our investment team gather basic property details so our partners don't take up too much of your time. If you're open to an offer, I can note down the details and have our senior acquisitions partner follow up with you directly."
-
-2. UNCOVERING MOTIVATION & 4 PILLARS IN ORDER:
-- Walkaway Price Anchor: "If we were to buy this completely cash as-is without you having to fix anything, what's the lowest number you'd feel comfortable walking away with from the closing table?"
-- Condition / Repairs: "To make sure our cash offer is fair, what kind of work does the property need? How are the roof, plumbing, HVAC, and cosmetics?"
-- Motivation / Real Reason: "What's prompting you to consider selling at this time? Are you looking to avoid tenant headaches, taxes, or reallocate cash?"
-- Timeline: "How soon would you like to have funds in your account? We can close in 10 to 14 days, or give you extra time to move."
-
-3. PRESENTING THE NET CASH OFFER (MATHEMATICAL FACT):
-"Based on our contractor numbers, the roof and cosmetics will require approximately $18,000-$22,000, and our company pays 100% of all title company escrow and closing fees with zero realtor commissions. Our clean, net walkaway cash offer for you is $${lead?.recommendedMaoOffer || '145,000'}. If we close next Friday, do we have a deal?"
-
-4. HANDLING OBJECTIONS (THE RICHARD TAYLOR REBUTTAL):
-- If seller says Zillow/Realtor price is higher: "With a realtor at full price you will pay 6% commissions, 3% closing costs, and the bank buyer will demand $15k in repairs after inspection, taking 90 days. We guarantee you $${lead?.recommendedMaoOffer || '145,000'} net in 10 days."
-
-5. INSTANT DIGITAL TIE-DOWN:
-"Can I text you our simple 1-page agreement right to your phone right now so you can tap and sign on your screen, and we'll open escrow today?"`,
-        message: `Agente de Voz IA conectado con ${ownerName} (${targetPhone}) con la entidad AI Automated Services LLC y metodología de Richard Taylor.`,
+        provider: 'built_in_prompt_engine',
+        botType,
+        callTargetType,
+        status: 'simulated_ready',
+        targetPhone,
+        ownerName,
+        propertyAddress: propertyAddr,
+        firstMessage,
+        systemPromptForTelephony: systemPrompt,
+        message: `Prompt de llamada calibrado con la voz de Pace Morby y matriz de objeciones para ${propertyAddr}.`,
       });
     }
 
-    // 2. Analyze Conversation Transcript and Extract Deal Agreement
+    // ─────────────────────────────────────────────────────────────────────────
+    // ACTION: Analyze Conversation Transcript and Extract Deal Agreement
+    // ─────────────────────────────────────────────────────────────────────────
     if (action === 'analyze_call_transcript') {
-      const prompt = `Analiza la siguiente transcripción de llamada entre el Agente de Adquisiciones y el Propietario:
+      const prompt = `Analiza la siguiente transcripción de llamada entre el Agente de Adquisiciones (Pace Morby) y el Propietario/Comprador:
 "${transcript || 'Transcripción vacía'}"
 
-Devuelve un JSON con:
+Devuelve un JSON estricto con:
 {
   "sellerMotivationScore": 85,
-  "conditionSummary": "Detalles del estado de la casa",
-  "timelineToSell": "Inmediato / 30 días",
-  "agreedOrTargetPrice": 175000,
+  "conditionSummary": "Detalles del estado de la casa o lote",
+  "timelineToSell": "Inmediato / 10-14 días",
+  "agreedOrTargetPrice": 65000,
+  "assignmentProfitFee": 15000,
   "dealVerdict": "AGREED_CASH_OFFER" | "NEEDS_FOLLOW_UP" | "NOT_INTERESTED",
-  "nextAction": "Enviar contrato por SMS para firma electrónica (E-Sign)"
+  "nextAction": "Enviar contrato PSA o Assignment por SMS para firma electrónica (E-Sign)"
 }`;
 
       try {
@@ -215,11 +269,12 @@ Devuelve un JSON con:
           success: true,
           analysis: {
             sellerMotivationScore: 88,
-            conditionSummary: 'Propiedad necesita techo y pintura; dueño no quiere hacer reparaciones.',
-            timelineToSell: '30 días o menos',
-            agreedOrTargetPrice: lead?.agreedPrice || lead?.recommendedMaoOffer || 170000,
+            conditionSummary: 'Propietario aceptó oferta al contado tras anclaje inverso sin comisiones.',
+            timelineToSell: '10 a 14 días',
+            agreedOrTargetPrice: lead?.agreedPrice || lead?.recommendedMaoOffer || 65000,
+            assignmentProfitFee: 15000,
             dealVerdict: 'AGREED_CASH_OFFER',
-            nextAction: 'Enviar contrato por SMS para firma electrónica en /sign/' + leadId,
+            nextAction: 'Enviar contrato por SMS para firma electrónica en /sign/' + (leadId || 'deal-1'),
           },
         });
       }

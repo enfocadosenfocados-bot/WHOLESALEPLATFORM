@@ -7,6 +7,12 @@ import {
   CARSON_INFILL_LOT_OPPORTUNITIES,
   ZACH_TOP50_ZILLOW_FSBO_LEADS,
 } from '@/types/reverseSourcing';
+import {
+  buildPaceOpeningGreeting,
+  generateSellerCloserPrompt,
+  generateBuyerCloserPrompt,
+  DealSpecs,
+} from '@/lib/voiceCloserPrompt';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Build a full, omniscient platform context snapshot for the AI
@@ -228,9 +234,41 @@ async function tryExecuteAction(
         phone: '(239) 555-4420',
       },
       scripts: {
-        callOpeningPatternInterrupt: 'Hola Robert, habla Alex de AI Automated Services LLC. Veo que tienes el terreno en 1428 Tropicana Pkwy W en Cape Coral. Varios vecinos nos comentaron que tal vez estarías dispuesto a venderlo si recibes una oferta al contado sin comisiones de agente. ¿Si te ponemos $7,500 en efectivo en tu banco en 10 días absorbiendo todos los costos de cierre, considerarías venderlo esta semana?',
-        smsDirectText: 'Hola Robert! Alex de AI Automated Services LLC. Tengo una oferta de $7,500 en efectivo lista para tu lote en 1428 Tropicana Pkwy W en Cape Coral. Cerramos en 10 días y pagamos todos los costos de cierre. ¿Te sirve cerrarlo esta semana?',
-        buyerVipPitch: 'Hola Jon (Baker Construction)! Tengo exactamente el lote de 80x125 ft en 1428 Tropicana Pkwy W en Cape Coral NW. Seco, calle asfaltada, poste de luz al frente. Bajo contrato listo para losa. Te lo asigno por $38,000 netos con título limpio. ¿Te paso el contrato hoy?',
+        callOpeningPatternInterrupt: 'Hey, good afternoon! ...Yeah, sorry to catch you out of nowhere, my name is Pace with the acquisitions team. Quick question—are you the owner or in charge of the property located at 1428 Tropicana Pkwy W, Cape Coral, FL 33993?',
+        callOpeningSpanish: 'Hola Robert, habla Pace del equipo de adquisiciones. Disculpa contactarte de la nada. Pregunta rápida: ¿eres el dueño o estás a cargo del terreno ubicado en 1428 Tropicana Pkwy W en Cape Coral?',
+        smsDirectText: 'Hey Robert, Pace with the acquisitions team here! We are buying infill lots for cash in Cape Coral this week. We have a clean $7,500 cash offer for 1428 Tropicana Pkwy W with zero commissions and 10-day title close. Would you be open to an all-cash walkaway this week?',
+        buyerVipPitch: 'Hey Jon (Baker Construction)! Pace here. I have an exclusive off-market 80x125 ft infill lot at 1428 Tropicana Pkwy W in Cape Coral NW. High & dry, paved street, power at street. Clean title opened at First American Title. Assigning for $38,000 cash with 10-day close. Can I send the assignment contract over today?',
+        buyerOpeningPatternInterrupt: 'Hey, good afternoon! ...Yeah, sorry to catch you out of nowhere, my name is Pace with the acquisitions team. Quick question—are you guys currently buying off-market properties or buildable infill lots around Cape Coral / Lee County, FL?',
+      },
+      telephonyActions: {
+        sellerCall: {
+          targetPhone: '(239) 555-9201',
+          ownerName: 'Robert Vance McCallister',
+          propertyAddress: '1428 Tropicana Pkwy W, Cape Coral, FL 33993',
+          county: 'Lee County, FL',
+          callTargetType: 'seller',
+          maoOffer: 7500,
+          anchorOffer: 6500,
+          projectedFee: 30500,
+          minimumFeeFloor: 5000,
+          firstMessage: 'Hey, good afternoon! ...Yeah, sorry to catch you out of nowhere, my name is Pace with the acquisitions team. Quick question—are you the owner or in charge of the property located at 1428 Tropicana Pkwy W, Cape Coral, FL 33993?',
+          voice: 'Pace Morby (ElevenLabs bRxD1Ek8rBfVQeKVLQSs)',
+          callerId: '+1 (870) 912-8303 (Telnyx)',
+        },
+        buyerCall: {
+          targetPhone: '(239) 555-4420',
+          ownerName: 'Jon Sninsky',
+          builderName: 'Baker Construction Corp',
+          propertyAddress: '1428 Tropicana Pkwy W, Cape Coral, FL 33993',
+          county: 'Lee County, FL',
+          callTargetType: 'buyer',
+          builderPrice: 38000,
+          projectedFee: 30500,
+          minimumFeeFloor: 5000,
+          firstMessage: 'Hey, good afternoon! ...Yeah, sorry to catch you out of nowhere, my name is Pace with the acquisitions team. Quick question—are you guys currently buying off-market properties or buildable infill lots around Cape Coral / Lee County, FL?',
+          voice: 'Pace Morby (ElevenLabs bRxD1Ek8rBfVQeKVLQSs)',
+          callerId: '+1 (870) 912-8303 (Telnyx)',
+        },
       },
       legalEntity: 'AI Automated Services LLC and/or assigns',
       eSignContractUrl: 'http://localhost:3005/sign/carson-lot-1',
@@ -777,7 +815,7 @@ Authorized Acquisitions Specialist`;
     };
   }
 
-  // 6. PREPARE / TRIGGER VOICE CALL (Vapi.ai / Twilio / Phone Closer Bot)
+  // 6. PREPARE / TRIGGER VOICE CALL (Vapi.ai / Telnyx / Pace Morby Real Estate Closer)
   if (
     intent === 'prepare_voice_call' ||
     msg.includes('llama a') ||
@@ -788,74 +826,145 @@ Authorized Acquisitions Specialist`;
     msg.includes('prepara la llamada') ||
     msg.includes('bot de voz') ||
     msg.includes('marcus vance') ||
-    msg.includes('arthur pendleton')
+    msg.includes('arthur pendleton') ||
+    msg.includes('robert') ||
+    msg.includes('tropicana') ||
+    msg.includes('baker') ||
+    msg.includes('sninsky') ||
+    msg.includes('llamar al vendedor') ||
+    msg.includes('llamar al comprador') ||
+    msg.includes('llamar al buyer')
   ) {
-    const leads = db.sellerLeads || [];
-    let targetLead = leads.find((l: any) =>
-      msg.includes(l.ownerName?.toLowerCase().split(' ')[0] || '') ||
-      msg.includes(l.propertyAddress?.toLowerCase().split(' ')[0] || '')
-    );
-    if (!targetLead && leads.length > 0) {
-      targetLead = leads[0];
-    }
-    if (!targetLead) {
-      targetLead = {
-        id: 'lead-vapi-demo',
-        ownerName: 'Marcus Vance',
-        propertyAddress: '18418 Joann St, Detroit, MI 48205',
-        phone: '(313) 555-8291',
-        estimatedArv: 135000,
-        recommendedMaoOffer: 62000,
-        status: 'call_ready',
-        leadSource: 'Code Violation / Tired Landlord',
-      };
+    const isBuyerCall = msg.includes('buyer') || msg.includes('comprador') || msg.includes('builder') || msg.includes('baker') || msg.includes('sninsky');
+    const isWinnerLot = msg.includes('robert') || msg.includes('tropicana') || msg.includes('cape coral') || msg.includes('infill') || msg.includes('lote') || (!msg.includes('marcus') && !msg.includes('arthur') && !msg.includes('detroit'));
+
+    let targetPhone = '(239) 555-9201';
+    let ownerName = 'Robert Vance McCallister';
+    let propertyAddress = '1428 Tropicana Pkwy W, Cape Coral, FL 33993';
+    let county = 'Lee County, FL';
+    let callTargetType: 'seller' | 'buyer' = isBuyerCall ? 'buyer' : 'seller';
+    let maoOffer = 7500;
+    let anchorOffer = 6500;
+    let builderPrice = 38000;
+    let projectedFee = 30500;
+    let minimumFeeFloor = 5000;
+    let builderName = 'Jon Sninsky (Baker Construction Corp)';
+    let specs = '0.23 Acres (80 x 125 ft) • R-1 Zoning • High & Dry Lot ready for slab';
+
+    if (isBuyerCall) {
+      targetPhone = '(239) 555-4420';
+      ownerName = 'Jon Sninsky';
+      builderName = 'Baker Construction Corp';
+    } else if (!isWinnerLot) {
+      const leads = db.sellerLeads || [];
+      const foundLead = leads.find((l: any) =>
+        msg.includes(l.ownerName?.toLowerCase().split(' ')[0] || '') ||
+        msg.includes(l.propertyAddress?.toLowerCase().split(' ')[0] || '')
+      ) || leads[0];
+
+      if (foundLead) {
+        ownerName = foundLead.ownerName;
+        propertyAddress = foundLead.propertyAddress;
+        targetPhone = foundLead.phone || '(313) 555-8291';
+        county = foundLead.county || 'Wayne County, MI';
+        maoOffer = foundLead.recommendedMaoOffer || 62000;
+        anchorOffer = Math.round(maoOffer * 0.88);
+        builderPrice = maoOffer + 12000;
+        projectedFee = 12000;
+        specs = 'Single Family Residential Property';
+      }
     }
 
-    const offerStr = `$${(targetLead.recommendedMaoOffer || 62000).toLocaleString()}`;
+    const dealSpecs: DealSpecs = {
+      callTargetType,
+      ownerName,
+      propertyAddress,
+      targetPhone,
+      county,
+      specs,
+      maoOffer,
+      anchorOffer,
+      builderPrice,
+      projectedFee,
+      minimumFeeFloor,
+      builderName,
+    };
+
+    const firstMessage = buildPaceOpeningGreeting(propertyAddress, callTargetType, county);
+    const systemPromptForTelephony = callTargetType === 'buyer'
+      ? generateBuyerCloserPrompt(dealSpecs)
+      : generateSellerCloserPrompt(dealSpecs);
+
     const vapiPayload = {
-      assistant: {
-        name: 'Alex - Wholesale Acquisitions Bot',
-        firstMessage: `Hola ${targetLead.ownerName}, habla Alex de AI Automated Services LLC. Sé que no esperabas mi llamada, te llamo muy brevemente sobre tu casa en ${targetLead.propertyAddress}. ¿Todavía eres el dueño?`,
+      phoneNumberId: '174882b4-adb6-4417-a37e-3de8de0c5291',
+      customer: {
+        number: targetPhone,
+        name: ownerName,
+      },
+      assistantId: '68ba22c6-0efa-49df-98a7-88b2febaa3a5',
+      assistantOverrides: {
+        firstMessage,
         model: {
           provider: 'openai',
           model: 'gpt-4o',
-          systemPrompt: `Eres Alex, analista senior de adquisiciones para AI Automated Services LLC and/or assigns.
-Tu objetivo en esta llamada con ${targetLead.ownerName} es evaluar la propiedad en ${targetLead.propertyAddress}:
-1. Validar condición física (techo, fontanería, daños).
-2. Diagnosticar los 4 pilares: Precio neto deseado, Condición real, Motivo de venta, Plazo (10-14 días).
-3. Presentar nuestra oferta de contado en mano de ${offerStr} sin comisiones ni costos de título.
-4. Si acepta o está cerca, pedir confirmación para enviar el acuerdo PSA de 1 página por SMS para firma digital inmediata.`,
+          messages: [
+            {
+              role: 'system',
+              content: systemPromptForTelephony,
+            },
+          ],
         },
         voice: {
           provider: '11labs',
-          voiceId: 'bIHbv24MWmeRgasZH58o',
+          model: 'eleven_turbo_v2_5',
+          voiceId: 'bRxD1Ek8rBfVQeKVLQSs',
+          stability: 0.30,
+          similarityBoost: 0.85,
+          style: 0.08,
         },
-      },
-      customer: {
-        number: targetLead.phone || '(313) 555-8291',
-        name: targetLead.ownerName,
-      },
-      metadata: {
-        propertyAddress: targetLead.propertyAddress,
-        recommendedMao: targetLead.recommendedMaoOffer,
-        entity: 'AI Automated Services LLC and/or assigns',
+        backgroundSound: 'office',
+        backchannelingEnabled: true,
       },
     };
 
     return {
       actionTaken: 'prepare_voice_call',
       actionResult: {
-        lead: targetLead,
+        callTargetType,
+        targetPhone,
+        ownerName,
+        propertyAddress,
+        county,
+        maoOffer,
+        anchorOffer,
+        builderPrice,
+        projectedFee,
+        minimumFeeFloor,
+        builderName,
+        firstMessage,
+        callerId: '+1 (870) 912-8303 (Telnyx)',
+        voiceUsed: 'Pace Morby Cloned (ElevenLabs bRxD1Ek8rBfVQeKVLQSs)',
         vapiPayload,
-        targetPhone: targetLead.phone || '(313) 555-8291',
-        ownerName: targetLead.ownerName,
-        propertyAddress: targetLead.propertyAddress,
-        maoOffer: targetLead.recommendedMaoOffer || 62000,
+        systemPromptForTelephony,
+        callActionPayload: {
+          action: 'trigger_telephony_call',
+          callTargetType,
+          phoneNumber: targetPhone,
+          ownerName,
+          propertyAddress,
+          county,
+          maoOffer,
+          anchorOffer,
+          builderPrice,
+          projectedFee,
+          minimumFeeFloor,
+          builderName,
+        },
         callScriptSpanish: {
-          opening: `Hola ${targetLead.ownerName}, habla Alex de AI Automated Services LLC. Sé que no esperabas mi llamada, te llamo muy brevemente sobre tu propiedad en ${targetLead.propertyAddress}. ¿Sigues siendo el propietario?`,
-          diagnostic: `Si pudiéramos cerrar al contado en 10 a 14 días absorbiendo nosotros el 100% de los gastos de título e inspección, ¿con qué monto neto te sentirías cómodo saliendo de la mesa de cierre?`,
-          presentation: `Basado en la condición y las reparaciones que asumimos, mi oferta neta directa para ti es de ${offerStr}. Cerramos el próximo viernes en una compañía de título local reconocida.`,
-          closing: `Excelente. Te acabo de enviar el enlace del contrato de 1 página a tu celular. Solo colocas tu firma con el dedo y abrimos el archivo en la compañía de título hoy mismo.`,
+          opening: firstMessage,
+          diagnostic: 'Evaluamos la condición, plazo y motivo de venta para garantizar cierre en 10-14 días netos.',
+          presentation: `Oferta inicial de anclaje inverso: ${anchorOffer.toLocaleString()} netos al contado (con techo MAO de ${maoOffer.toLocaleString()}) absorbiendo el 100% de gastos de título.`,
+          closing: 'Envío del acuerdo simple de 1 página por SMS para firma electrónica inmediata en pantalla.',
         },
       },
       navigateToTab: 'seller_pipeline',
@@ -1655,37 +1764,51 @@ Hemos ejecutado el ciclo completo de Wholesale de principio a fin:
 
   // VOICE CALL
   if (actionTaken === 'prepare_voice_call' && actionData) {
-    const s = actionData.callScriptSpanish;
-    return `📞 **¡LLAMADA IA PREPARADA & LISTA EN VAPI TELEPHONY!**
+    const isBuyer = actionData.callTargetType === 'buyer';
+    const profitFee = Number(actionData.projectedFee || 15000).toLocaleString();
+    const anchor = Number(actionData.anchorOffer || 6500).toLocaleString();
+    const mao = Number(actionData.maoOffer || 7500).toLocaleString();
+    const builderP = Number(actionData.builderPrice || 38000).toLocaleString();
+    const targetType = isBuyer ? 'Comprador Final / Constructor VIP' : 'Propietario / Seller Motivado';
 
-El sistema configuró el bot de voz para contactar a **${actionData.ownerName}** (${actionData.targetPhone}) sobre la propiedad en **${actionData.propertyAddress}**.
-
----
-
-### 🎙️ Guion Calibrado para la Llamada (4 Pilares de Motivación):
-1. **Apertura (Pattern Interrupt):**
-   > *"${s.opening}"*
-2. **Diagnóstico de Motivación (Precio y Condición):**
-   > *"${s.diagnostic}"*
-3. **Presentación de Oferta Matemática:**
-   > *"${s.presentation}"*
-4. **Cierre & Envío del Contrato E-Sign:**
-   > *"${s.closing}"*
-
----
-
-### ⚙️ Payload Listo para Disparar en Vapi / Twilio:
-\`\`\`json
-{
-  "phoneNumber": "${actionData.targetPhone}",
-  "customerName": "${actionData.ownerName}",
-  "property": "${actionData.propertyAddress}",
-  "targetOffer": "$${(actionData.maoOffer || 62000).toLocaleString()}",
-  "buyerEntity": "AI Automated Services LLC and/or assigns"
-}
-\`\`\`
-
-📍 *Sincronizado con **2. Vendedores (SMS/Llamada IA)** para monitoreo en vivo.*`;
+    return [
+      '📞 **¡LLAMADA EN VIVO CALIBRADA CON LA VOZ DE PACE MORBY (VAPI + TELNYX)!**',
+      '',
+      'El agente de voz de adquisiciones está configurado y listo para marcar inmediatamente a **' + actionData.ownerName + '** (' + actionData.targetPhone + ').',
+      '',
+      '---',
+      '',
+      '### 🎙️ Configuración de Telefonía en Producción:',
+      '- 📱 **Número Saliente (Caller ID):** `+1 (870) 912-8303` (Telnyx Voice PSTN / US Whitelisted)',
+      '- 🗣️ **Voz Ultra-Realista:** `Pace Morby (ElevenLabs bRxD1Ek8rBfVQeKVLQSs)` + Sonido de Fondo de Oficina (`office`)',
+      '- 🎯 **Destinatario:** `' + targetType + '`',
+      '- 🏠 **Propiedad en Negociación:** **' + actionData.propertyAddress + '**',
+      '',
+      '---',
+      '',
+      '### 💬 Primer Mensaje Inyectado en Vivo (First Spoken Message):',
+      '> **"' + (actionData.firstMessage || '') + '"**',
+      '',
+      '---',
+      '',
+      '### 💰 Estrategia Financiera & Regla de Ganancia Mínima:',
+      '- 🛡️ **Piso Mínimo de Ganancia (Floor Fee):** **$5,000 USD** (Estrictamente respetado en toda negociación)',
+      '- 💎 **Ganancia Proyectada del Deal:** **+$' + profitFee + ' USD**',
+      isBuyer
+        ? '- 🏗️ **Precio de Venta al Constructor:** **$' + builderP + ' CASH**'
+        : '- 📉 **Oferta de Anclaje Inverso:** **$' + anchor + ' Netos** (Margen de negociación hasta **$' + mao + ' MAO**)',
+      '',
+      '---',
+      '',
+      '### 🛡️ Matriz de Negociación y Cierre en el Prompt de IA:',
+      '1. **Los 4 Pilares:** Diagnostica Condición, Plazo, Motivo y Precio antes de ofertar.',
+      '2. **Reverse Price Anchor:** "Mi comité de inversión me dio un tope de $' + anchor + '... ¿qué tan cerca puedes llegar?"',
+      '3. **Manejo de Objeciones:** Rebatimiento para DNC/Legalidad, Precio de Zillow, "¿Eres agente?", "No quiero vender" y "Tengo que pensarlo".',
+      '4. **Plan B Finanzas Creativas:** Si el vendedor exige precio retail, pivotea a Subject-To o Seller Financing.',
+      '5. **Cierre Digital:** Envío del contrato PSA de 1 página por SMS para firma digital.',
+      '',
+      '📍 *Presiona el botón verde abajo **"📞 Iniciar Llamada Real con Pace Morby"** para disparar la llamada al teléfono real vía Telnyx.*'
+    ].join('\n');
   }
 
   // MAO CALCULATION
