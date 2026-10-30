@@ -88,9 +88,20 @@ NEGOTIATION SCRIPT (GOOD COP / BAD COP):
    "Look, I really want to help you get this done today. If I go back to my partners right now and fight to get them to approve $${mao.toLocaleString()} net cash in hand, can we shake hands and execute a simple 1-page agreement today?"
 
 PHASE 3: CREATIVE FINANCE PIVOT (PACE MORBY SIGNATURE MOVE):
-If the seller is stuck on a high retail price or has an existing low-interest mortgage:
-- Pivot to Subject-To or Seller Financing:
-  "${owner}, if you really need $${(mao * 1.3).toLocaleString()} or close to retail, cash won't make sense for our cash flow. But would you consider selling on terms? For example, if we take over your monthly mortgage payments or pay you monthly with interest, we can get much closer to your price without you paying capital gains taxes all at once."
+If the seller insists on retail price ("no me bajo de mi precio / Zillow price") OR mentions an existing mortgage with a low interest rate (2.8% to 4% from 2020-2021):
+Pivot smoothly to Subject-To or Seller Financing without confusing the seller with complicated bank jargon:
+
+1. THE EXACT MASTER PIVOT HOOK:
+   "Look, ${owner}, I completely respect that you want your full price. If a cash offer with a discount doesn't make sense for you, would you be open to getting your full asking price if we take over your monthly mortgage payments, or pay you directly every month with interest?"
+   (En español: "Mira, ${owner}, entiendo y respeto que quieras tu precio completo. Si una oferta de contado con descuento no te conviene, ¿estarías abierto a que te paguemos tu precio completo si asumimos las cuotas mensuales de tu hipoteca o te pagamos mensualmente con intereses?")
+
+2. WHY THIS IS EFFORTLESS & DEAD SIMPLE FOR THE SELLER (NO HEADACHES):
+   - FULL ASKING PRICE: They get their top dollar without taking an aggressive haircut.
+   - ZERO LANDLORD BURDEN: "You will never get a call about toilets, maintenance, property taxes, or insurance. We take over 100% of property upkeep, hazard insurance, and county taxes from day one."
+   - LICENSED 3RD-PARTY LOAN SERVICING: "You don't have to manage anything or collect payments manually. We set up a licensed escrow servicing company (like Weststar Loan Servicing or Evergreen) that automatically direct-deposits your payment into your bank account on the 1st of every month."
+   - MASSIVE TAX SAVINGS: Avoids a devastating lump-sum capital gains tax hit this year because payments are spread out over time.
+   - CREDIT BOOST (FOR SUBJECT-TO): Every on-time mortgage payment made by our servicer on their existing low-rate loan directly builds their personal credit score.
+   - FAST CLOSING: Standard 1-page agreement closed through our licensed investor-friendly title company in 10-14 days without bank loan delays.
 
 PHASE 4: MASTER OBJECTION HANDLING MATRIX (REBUTTALS):
 
@@ -119,7 +130,14 @@ PHASE 4: MASTER OBJECTION HANDLING MATRIX (REBUTTALS):
    - Rebuttal: "Not a problem at all. We buy properties with tenants in place, even if they are behind on rent or don't have a lease. You won't have to evict anyone or deal with the drama—we inherit the situation as-is."
 
 9. "El título tiene multas de código / impuestos atrasados / herencia en probate"
-   - Rebuttal: "We specialize in clearing messy titles. Our curative title team works directly with the county to negotiate liens down by up to 85% and handle affidavits of heirship. We pay off the liens directly at closing from our funds, so you walk away clean."
+   - Rebuttal: "Look, please do not let code violations, back taxes, or probate stress you out—we handle complicated titles every single week and make it completely effortless and simple for you so you don't have to enter into painful legal processes:
+     1. Zero Out-of-Pocket Cost: You do NOT pay a single penny out of your pocket.
+     2. No Court or Bureaucracy: You never have to hire expensive lawyers, attend hearings, or face the municipal code enforcement magistrate.
+     3. Up to 85%-90% Fine Reduction: Our dedicated curative title team files the formal hardship relief petition directly with the county/city code magistrate to slash municipal code liens by up to 85% to 90%.
+     4. Paid Directly at Closing: Any remaining tax or lien balance is paid off directly from closing proceeds by the title company on closing day, so you walk away 100% clean with zero liability.
+     5. Probate / Inherited Property Made Simple: If the property came from an inheritance or probate, our title attorney drafts a simple Affidavit of Heirship right at closing so you bypass months of probate court.
+     You literally just sign the closing documents with a mobile notary or on your phone, and walk away with your net cash check in hand, 100% clean, with zero hassles."
+   - Spanish version: "Por favor, no te preocupes en absoluto por las multas de código, impuestos atrasados o si la propiedad viene de una herencia o probate. Nosotros nos encargamos de todo para que sea 100% simple para ti y no tengas que entrar en otros procesos engorrosos: No tienes que pagar un solo centavo de tu bolsillo, no tienes que contratar abogados caros ni presentarte ante el municipio o la corte. Nuestro equipo curativo de título radica la petición formal ante el magistrado de código del condado para negociar y reducir las multas entre un 85% y un 90%, y cualquier saldo restante se liquida directamente de los fondos de cierre en la compañía de título. Y si es una herencia, nuestro abogado de título redacta una simple Declaración Jurada de Herederos (Affidavit of Heirship) para evitarte meses de juicio sucesorio. Tú solo firmas y te llevas tu cheque neto en mano sin trámites complicados."
 
 PHASE 5: CLOSING TIE-DOWN:
 When the seller agrees or is close:

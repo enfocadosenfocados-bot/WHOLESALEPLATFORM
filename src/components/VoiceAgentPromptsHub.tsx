@@ -159,11 +159,11 @@ export const MASTER_OBJECTIONS: ObjectionItem[] = [
   },
   {
     id: 'obj-title-heirs-mess',
-    objection: 'El título tiene problemas / herederos que no se hablan / embargos o impuestos atrasados',
-    sellerMindset: 'Creen que la propiedad no se puede vender porque el papeleo legal es un laberinto insalvable.',
-    rebuttalScriptSpanish: 'No se preocupe en lo más mínimo, resolvemos títulos complicados todos los meses. Nuestro equipo de título (*Curative Title*) se encarga de preparar los Affidavits of Heirship, localizar a los herederos para que firmen electrónicamente desde su celular y negociar con el municipio o el condado para liquidar o reducir los gravámenes directamente en la mesa de cierre. Lo que quede neto va directo a su cuenta bancaria.',
-    rebuttalScriptEnglish: 'Do not worry about that at all, we clear messy titles every single week. Our curative title team prepares Affidavits of Heirship, tracks down heirs for digital mobile signing, and negotiates with county officials to settle liens right at the closing table. The remaining cash goes straight to your bank account.',
-    closingHook: 'Nosotros pagamos los trámites de título y usted recibe su dinero limpio.',
+    objection: 'El título tiene problemas / herederos que no se hablan / embargos o multas de código',
+    sellerMindset: 'Creen que la propiedad no se puede vender porque el papeleo legal es un laberinto insalvable de corte o deudas.',
+    rebuttalScriptSpanish: 'No se preocupe en lo más mínimo, resolvemos títulos complicados todas las semanas de forma 100% simple para usted sin entrar en procesos desgastantes. Nuestro equipo curativo de título (Curative Title) radica la petición formal ante el magistrado municipal para reducir las multas de código entre un 85% y un 90%, y cualquier saldo restante se liquida directamente con los fondos de cierre en la compañía de título, por lo que usted no saca ni un dólar de su bolsillo ni va a audiencias. Y si hay herederos, nuestro abogado prepara un simple Affidavit of Heirship para evitar meses de juicio de probate. Usted solo firma y recibe su cheque neto y limpio en mano.',
+    rebuttalScriptEnglish: 'Do not worry about that at all, we clear messy titles every single week and make it completely effortless for you so you avoid exhausting legal hurdles. Our curative title team files hardship relief petitions directly with the city magistrate to slash code liens by 85% to 90%, and all remaining liens are paid directly from closing proceeds by the title company—you pay zero out of pocket and never go to court. For probate, our title attorney drafts a simple Affidavit of Heirship right at closing. You just sign and collect your clean net cash wire.',
+    closingHook: 'Nosotros gestionamos la reducción y el papeleo de título; usted solo cobra su cheque neto.',
     categoryTag: 'Probate & Títulos Sucios',
   },
 ];
@@ -365,7 +365,7 @@ OBJETIVO: Estructurar compra Subject-To asumiendo hipoteca existente y dando {ta
     },
     humanCloserScript: {
       patternInterrupt: 'Hola Cynthia, te llamo directo por tu casa en N 52nd St en Tampa. ¿Sigues siendo la dueña?',
-      pillar1Condition: 'Vemos que tienes una excelente tasa hipotecaria fija. Si nosotros nos hiciéramos cargo del pago mensual protegiendo tu crédito, ¿te interesaría mudarte?',
+      pillar1Condition: '¿Estarías abierto a que te paguemos tu precio completo si asumimos las cuotas mensuales de tu hipoteca al 2.8% o te pagamos mensualmente con intereses a través de una compañía de servicio autorizada?',
       pillar2Timeline: '¿Cuánto tiempo te tomaría empacar si tuvieras el dinero en mano este mes?',
       pillar3PriceAnchor: 'Nuestra propuesta es poner al día cualquier atraso con el banco, darte $12,000 en efectivo en mano limpios, y tomar la posición de pago mensual.',
       pillar4Motivation: 'Esto te permite salir de la deuda sin manchar tu historial crediticio con un foreclosure.',

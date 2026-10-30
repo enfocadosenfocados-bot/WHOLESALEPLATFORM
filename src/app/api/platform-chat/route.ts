@@ -1623,7 +1623,14 @@ Estrategia: **${cf.strategy}**
 - 👤 **${cf.matchedCashBuyer.name}** (${cf.matchedCashBuyer.role}) — Tel: **${cf.matchedCashBuyer.phone}**
 - 💬 **Pitch VIP:** *"${cf.matchedCashBuyer.vipPitch}"*
 
-🛡️ **Blindaje Legal Due-on-Sale:** *${cf.legalSafeguard}*`;
+🛡️ **Blindaje Legal Due-on-Sale:** *${cf.legalSafeguard}*
+
+---
+
+### 🎙️ Guión Pivot de Finanzas Creativas para el Agente de Voz (Pace Morby):
+> **"¿Estarías abierto a que te paguemos tu precio completo si asumimos las cuotas mensuales de tu hipoteca al 2.8% o te pagamos mensualmente con intereses a través de un Loan Servicer autorizado?"**
+
+*Beneficio Clave para el Vendedor: Recibe su precio completo sin descuentos, cero mantenimiento ni dolores de cabeza de inquilinos, pagos depositados el día 1 de cada mes y ahorro sustancial en impuestos de ganancias de capital.* `;
   }
 
   // SPEED-TO-LEAD DEAL SCORE (0-100)
@@ -1736,7 +1743,14 @@ Oferta de Liquidación al Municipio: **$${actionData.settlementOffer.toLocaleStr
 ${actionData.reductionLetterText}
 \`\`\`
 
-📍 *Radicar esta carta ante el Code Enforcement Board permite limpiar el título en la Title Company antes de la fecha de cierre.*`;
+### 🛡️ Protocolo Curativo "Cero Fricción" para el Vendedor:
+1. **Cero Dólares de su Bolsillo:** El propietario no paga absolutamente nada por adelantado.
+2. **Cero Audiencias ni Abogados:** No tiene que presentarse ante el magistrado municipal ni lidiar con tribunales.
+3. **Reducción del 85% al 90%:** Nuestro equipo curativo negocia la reducción por causa de fuerza mayor directamente con el municipio.
+4. **Liquidación Directa en el Cierre:** El saldo restante se descuenta y paga automáticamente de los fondos de cierre en la compañía de título (Title Escrow).
+5. **Herencias / Probate Resuelto:** Si la propiedad es heredada, el abogado de título elabora un simple *Affidavit of Heirship* para evitar meses de juicio de probate.
+
+📍 *El vendedor solo firma el acuerdo y recibe su cheque neto limpio de toda deuda sin entrar en procesos desgastantes.*`;
   }
 
   // DEAL WIZARD
