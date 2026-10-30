@@ -2383,6 +2383,142 @@
         }
       ],
       "sources": []
+    },
+    {
+      "id": "skill-master-negotiation-closer",
+      "slug": "wholesale-master-negotiation-sales-closer",
+      "title": "Maestría en Negociación y Cierre de Real Estate Wholesale (Chris Voss, Pace Morby, Brent Daniels & Jerry Norton)",
+      "category": "Deal Analysis & Offers",
+      "version": "2.0",
+      "lastUpdated": "2026-10-30",
+      "masteryScore": 98,
+      "summary": "Compilación exhaustiva de tácticas de negociación de rehenes del FBI (Chris Voss) aplicadas a Wholesale, el pivote de Finanzas Creativas y Subject-To de Pace Morby, la técnica Push-Pull de Brent Daniels, la escalera de negociación Ackerman y la reducción de multas de títulos curativos de Zach Ginn.",
+      "whyItWorks": "El 80% de los wholesalers novatos queman leads porque presentan ofertas bajas agresivas y discuten el precio con el vendedor. Los cerradores de élite utilizan empatía táctica, preguntas orientadas al NO para dar sensación de control, Good Cop / Bad Cop con comités de inversión y alternativas de financiamiento creativo para monetizar el 100% de los leads que otros descartan.",
+      "executorType": "interactive_flow",
+      "steps": [
+        {
+          "order": 1,
+          "title": "Apertura con Empatía Táctica y Preguntas Orientadas al NO (Chris Voss)",
+          "actionDescription": "Iniciar la conversación desarmando la resistencia del vendedor preguntando: \"¿Te diste por vencido con la idea de vender esta propiedad?\" o \"¿Sería descabellado si compramos en efectivo y cerramos la próxima semana?\". La gente necesita decir NO para sentirse protegida.",
+          "exactCommandsOrClicks": [
+            "Llamar con tono calmado",
+            "Hacer pausa de 4 segundos tras la pregunta"
+          ],
+          "proTip": "Nunca preguntes \"¿Tienes 5 minutos para hablar?\" (dicen NO). Pregunta: \"¿Te interrumpo en un pésimo momento?\" (dicen \"No, dime rápido\").",
+          "sourceAttribution": "Chris Voss - Never Split the Difference"
+        },
+        {
+          "order": 2,
+          "title": "La Técnica Push-Pull & Retirada Estratégica (Brent Daniels & Todd Toback)",
+          "actionDescription": "Si el vendedor actúa con soberbia o dice que no tiene prisa, aléjalo: \"Sinceramente, nuestra oferta de contado tal vez ni siquiera sea para ti. Si puedes esperar 6 meses y reparar el techo, sácale más en el MLS. ¿Por qué no te la quedas otro año?\". Esto desata el pánico a perder el comprador y el vendedor comienza a venderse a sí mismo.",
+          "exactCommandsOrClicks": [
+            "Aplicar inflexión descendente",
+            "Hacer silencio absoluto"
+          ],
+          "proTip": "Quien persigue pierde. Quien se retira con calma atrae.",
+          "sourceAttribution": "Brent Daniels - TTP / Talk To People"
+        },
+        {
+          "order": 3,
+          "title": "Anclaje Inverso y Escalera Ackerman (Jerry Norton & Pace Morby)",
+          "actionDescription": "Anclar la oferta inicial al 65% de MAO respaldado por el \"comité de números\" (Good Cop / Bad Cop). Subir en tramos decrecientes (85%, 95%, 100%) exigiendo concesiones no monetarias (dejar muebles viejos, pagar camión de mudanza) y cerrando en un número exacto no redondo ($98,420).",
+          "exactCommandsOrClicks": [
+            "Presentar oferta neta con gastos de título cubiertos"
+          ],
+          "proTip": "Los números precisos transmiten cálculos matemáticos rigurosos; los números redondos parecen inventados.",
+          "sourceAttribution": "Jerry Norton - Flipping Mastery"
+        },
+        {
+          "order": 4,
+          "title": "Pivote de Finanzas Creativas & Subject-To al 2.8% (Pace Morby Signature Move)",
+          "actionDescription": "Si el vendedor insiste en precio retail o tiene una hipoteca fija al 2.8%–4%, ofrecer pagar el 100% de su precio tomando las cuotas mensuales a través de un Loan Servicer neutral (Weststar/Evergreen). Asignar este contrato por $12,000–$25,000 de fee a compradores con retorno del 35% anual.",
+          "exactCommandsOrClicks": [
+            "Verificar balance y PITI mensual",
+            "Estructurar Entry Fee"
+          ],
+          "proTip": "Los compradores de hoy están desesperados por hipotecas al 2.8% porque los bancos cobran el 7.5%.",
+          "sourceAttribution": "Pace Morby - SubTo & Creative Finance"
+        },
+        {
+          "order": 5,
+          "title": "Protocolo de Título Curativo Cero Fricción (Multas de Código & Probate)",
+          "actionDescription": "Radicar petición formal de reducción de multas del 85% al 90% ante el magistrado municipal. Redactar Affidavit of Heirship para evitar meses de juicio sucesorio. Cero dólares del bolsillo del dueño y liquidación en Title Escrow.",
+          "exactCommandsOrClicks": [
+            "Radicar carta de reducción ante Code Enforcement",
+            "Abrir archivo en Investor-Friendly Title Co."
+          ],
+          "proTip": "El vendedor no tiene que ir a la corte ni contratar abogados; el título se entrega limpio el día del cierre.",
+          "sourceAttribution": "Zach Ginn & Rick Ginn - FreeWholesaling.com"
+        },
+        {
+          "order": 6,
+          "title": "Amarre Digital Inmediato en la Llamada (Digital Phone Tie-Down)",
+          "actionDescription": "Enviar el contrato PSA de 1 página por SMS mientras el vendedor sigue en la llamada telefónica y guiarlo a firmar con el dedo en pantalla antes de colgar.",
+          "exactCommandsOrClicks": [
+            "Enviar enlace /sign/[id]",
+            "Verificar recepción de firma"
+          ],
+          "proTip": "Si cuelgas sin la firma, un competidor o el miedo puede frenar el deal. Cierra en la llamada.",
+          "sourceAttribution": "Todd Toback - No Limits Real Estate"
+        }
+      ],
+      "resources": [
+        {
+          "id": "res-voss-book",
+          "name": "Never Split the Difference - Chris Voss (FBI Negotiation)",
+          "url": "https://www.blackswanltd.com/",
+          "category": "educational",
+          "isFree": true,
+          "howToUse": "Dominio de preguntas orientadas al NO, empatía táctica y etiquetas emocionales.",
+          "discoveredVia": "deep_research"
+        },
+        {
+          "id": "res-subto-community",
+          "name": "SubTo Mentorship & Creative Finance Vault - Pace Morby",
+          "url": "https://www.subto.com/",
+          "category": "educational",
+          "isFree": true,
+          "howToUse": "Bóveda de contratos de Subject-To, Fideicomisos de Título y Loan Servicing.",
+          "discoveredVia": "video_audio"
+        },
+        {
+          "id": "res-freewholesaling",
+          "name": "FreeWholesaling.com & FlipWithZach - Zach & Rick Ginn",
+          "url": "https://www.freewholesaling.com/",
+          "category": "educational",
+          "isFree": true,
+          "howToUse": "Guiones de 4 pilares, contratos de 1 página y arbitraje de lotes baldíos.",
+          "discoveredVia": "seed"
+        }
+      ],
+      "scriptsAndTemplates": [
+        {
+          "id": "script-push-pull",
+          "title": "Guión Push-Pull para Vendedores Orgullosos",
+          "type": "negotiation_anchor",
+          "content": "Mira {owner_name}, siendo 100% honesto contigo... según lo que me cuentas, nuestra oferta de contado tal vez ni siquiera sea la mejor opción para ti. Si no te importa esperar 6 meses, contratar albañiles para arreglar el techo y pagar el 6% a un agente, probablemente sacarías más dinero en el mercado abierto. ¿Por qué no mejor te quedas con la casa y la alquilas otro año más?"
+        },
+        {
+          "id": "script-subto-pivot",
+          "title": "Pivote de Finanzas Creativas de Pace Morby",
+          "type": "negotiation_anchor",
+          "content": "¿Estarías abierto a que te paguemos tu precio completo si asumimos las cuotas mensuales de tu hipoteca al 2.8% o te pagamos mensualmente con intereses a través de un Loan Servicer autorizado?"
+        },
+        {
+          "id": "script-curative-relief",
+          "title": "Guión de Alivio Inmediato para Multas de Código y Herencias",
+          "type": "negotiation_anchor",
+          "content": "Por favor, no te preocupes en absoluto por las multas de código, impuestos atrasados o si la propiedad viene de una herencia o probate. Nosotros nos encargamos de todo para que sea 100% simple para ti y no tengas que entrar en procesos engorrosos: No tienes que pagar un solo centavo de tu bolsillo, no tienes que contratar abogados caros ni presentarte ante el municipio o la corte. Nuestro equipo curativo de título radica la petición formal ante el magistrado de código del condado para negociar y reducir las multas entre un 85% y un 90%, y cualquier saldo restante se liquida directamente de los fondos de cierre en la compañía de título."
+        }
+      ],
+      "sources": [],
+      "changelog": [
+        {
+          "version": "2.0",
+          "date": "2026-10-30",
+          "summary": "Integración enciclopédica de negociación Chris Voss, Pace Morby, Brent Daniels y Jerry Norton."
+        }
+      ]
     }
   ],
   "ingestionHistory": [

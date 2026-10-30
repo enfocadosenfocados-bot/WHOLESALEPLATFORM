@@ -13,6 +13,11 @@ import {
   generateBuyerCloserPrompt,
   DealSpecs,
 } from '@/lib/voiceCloserPrompt';
+import {
+  MASTER_NEGOTIATION_TACTICS,
+  CREATIVE_FINANCE_PLAYBOOK,
+  MASTER_OBJECTIONS_ENCYCLOPEDIA,
+} from '@/lib/knowledge/wholesaleMasterNegotiationKnowledge';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Build a full, omniscient platform context snapshot for the AI
@@ -110,6 +115,25 @@ ${lastRun
 - Casas (SFH): MAO = (ARV * 0.70) - Reparaciones - Fee ($10,000)
 - Terrenos (Infill Lots): MAO = (Valor de Mercado Constructor * 0.40) - Fee ($3,000)
 - Anclaje Inverso: Presentar oferta inicial a 10%-15% por debajo del MAO para negociar hacia el número objetivo.
+
+🧠 ENCICLOPEDIA MAESTRA DE NEGOCIACIÓN & CIERRE (VOSS, MORBY, DANIELS, NORTON, GINN):
+1. FBI Negotiation & Tactical Empathy (Chris Voss):
+   - Calibrated No-Questions: "¿Te diste por vencido con la idea de vender?", "¿Sería descabellado si compramos en efectivo y pagamos el 100% de gastos de cierre?" (La gente necesita decir NO para sentirse en control).
+   - Push-Pull & Takeaway (Brent Daniels / Todd Toback): "Honestamente, nuestra oferta de contado tal vez no sea para ti. Si puedes esperar 6 meses y pintar la casa, te conviene más el MLS. ¿Por qué no te la quedas otro año?" -> Activa el pánico de pérdida y hace que el vendedor se venda a sí mismo.
+   - Ackerman Underwriting Ladder: Anclaje al 65% de MAO, subidas decrecientes al 85%, 95% y 100% acompañadas de concesiones no monetarias (pagar camión de mudanza, retirar muebles viejos, dejar basura en la casa).
+   - Good Cop / Bad Cop: Tú eres el amigo del vendedor; el comité frío de suscripción es el que exige el descuento.
+2. Finanzas Creativas & Subject-To (Pace Morby):
+   - Pregunta de Pivote: "¿Estarías abierto a que te paguemos tu precio completo si asumimos las cuotas mensuales de tu hipoteca o te pagamos mensualmente con intereses?"
+   - Por qué lo compran los Buyers con desespero: Los bancos hoy cobran 7.5% de interés. Una hipoteca al 2.8% o 3% genera $600-$1,200/mes de cash flow libre y un retorno Cash-on-Cash superior al 35% anual.
+   - Blindaje Legal: Land Trust, Seguro con Endoso de Acreedor Adicional y Loan Servicing neutral (Weststar/Evergreen).
+3. Curative Title "Cero Fricción" (Multas de Código, Impuestos, Probate):
+   - Petición formal de reducción de multas de código del 85% al 90% ante el magistrado.
+   - Cero dólares del bolsillo del dueño, cero audiencias o juicios. Gravámenes pagados en Title Escrow al cierre.
+   - Affidavits of Heirship para herencias/probate en 14 días sin abogados costosos.
+4. Plan B Inspection Price Drop (Renegociación Técnica):
+   - Cómo bajar el precio $10k-$25k tras la visita de contratistas usando la Cláusula 4 de inspección sin que se caiga el contrato.
+5. Cierre Digital Inmediato en la Llamada (Digital Tie-Down):
+   - Enviar contrato de 1 página por SMS y mantener la llamada mientras firman con el dedo en pantalla.
 `.trim();
 }
 
